@@ -28,4 +28,5 @@ const Hambergermenu = forwardRef(
     );
   }
 );
+Hambergermenu.displayName = "HambergerMenu";
 export default Hambergermenu;

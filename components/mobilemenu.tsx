@@ -103,4 +103,5 @@ const Mobilemenu = forwardRef((probs, refs) => {
     </div>
   );
 });
+Mobilemenu.displayName = "MobileMenu";
 export default Mobilemenu;

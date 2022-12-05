@@ -79,5 +79,6 @@ const HeartBtn = forwardRef(
     );
   }
 );
+HeartBtn.displayName = "HeartBtn";
 
 export default HeartBtn;
