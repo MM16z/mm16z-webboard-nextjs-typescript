@@ -1,0 +1,281 @@
+.post-box-container {
+    z-index: 1;
+    position: relative;
+    width: 400px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+    & > .vertical-line {
+        position: absolute;
+        background: linear-gradient(45deg, rgba(62, 100, 255, 1) 0%, rgba(255, 0, 134, 1) 100%);
+        height: 90%;
+        width: 2px;
+        left: 0;
+        border-radius: 16px;
+        opacity: 0.6;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    & > .vertical-line_1 {
+        position: absolute;
+        background: linear-gradient(180deg, rgba(62, 100, 255, 1) 0%, rgba(255, 0, 134, 1) 100%);
+        height: 90%;
+        width: 2px;
+        right: 0;
+        border-radius: 16px;
+        opacity: 0.6;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    & > .horizontal-line {
+        position: absolute;
+        background: linear-gradient(90deg, rgba(62, 100, 255, 1) 0%, rgba(78, 209, 255, 1) 100%);
+        width: 360px;
+        height: 2px;
+        top: 0;
+        margin-left: 20px;
+        border-radius: 16px;
+        opacity: 0.65;
+    }
+    & > .horizontal-line_1 {
+        position: absolute;
+        width: 360px;
+        height: 2px;
+        left: 0;
+        bottom: 0;
+        margin-left: 20px;
+        background: linear-gradient(90deg, rgba(253, 84, 255, 1) 0%, rgba(255, 0, 134, 1) 100%);
+    }
+    & > .line5 {
+        position: absolute;
+        width: 320px;
+        height: 1px;
+        top: 70px;
+        margin-left: 40px;
+        background: linear-gradient(90deg, rgba(255, 0, 134, 1) 0%, rgba(253, 84, 255, 1) 100%);
+    }
+    & > .line6 {
+        position: absolute;
+        width: 280px;
+        height: 1px;
+        top: 115px;
+        margin-left: 60px;
+        background: linear-gradient(90deg, rgba(78, 209, 255, 1) 0%, rgba(62, 100, 255, 1) 100%);
+        opacity: 1;
+    }
+    & > .profile-circle-line {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        top: 0;
+        margin-top: 15px;
+        margin-left: 20px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        background: linear-gradient(to right, rgb(255, 255, 255), rgb(255, 255, 255)),
+            linear-gradient(135deg, rgba(255, 29, 0, 1) 0%, rgba(76, 0, 255, 1) 100%);
+        background-clip: padding-box, border-box;
+        background-origin: padding-box, border-box;
+        overflow: hidden;
+        & > .profile-circle-img {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            top: 2.5px;
+            left: 2.5px;
+            border-radius: 50%;
+            background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ft00.deviantart.net%2FSWUCfIShpn7wS8Xn4KIkiiFeAcc%3D%2Ffit-in%2F700x350%2Ffilters%3Afixed_height(100%2C100)%3Aorigin()%2Fpre00%2Fd38b%2Fth%2Fpre%2Ff%2F2018%2F009%2F7%2Fc%2Fdo_you_know_da_wae_by_chander_fox-dbzi5xa.png&f=1&nofb=1&ipt=1996a69800e2ab47e0cd1a3687332c3227daaeef94c0044ddae09ebeca68c0b8&ipo=images");
+            background-size: contain;
+        }
+    }
+    & > .username {
+        position: absolute;
+        top: 22.5px;
+        left: 75px;
+        font-family: "Silkscreen", cursive;
+        font-size: 20px;
+        inline-size: 300px;
+        line-height: 25px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    & > .title {
+        position: absolute;
+        top: 82.5px;
+        left: 20px;
+        font-family: "Varela Round", sans-serif;
+        font-size: 16.6px;
+        font-weight: bold;
+        inline-size: 360px;
+        line-height: 20px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    & > .post-content {
+        display: inline-block;
+        position: relative;
+        font-family: "Varela Round", sans-serif;
+        font-size: 14.6px;
+        left: 20px;
+        margin-top: 130px;
+        margin-bottom: 10px;
+        inline-size: 360px;
+        word-wrap: break-word;
+    }
+    & > .post-date {
+        position: absolute;
+        font-family: "Varela Round", sans-serif;
+        font-size: 14.6px;
+        font-weight: bold;
+        bottom: 10px;
+        right: 10px;
+        inline-size: 140px;
+        text-align: center;
+    }
+    & > form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+        row-gap: 10px;
+        & > label {
+            font-family: "Silkscreen", cursive;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        & > #comment-input {
+            font-family: "Varela Round", sans-serif;
+            font-size: 14px;
+            width: 350px;
+            height: 50px;
+            resize: none;
+            &:focus {
+                outline: none;
+            }
+        }
+        & > #comment-submitbtn {
+            font-family: "Silkscreen", cursive;
+            background-color: white;
+            font-size: 16px;
+            opacity: 1;
+            cursor: pointer;
+            border-radius: 5px;
+            border-width: 1px;
+            border-color: rgb(46, 46, 46);
+            &:hover {
+                opacity: 0.5;
+                transition: 0.3s;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 361px) {
+    .post-box-container > .post-content {
+        inline-size: 260px;
+        word-wrap: break-word;
+    }
+    .post-box-container > .vertical-line_1 {
+        left: 300px;
+    }
+    .post-box-container > .horizontal-line {
+        width: 260px;
+    }
+    .post-box-container > .horizontal-line_1 {
+        width: 260px;
+    }
+    .post-box-container > .line5 {
+        width: 220px;
+    }
+    .post-box-container > .line6 {
+        width: 180px;
+    }
+    .post-box-container > .username {
+        inline-size: 200px;
+    }
+    .post-box-container > .title {
+        inline-size: 250px;
+    }
+    .post-box-container > .post-date {
+        right: 110px;
+    }
+    .post-box-container > form {
+        width: 300px;
+    }
+    .post-box-container > form > #comment-input {
+        width: 250px;
+    }
+}
+@media screen and (min-width: 362px) and (max-width: 450px) {
+    .post-box-container > .post-content {
+        inline-size: 260px;
+        word-wrap: break-word;
+    }
+    .post-box-container > .vertical-line_1 {
+        left: 300px;
+    }
+    .post-box-container > .horizontal-line {
+        width: 260px;
+    }
+    .post-box-container > .horizontal-line_1 {
+        width: 260px;
+    }
+    .post-box-container > .line5 {
+        width: 220px;
+    }
+    .post-box-container > .line6 {
+        width: 180px;
+    }
+    .post-box-container > .username {
+        inline-size: 200px;
+    }
+    .post-box-container > .title {
+        inline-size: 250px;
+    }
+    .post-box-container > .post-date {
+        right: 110px;
+    }
+    .post-box-container > form {
+        width: 300px;
+    }
+    .post-box-container > form > #comment-input {
+        width: 250px;
+    }
+}
+@media screen and (min-width: 451px) and (max-width: 500px) {
+    .post-box-container > .post-content {
+        inline-size: 260px;
+        word-wrap: break-word;
+    }
+    .post-box-container > .vertical-line_1 {
+        left: 300px;
+    }
+    .post-box-container > .horizontal-line {
+        width: 260px;
+    }
+    .post-box-container > .horizontal-line_1 {
+        width: 260px;
+    }
+    .post-box-container > .line5 {
+        width: 220px;
+    }
+    .post-box-container > .line6 {
+        width: 180px;
+    }
+    .post-box-container > .username {
+        inline-size: 200px;
+    }
+    .post-box-container > .title {
+        inline-size: 250px;
+    }
+    .post-box-container > .post-date {
+        right: 110px;
+    }
+    .post-box-container > form {
+        width: 300px;
+    }
+    .post-box-container > form > #comment-input {
+        width: 250px;
+    }
+}

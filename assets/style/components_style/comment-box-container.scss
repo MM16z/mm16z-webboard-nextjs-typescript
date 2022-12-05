@@ -1,0 +1,103 @@
+.reply-box-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    left: 20px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    inline-size: 360px;
+    & > .comment-profile-circle-line {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        top: 20px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        background: linear-gradient(to right, white, white),
+            linear-gradient(135deg, rgba(255, 29, 0, 1) 0%, rgba(76, 0, 255, 1) 100%);
+        background-clip: padding-box, border-box;
+        background-origin: padding-box, border-box;
+        overflow: hidden;
+        & > .comment-profile-circle-img {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            top: 2.5px;
+            left: 2.5px;
+            border-radius: 50%;
+            background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ft00.deviantart.net%2FSWUCfIShpn7wS8Xn4KIkiiFeAcc%3D%2Ffit-in%2F700x350%2Ffilters%3Afixed_height(100%2C100)%3Aorigin()%2Fpre00%2Fd38b%2Fth%2Fpre%2Ff%2F2018%2F009%2F7%2Fc%2Fdo_you_know_da_wae_by_chander_fox-dbzi5xa.png&f=1&nofb=1&ipt=1996a69800e2ab47e0cd1a3687332c3227daaeef94c0044ddae09ebeca68c0b8&ipo=images");
+            background-size: contain;
+        }
+    }
+    & > .comment-username {
+        position: absolute;
+        top: 22px;
+        left: 40px;
+        font-family: "Silkscreen", cursive;
+        font-size: 15px;
+        inline-size: 320px;
+        line-height: 25px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    & > .comment-post-content {
+        display: inline-block;
+        position: relative;
+        font-family: "Varela Round", sans-serif;
+        font-size: 10.6px;
+        left: 0px;
+        margin-top: 42.5px;
+        margin-bottom: 15px;
+        inline-size: 360px;
+        word-wrap: break-word;
+        white-space: pre-line;
+    }
+    & > hr {
+        position: relative;
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 361px) {
+    .reply-box-container > .comment-username {
+        inline-size: 220px;
+    }
+    .reply-box-container > .comment-post-content {
+        inline-size: 260px;
+    }
+    .reply-box-container > hr {
+        width: 300px;
+    }
+    .reply-box-container > hr {
+        position: relative;
+        width: 260px;
+        left: -50px;
+    }
+}
+@media screen and (min-width: 362px) and (max-width: 450px) {
+    .reply-box-container > .comment-username {
+        inline-size: 220px;
+    }
+    .reply-box-container > .comment-post-content {
+        inline-size: 260px;
+    }
+    .reply-box-container > hr {
+        position: relative;
+        width: 260px;
+        left: -50px;
+    }
+}
+@media screen and (min-width: 451px) and (max-width: 500px) {
+    .reply-box-container > .comment-username {
+        inline-size: 220px;
+    }
+    .reply-box-container > .comment-post-content {
+        inline-size: 260px;
+    }
+    .reply-box-container > hr {
+        position: relative;
+        width: 260px;
+        left: -50px;
+    }
+}

@@ -1,0 +1,152 @@
+.login-page-container {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    & > form {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+}
+.login-inputcontainer {
+    z-index: 2;
+    position: relative;
+    font-family: "Silkscreen", cursive;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    left: 50%;
+    padding-top: 100px;
+    transform: translateX(-50%);
+    & > input#email-input {
+        margin-bottom: 25px;
+    }
+    & > input#password-input {
+        margin-bottom: 15px;
+    }
+    & > input.inputborder {
+        font-family: "Silkscreen", cursive;
+        font-size: 3vw;
+        line-height: 5vw;
+        width: 50vw;
+        padding-left: 2vw;
+        padding-right: 2vw;
+        border: double 1vw transparent;
+        border-radius: 5vw;
+        background-image: linear-gradient(
+                215deg,
+                rgb(255, 226, 221) 0%,
+                rgb(240, 221, 255) 50%,
+                rgb(202, 247, 255) 100%
+            ),
+            linear-gradient(215deg, rgba(255, 42, 0, 1) 0%, rgba(158, 0, 255, 1) 50%, rgba(0, 219, 255, 1) 100%);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        outline: none;
+    }
+    & > label {
+        text-align: center;
+        font-size: 2vw;
+        margin-bottom: 0.3vw;
+    }
+    & > input#login-submitbtn {
+        font-family: "Silkscreen", cursive;
+        cursor: pointer;
+        font-size: 10vw;
+        width: 90vw;
+        height: 15vw;
+        margin-top: 20px;
+        color: green;
+        &:hover {
+            background-color: black;
+        }
+    }
+    & > #toregisref {
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 500px) {
+    .login-inputcontainer {
+        & > input.inputborder {
+            font-size: 7vw;
+            line-height: 5vw;
+            width: 80vw;
+            margin-bottom: 6vw;
+            padding-left: 2vw;
+            padding-right: 2vw;
+            border: double 2vw transparent;
+            border-radius: 5vw;
+            background-image: linear-gradient(
+                    215deg,
+                    rgb(255, 226, 221) 0%,
+                    rgb(240, 221, 255) 50%,
+                    rgb(202, 247, 255) 100%
+                ),
+                linear-gradient(215deg, rgba(255, 42, 0, 1) 0%, rgba(158, 0, 255, 1) 50%, rgba(0, 219, 255, 1) 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            outline: none;
+        }
+        & > label {
+            text-align: center;
+            font-size: 4.5vw;
+            margin-bottom: 0.3vw;
+        }
+        & > input#login-submitbtn {
+            font-family: "Silkscreen", cursive;
+            cursor: pointer;
+            font-size: 10vw;
+            width: 90vw;
+            height: 15vw;
+            margin-top: 5vw;
+            color: green;
+            &:hover {
+                background-color: black;
+            }
+        }
+    }
+}
+@media screen and (min-width: 501px) and (max-width: 1200px) {
+    .login-inputcontainer {
+        & > input.inputborder {
+            font-size: 5vw;
+            line-height: 5vw;
+            width: 60vw;
+            margin-bottom: 2vw;
+            padding-left: 2vw;
+            padding-right: 2vw;
+            border: double 1.2vw transparent;
+            border-radius: 5vw;
+            background-image: linear-gradient(
+                    215deg,
+                    rgb(255, 226, 221) 0%,
+                    rgb(240, 221, 255) 50%,
+                    rgb(202, 247, 255) 100%
+                ),
+                linear-gradient(215deg, rgba(255, 42, 0, 1) 0%, rgba(158, 0, 255, 1) 50%, rgba(0, 219, 255, 1) 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            outline: none;
+        }
+        & > label {
+            text-align: center;
+            font-size: 2.5vw;
+            margin-bottom: 0.3vw;
+        }
+        & > input#login-submitbtn {
+            font-family: "Silkscreen", cursive;
+            cursor: pointer;
+            font-size: 10vw;
+            width: 90vw;
+            height: 15vw;
+            color: green;
+            &:hover {
+                background-color: black;
+            }
+        }
+    }
+}

@@ -1,0 +1,126 @@
+.navbar-container {
+    // z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 66px;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow: hidden;
+}
+.navbar-title {
+    z-index: 3;
+    font-size: 40px;
+    margin-left: 30px;
+    margin-bottom: 25px;
+    background: linear-gradient(180deg, #00c4eb 0, #da06ff);
+    font-family: Silkscreen, cursive;
+    letter-spacing: -5px;
+    -webkit-text-stroke-color: rgb(255, 255, 255);
+    -webkit-text-stroke-width: 0.6px;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    cursor: pointer;
+}
+.navbar-title_01 {
+    z-index: 3;
+    font-size: 20px;
+    margin-left: -172px;
+    margin-top: 32px;
+    color: rgb(255, 255, 255);
+    font-family: Silkscreen, cursive;
+    letter-spacing: -1px;
+    cursor: pointer;
+}
+.navbar-bg {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(10deg, #3e64ff 0%, #5edfff 100%);
+    opacity: 0.6;
+}
+.navbar-bg-nested {
+    @extend .navbar-container;
+    pointer-events: none;
+    background: linear-gradient(0deg, rgba(255, 0, 134, 0.9) 0%, rgba(255, 0, 134, 0) 70%);
+    opacity: 0.22;
+}
+.navbar-text-login {
+    z-index: 3;
+    position: absolute;
+    font-size: 25px;
+    right: 60px;
+    font-family: Silkscreen, cursive;
+    color: white;
+    letter-spacing: -2px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.navbar-text-register {
+    @extend .navbar-text-login;
+    right: 145px;
+}
+.navbar-text-createpost {
+    @extend .navbar-text-login;
+    // right: 295px;
+}
+.navbar-text-createpost_isLogin {
+    @extend .navbar-text-login;
+}
+.navbar-text-logout {
+    @extend .navbar-text-login;
+    right: 35px;
+    color: red;
+}
+
+@keyframes rainbow {
+    0% {
+        background-position: 0% 82%;
+    }
+    50% {
+        background-position: 100% 19%;
+    }
+    100% {
+        background-position: 0% 82%;
+    }
+}
+@-webkit-keyframes rainbow {
+    0% {
+        background-position: 0% 82%;
+    }
+    50% {
+        background-position: 100% 19%;
+    }
+    100% {
+        background-position: 0% 82%;
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 600px) {
+    .navbar-text-login,
+    .navbar-text-register,
+    .navbar-text-createpost {
+        display: none !important;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 800px) {
+    .navbar-text-login,
+    .navbar-text-register,
+    .navbar-text-createpost {
+        font-size: 15px;
+    }
+    .navbar-text-register {
+        right: 110px;
+    }
+    .navbar-text-createpost {
+        right: 190px !important;
+    }
+    .navbar-text-createpost_isLogin {
+        right: 95px !important;
+    }
+}
