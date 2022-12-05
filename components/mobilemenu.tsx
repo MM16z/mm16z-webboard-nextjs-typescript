@@ -51,13 +51,16 @@ const Mobilemenu = forwardRef((probs, refs) => {
       {router.pathname === "/userpanel" ? null : (
         <p
           onClick={() => {
-            window.location.href = "/userpanel";
+            if (currentToken.token) {
+              window.location.href = "/userpanel";
+            } else {
+              window.location.href = "/login";
+            }
           }}
         >
           Createpost
         </p>
       )}
-
       {router.pathname === "/userpanel" || currentToken.token ? null : (
         <p
           style={{ top: "150px" }}

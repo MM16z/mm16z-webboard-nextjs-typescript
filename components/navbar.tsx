@@ -67,7 +67,11 @@ function Navbar() {
               : "navbar-text-createpost"
           }
           onClick={() => {
-            window.location.href = "/userpanel";
+            if (currentToken.token) {
+              window.location.href = "/userpanel";
+            } else {
+              window.location.href = "/login";
+            }
           }}
           style={{ right: currentToken.token ? "140px" : "295px" }}
         >
