@@ -1,9 +1,10 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
+
 import { useRouter } from "next/router";
 
-import hasJWT from "../../jwt_auth/hasJWT";
-import getUserauth from "../../jwt_auth/getUserAuth";
+import getUserauth from "../../hooks/getUserAuth";
+import useAuthStore from "../../hooks/authstore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,18 +14,14 @@ const Login = () => {
 
   const router = useRouter();
 
+  const useAuth = useAuthStore((state) => state.accessToken);
+
+  const setAuthStore = useAuthStore((state) => state.setAccessToken);
+
   const routeAuth = () => {
-    if (hasJWT()) {
-      getUserauth().then((response) => {
-        if (response.data.status === "error") {
-          localStorage.removeItem("token");
-          window.location.href = "/";
-        } else {
-          router.push("/userpanel");
-        }
-      });
+    if (useAuth) {
       alert("already login");
-      alert("dont broke my Pepehands code :(");
+      router.push("userpanel");
     }
   };
 
@@ -35,22 +32,21 @@ const Login = () => {
       password: password,
     };
     axios
-      .post(
-        "https://blushing-gold-macaw.cyclic.app/login",
-        JSON.stringify(jsonBodyData),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .post("http://localhost:3006/login", JSON.stringify(jsonBodyData), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
       .then((response) => {
+        if (response.data.status === "error") {
+          console.log(response.data);
+          return alert("Login failed");
+        }
         if (response.data.status === "ok") {
+          setAuthStore(response.data.accessToken);
           alert("Login success");
-          localStorage.setItem("token", response.data.token);
-          window.location.href = "/userpanel";
-        } else {
-          alert("login failed");
+          router.push("userpanel");
         }
       })
       .catch((error) => {

@@ -1,8 +1,8 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-import hasJWT from "../../jwt_auth/hasJWT";
-import getUserauth from "../../jwt_auth/getUserAuth";
+import useAuthStore from "../../hooks/authstore";
+
 import { useRouter } from "next/router";
 
 const Register = () => {
@@ -15,18 +15,12 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const useAuth = useAuthStore((state) => state.accessToken);
+
   const routeAuth = () => {
-    if (hasJWT()) {
-      getUserauth().then((response) => {
-        if (response.data.status === "error") {
-          localStorage.removeItem("token");
-          window.location.href = "/";
-        } else {
-          window.location.href = "/userpanel";
-        }
-      });
+    if (useAuth) {
       alert("already login");
-      alert("dont broke my Pepehands code :(");
+      router.push("userpanel");
     }
   };
 
@@ -34,34 +28,33 @@ const Register = () => {
     e: FormEvent<EventTarget | HTMLFormElement>
   ) => {
     e.preventDefault();
-    const jsonBodydata = {
+    const payloadData = {
       username: username,
       email: email,
       password: password,
     };
 
     axios
-      .post(
-        "https://blushing-gold-macaw.cyclic.app/register",
-        JSON.stringify(jsonBodydata),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .post("http://localhost:3006/register", JSON.stringify(payloadData), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
+        if (response.data.message.errno === 1062) {
+          return alert("Email already used");
+        }
+        if (response.data.status === "error") {
+          return alert("Register failed");
+        }
         if (response.data.status === "ok") {
           alert("Register Success");
           router.push("login");
-        } else {
-          alert("Register failed");
         }
       })
       .catch((error) => {
         console.log("Error", error);
       });
-
     setUsername("");
     setEmail("");
     setPassword("");

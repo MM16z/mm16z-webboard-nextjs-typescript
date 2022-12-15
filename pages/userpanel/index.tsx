@@ -1,31 +1,21 @@
-import {
-  useEffect,
-  useState,
-  useRef,
-  ChangeEvent,
-  TextareaHTMLAttributes,
-  DetailedHTMLProps,
-  HTMLAttributes,
-} from "react";
-import hasJWT from "../../jwt_auth/hasJWT";
-import getUserauth from "../../jwt_auth/getUserAuth";
-import { useRouter } from "next/router";
+import { useEffect, useState, useRef, ChangeEvent } from "react";
 import axios from "axios";
+
+import getUserauth from "../../hooks/getUserAuth";
+import useAuthStore from "../../hooks/authstore";
+
+import { useRouter } from "next/router";
 import { setCookie } from "cookies-next";
-import { PostDataType } from "../../types/PostDataType";
 import { GetServerSideProps } from "next";
 
-type UserpanelType = {
-  postid: number;
-  currentpostcontext: string;
-};
+import { PostDataType } from "../../types/PostDataType";
+import reqAuth from "../../hooks/requestAuth";
 
 export default function Userpanel({ posts }: PostDataType) {
-  const [username, setUsername] = useState<string | null>(null);
+  console.log(posts);
   const [postcontext, setPostContext] = useState("");
   const [usereditinput, setUserEditinput] = useState(false);
   const [preveditdata, setprevEditdata] = useState("");
-  const [userId, setUserId] = useState(null);
   const [userpostid, setPostid] = useState<number | null>(null);
 
   const editdataRef = useRef<HTMLTextAreaElement>(null);
@@ -33,53 +23,60 @@ export default function Userpanel({ posts }: PostDataType) {
 
   const router = useRouter();
 
+  const useAuth = useAuthStore((state) => state.accessToken);
+  const useUserName = useAuthStore((state) => state.userName);
+
+  const setAuthStore = useAuthStore((state) => state.setAccessToken);
+  const setEmailStore = useAuthStore((state) => state.setEmailStore);
+  const setUserName = useAuthStore((state) => state.setUserName);
+
   const routeAuth = () => {
-    if (hasJWT()) {
-      getUserauth().then((result) => {
-        if (result.data.status === "error") {
-          localStorage.clear();
-          window.location.href = "/";
-        } else {
-          setUsername(result.data.decoded.username);
-          const currentPath = router.pathname;
-          router.push({
-            pathname: currentPath,
-            query: {
-              currentUser: result.data.decoded.username,
-            },
-          });
-          setUserId(result.data.decoded.userId);
-          setCookie("userId", userId);
-        }
-      });
+    if (useAuth) {
+      getUserauth()
+        .then((result) => {
+          setEmailStore(result.data.decoded.email);
+          setUserName(result.data.decoded.username);
+        })
+        .catch((err) => {
+          if (err.response.status === 403) {
+            setCookie("userId", null);
+            setAuthStore(null);
+            router.push("/");
+          }
+        });
     } else {
-      setUsername("Anomymous");
-      setCookie("userId", null);
-      alert("Login frist!");
       router.push("/login");
     }
   };
 
+  //scroll to top when edited on responsive(mobile etc..) later
   const onEditClickhandler = (postid: number, currentpostcontext: string) => {
     setUserEditinput(true);
     setprevEditdata(currentpostcontext);
     setPostid(postid);
   };
 
-  const onPostSubmitHandler = (e: ChangeEvent<HTMLFormElement>) => {
+  const onPostSubmitHandler = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (postcontextRef.current?.value.trim() === "") {
-      alert("NO TEXT Pepehands");
-      return;
+      return alert("NO TEXT Pepehands");
+    }
+    if (!useAuth) {
+      alert("Please login frist");
+      return router.push("login");
+    }
+    if ((await reqAuth()) === "noAuthorization") {
+      alert("out of session");
+      return router.push("login");
     }
     const jsonBodydata = {
-      postfrom: username,
+      postfrom: useUserName,
       posttitle: "(Post Title Input Incoming...)",
       postcontent: postcontext,
     };
     axios
       .post(
-        "https://blushing-gold-macaw.cyclic.app/user_post_create",
+        "http://localhost:3006/user_post_create",
         JSON.stringify(jsonBodydata),
         {
           headers: {
@@ -87,35 +84,33 @@ export default function Userpanel({ posts }: PostDataType) {
           },
         }
       )
-      .then((res) => {
-        console.log(res);
-        if (res.data.status === "ok") {
+      .then((response) => {
+        if (response.data.message === "emtpy content")
+          return alert("Emtpy Content Pepehands");
+        if (response.data.status === "error") return alert("Post Failed");
+        if (response.data.status === "ok") {
           alert("Post Success");
-          window.location.href = "/";
-          return;
-        } else {
-          if ((res.data.message = "no text")) {
-            alert("Emtpy Content Pepehands");
-            return;
-          }
-          alert("Post Failed");
-          return;
+          router.push("/");
         }
       })
-      .catch((error) => {
-        console.log("Error", error);
+      .catch((err) => {
+        console.log("Error", err);
       });
   };
 
-  const onEdithSubmithandler = (e: ChangeEvent<HTMLFormElement>) => {
+  const onEdithSubmithandler = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (editdataRef.current?.value.trim() === "") {
-      alert("NO TEXT Pepehands");
-      return;
+    if (!useAuth) {
+      alert("Please login frist");
+      return router.push("login");
+    }
+    if ((await reqAuth()) === "noAuthorization") {
+      alert("out of session");
+      return router.push("login");
     }
     axios
       .post(
-        "https://blushing-gold-macaw.cyclic.app/user_post_edit",
+        "http://localhost:3006/user_post_edit",
         JSON.stringify({
           editcontent: preveditdata,
           postid: userpostid,
@@ -124,30 +119,33 @@ export default function Userpanel({ posts }: PostDataType) {
           headers: { "Content-Type": "application/json" },
         }
       )
-      .then((res) => {
-        console.log(res);
-        if (res.data.status === "ok") {
+      .then((response) => {
+        if (response.data.message === "emtpy content")
+          return alert("Emtpy Content Pepehands");
+        if (response.data.status === "error") return alert("Edit Failed");
+        if (response.data.status === "ok") {
           alert("Edit Success");
-          window.location.href = "/userpanel";
-          return;
-        } else {
-          if ((res.data.message = "no text")) {
-            alert("Emtpy Content Pepehands");
-            return;
-          }
-          alert("Post Failed");
-          return;
+          setUserEditinput(false);
+          router.push("userpanel");
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Error", err);
       });
   };
 
-  const onDelClickhandler = (postid: number) => {
+  const onDelClickhandler = async (postid: number) => {
+    if (!useAuth) {
+      alert("Please login frist");
+      return router.push("login");
+    }
+    if ((await reqAuth()) === "noAuthorization") {
+      alert("out of session");
+      return router.push("login");
+    }
     axios
       .post(
-        "https://blushing-gold-macaw.cyclic.app/user_post_delete",
+        "http://localhost:3006/user_post_delete",
         JSON.stringify({
           userpostid: postid,
         }),
@@ -155,15 +153,11 @@ export default function Userpanel({ posts }: PostDataType) {
           headers: { "Content-Type": "application/json" },
         }
       )
-      .then((res) => {
-        console.log(res);
-        if (res.data.status === "ok") {
+      .then((response) => {
+        if (response.data.status === "error") return alert("Delete Failed");
+        if (response.data.status === "ok") {
           alert("Delete Success");
-          window.location.href = "/userpanel";
-          return;
-        } else {
-          alert("Delete Failed");
-          return;
+          router.push("userpanel");
         }
       })
       .catch((err) => {
@@ -208,16 +202,19 @@ export default function Userpanel({ posts }: PostDataType) {
         </form>
       </section>
     );
+  } else {
+    editinput = null;
   }
 
   useEffect(() => {
     routeAuth();
+    console.log(posts);
     postcontextRef.current?.focus();
-  }, [userId]);
+  }, []);
 
   return (
     <div className="userpanel-container">
-      <span id="username">HI! {username} </span>
+      <span id="username">HI! {useUserName} </span>
       <form onSubmit={onPostSubmitHandler}>
         <div className="user-panel-inputcontainer">
           <label htmlFor="post-text-input">Write something nice :D</label>
@@ -288,10 +285,10 @@ export default function Userpanel({ posts }: PostDataType) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let currentUser = context.query.currentUser;
+  let currentUser = context.req?.cookies?.userName || null;
   const options = {
     method: "GET",
-    url: "https://blushing-gold-macaw.cyclic.app/user_posts",
+    url: "http://localhost:3006/current_user_posts",
     params: { currentUser: currentUser },
   };
   const posts = await axios.request(options);

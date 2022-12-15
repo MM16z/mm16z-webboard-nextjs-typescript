@@ -1,33 +1,24 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { setCookie } from "cookies-next";
 
+import useAuthStore from "../hooks/authstore";
+
 function Navbar() {
-  const [currentToken, setCurrentToken] = useState({
-    token: null as any,
-  });
   const router = useRouter();
   const createPostBtnref = useRef(null);
 
-  const getLocalStorageItem = (key: string) => {
-    return typeof window !== undefined
-      ? window.localStorage.getItem(key)
-      : null;
-  };
+  const useAuth = useAuthStore((state) => state.accessToken);
+  const setAuthStore = useAuthStore((state) => state.setAccessToken);
+
   const logoutHandler = () => {
-    setCurrentToken({
-      token: window.localStorage.removeItem("token"),
-    });
+    setAuthStore(null);
     setCookie("userId", null);
+    setCookie("userName", null);
     window.location.href = "/";
   };
 
-  useEffect(() => {
-    setCurrentToken({
-      token: getLocalStorageItem("token"),
-    });
-  }, []);
   return (
     <nav className="navbar-container">
       <div
@@ -46,15 +37,13 @@ function Navbar() {
       >
         Webboard
       </div>
-      {currentToken.token ? null : (
+      {useAuth ? null : (
         <Link href="/login" className={"navbar-text-login"}>
-          {/* <div className={"navbar-text-login"}>Login</div> */}
           Login
         </Link>
       )}
-      {currentToken.token ? null : (
+      {useAuth ? null : (
         <Link href="/register" className={"navbar-text-register"}>
-          {/* <div className={"navbar-text-register"}>Register |</div> */}
           Register |
         </Link>
       )}
@@ -62,23 +51,23 @@ function Navbar() {
         <div
           ref={createPostBtnref}
           className={
-            currentToken.token
+            useAuth
               ? "navbar-text-createpost_isLogin"
               : "navbar-text-createpost"
           }
           onClick={() => {
-            if (currentToken.token) {
-              window.location.href = "/userpanel";
+            if (useAuth) {
+              router.push("userpanel");
             } else {
-              window.location.href = "/login";
+              router.push("login");
             }
           }}
-          style={{ right: currentToken.token ? "140px" : "295px" }}
+          style={{ right: useAuth ? "140px" : "295px" }}
         >
           CreatePost |
         </div>
       )}
-      {currentToken.token ? (
+      {useAuth ? (
         <div className="navbar-text-logout" onClick={logoutHandler}>
           Logout
         </div>

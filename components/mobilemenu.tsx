@@ -1,67 +1,49 @@
 import Image from "next/image";
 import {
-  ForwardedRef,
   forwardRef,
   useContext,
   useEffect,
   useImperativeHandle,
   useRef,
-  useState,
 } from "react";
 import { useRouter } from "next/router";
 
-import getUserauth from "../jwt_auth/getUserAuth";
-
 import mm16grid from "../assets/images/mm16grid.png";
 import { Appcontext } from "../pages/_app";
+import useAuthStore from "../hooks/authstore";
 
 const Mobilemenu = forwardRef((probs, refs) => {
   const mobilemenuref = useRef<HTMLDivElement>(null);
+
+  const useAuth = useAuthStore((state) => state.accessToken);
+
+  const setAuthStore = useAuthStore((state) => state.setAccessToken);
+
   useImperativeHandle(refs, () => mobilemenuref.current);
   const router = useRouter();
   const appcontext = useContext(Appcontext);
-  const [currentToken, setCurrentToken] = useState({ token: null as any });
 
-  const getLocalStorageItem = (key: string) => {
-    return typeof window !== undefined
-      ? window.localStorage.getItem(key)
-      : null;
-  };
-
-  const routeAuth = () => {
-    if (currentToken.token) {
-      getUserauth().then((result) => {
-        if (result.data.status === "error") {
-          localStorage.clear();
-          window.location.href = "/";
-        }
-      });
-    }
-  };
-
-  useEffect(() => {
-    routeAuth();
-    setCurrentToken({
-      token: getLocalStorageItem("token"),
-    });
-    console.log(appcontext);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <div className="mobilemenu" ref={mobilemenuref}>
       {router.pathname === "/userpanel" ? null : (
         <p
           onClick={() => {
-            if (currentToken.token) {
-              window.location.href = "/userpanel";
+            if (useAuth) {
+              router.push("userpanel");
+              mobilemenuref.current?.classList.toggle("active");
+              appcontext.current.classList.toggle("active");
             } else {
-              window.location.href = "/login";
+              router.push("login");
+              mobilemenuref.current?.classList.toggle("active");
+              appcontext.current.classList.toggle("active");
             }
           }}
         >
           Createpost
         </p>
       )}
-      {router.pathname === "/userpanel" || currentToken.token ? null : (
+      {router.pathname === "/userpanel" || useAuth ? null : (
         <p
           style={{ top: "150px" }}
           onClick={() => {
@@ -73,7 +55,7 @@ const Mobilemenu = forwardRef((probs, refs) => {
           LOGIN
         </p>
       )}
-      {router.pathname === "/userpanel" || currentToken.token ? null : (
+      {router.pathname === "/userpanel" || useAuth ? null : (
         <p
           style={{ top: "250px" }}
           onClick={() => {
@@ -85,13 +67,11 @@ const Mobilemenu = forwardRef((probs, refs) => {
           REGISTER
         </p>
       )}
-      {currentToken.token ? (
+      {useAuth ? (
         <p
           style={{ top: "150px" }}
           onClick={() => {
-            setCurrentToken({
-              token: localStorage.removeItem("token"),
-            });
+            setAuthStore(null);
             window.location.href = "/";
             mobilemenuref.current?.classList.toggle("active");
             appcontext.current.classList.toggle("active");

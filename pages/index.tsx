@@ -1,15 +1,3 @@
-import PostBoxContainer from "../components/post-box-container";
-import CommentBoxContainer from "../components/comment-box-container";
-import HeartBtn from "../components/heartbtn";
-
-import hasJWT from "../jwt_auth/hasJWT";
-import getUserauth from "../jwt_auth/getUserAuth";
-
-import axios from "axios";
-import Masonry from "react-masonry-css";
-import ReactPaginate from "react-paginate";
-import { useRouter } from "next/router";
-import User from "../components/user";
 import {
   useRef,
   useState,
@@ -17,14 +5,27 @@ import {
   SyntheticEvent,
   ChangeEvent,
 } from "react";
-import { setCookie, getCookie } from "cookies-next";
+import axios from "axios";
+import Masonry from "react-masonry-css";
+import ReactPaginate from "react-paginate";
+import { useRouter } from "next/router";
+
+import PostBoxContainer from "../components/post-box-container";
+import CommentBoxContainer from "../components/comment-box-container";
+import HeartBtn from "../components/heartbtn";
+
+import getUserauth from "../hooks/getUserAuth";
+import useAuthStore from "../hooks/authstore";
+
+import { setCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
 
 import { PostDataType } from "../types/PostDataType";
+import reqAuth from "../hooks/requestAuth";
 
 function Home({ posts }: PostDataType) {
-  const [username, setUsername] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState<string | null>("Anonymous");
+  // const [userId, setUserId] = useState<number | null>(null);
   const [comment, setComment] = useState(["", "", "", "", "", ""]);
   const [postlikedstate, setPostlikedstate] = useState([
     false,
@@ -36,7 +37,31 @@ function Home({ posts }: PostDataType) {
   ]);
 
   const heartRef = useRef(null);
+
   const router = useRouter();
+
+  const useAuth = useAuthStore((state) => state.accessToken);
+  const useUserId = useAuthStore((state) => state.userId);
+
+  const setAuthStore = useAuthStore((state) => state.setAccessToken);
+
+  const routeAuth = () => {
+    console.log("running form index");
+    if (useAuth) {
+      getUserauth()
+        .then((result) => {
+          setUsername(result.data.decoded.username);
+          // setUserId(result.data.decoded.userId);
+        })
+        .catch((err) => {
+          if (err.response.status === 403) {
+            setCookie("userId", null);
+            setAuthStore(null);
+            router.push("/");
+          }
+        });
+    }
+  };
 
   const breakpointColumnsObj = {
     default: 4,
@@ -61,22 +86,6 @@ function Home({ posts }: PostDataType) {
     postsCount = 1;
   }
 
-  const routeAuth = () => {
-    if (hasJWT()) {
-      getUserauth().then((result) => {
-        if (result.data.status === "error") {
-          localStorage.clear();
-          window.location.href = "/";
-        } else {
-          setUsername(result.data.decoded.username);
-          setUserId(result.data.decoded.userId);
-        }
-      });
-    } else {
-      setCookie("userId", null);
-    }
-  };
-
   const pagginationHandler = (page: any) => {
     let currentPage = page.selected + 1;
     router.push({
@@ -85,104 +94,97 @@ function Home({ posts }: PostDataType) {
     });
   };
 
-  const commentSubmitHandler = (
+  const commentSubmitHandler = async (
     e: SyntheticEvent,
     postId: number,
     index: number
   ) => {
     e.preventDefault();
-    if (!hasJWT()) {
+    if (!useAuth) {
       alert("Please login frist");
-      router.push("/login");
-      return;
+      return router.push("login");
     }
-    const jsondata = {
+    if ((await reqAuth()) === "noAuthorization") {
+      alert("out of session");
+      return router.push("login");
+    }
+    const payloadData = {
       postfrom: username,
       postcontent: comment[index],
       postid: postId,
     };
-    axios
-      .post(
-        "https://blushing-gold-macaw.cyclic.app/user_post_comment",
-        JSON.stringify(jsondata),
+    const response = await axios.post(
+      "http://localhost:3006/user_post_comment",
+      JSON.stringify(payloadData),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (response.data.message === "emtpy content")
+      return alert("Emtpy Content Pepehands");
+    if (response.data.status === "error") return alert("Comment Failed");
+
+    if (response.data.status === "ok") {
+      alert("Comment Success");
+      setComment((prev) => [...prev, (prev[index] = "")]);
+      router.push("/");
+    }
+  };
+
+  const onPostlikeHandler = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    postId: number,
+    index: number
+  ) => {
+    const payloadData = {
+      userid: useUserId,
+      postid: postId,
+    };
+    if (!useAuth) {
+      alert("Please login frist");
+      return router.push("login");
+    }
+    if ((await reqAuth()) === "noAuthorization") {
+      alert("out of session");
+      return router.push("login");
+    }
+    const checked = [...postlikedstate];
+    if (e.target.checked === true) {
+      axios.post(
+        "http://localhost:3006/user_post_liked",
+        JSON.stringify(payloadData),
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
-      )
-      .then((res) => {
-        console.log(res);
-        if (res.data.status === "ok") {
-          alert("Comment Success");
-          window.location.href = "/";
-          return;
-        } else {
-          if ((res.data.message = "no text")) {
-            alert("Emtpy Content Pepehands");
-            return;
-          }
-          alert("Comment Failed");
-          return;
-        }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  const onPostlikeHandler = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    postId: number,
-    index: number
-  ) => {
-    if (!hasJWT()) {
-      router.push("login");
-      return;
+      );
+      checked[index] = e.target.checked;
+      setPostlikedstate(checked);
     } else {
-      const checked = [...postlikedstate];
-      if (e.target.checked === true) {
-        const jsondata = {
-          userId: userId,
-          postid: postId,
-        };
-        axios.post(
-          "https://blushing-gold-macaw.cyclic.app/user_post_liked",
-          JSON.stringify(jsondata),
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        setPostlikedstate(checked);
-      } else {
-        const jsondata = {
-          userId: userId,
-          postId: postId,
-        };
-        axios.post(
-          "https://blushing-gold-macaw.cyclic.app/user_post_unliked",
-          JSON.stringify(jsondata),
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        checked[index] = e.target.checked;
-        setPostlikedstate(checked);
-      }
+      axios.post(
+        "http://localhost:3006/user_post_unliked",
+        JSON.stringify(payloadData),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      checked[index] = e.target.checked;
+      setPostlikedstate(checked);
     }
   };
 
   useEffect(() => {
     routeAuth();
-  }, [userId]);
+  }, []);
 
   return (
     <div className="home-page-container">
-      <User />
+      <div className="userstate">/Home, Howdy! :D @User : {username}</div>
       <span
         style={{
           position: "fixed",
@@ -304,16 +306,14 @@ function Home({ posts }: PostDataType) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let currentQuery = Number(context.query.page);
-  let currentUserId = context.req.headers.cookie
-    ? context.req.headers.cookie.split("=")[1]
-    : null;
+  let currentUserId = context.req?.cookies?.userId || null;
   if (currentQuery <= 0) {
     currentQuery = 1;
   }
 
   const postDataOptions = {
     method: "GET",
-    url: "https://blushing-gold-macaw.cyclic.app/user_posts",
+    url: "http://localhost:3006/user_posts",
     params: { currentQuery: currentQuery, currentUserId: currentUserId },
   };
   const posts = await axios.request(postDataOptions);
