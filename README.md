@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-#Update log #1 => every requuest need authorization.
-#Update log #2 => jwt now app memory store // jwt refresh token update with https header only
+#Update log #1 => every requuest need authorization.              
+#Update log #2 => jwt now app memory store // jwt refresh token update with https header only     
 #Update log #3 => persistant state // ongoing
 
 ## Learn More
