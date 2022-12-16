@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 import getUserauth from "../../hooks/getUserAuth";
-import useAuthStore from "../../hooks/authstore";
+import useAuthStore from "../../state/authStore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -32,15 +32,18 @@ const Login = () => {
       password: password,
     };
     axios
-      .post("http://localhost:3006/login", JSON.stringify(jsonBodyData), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      })
+      .post(
+        "https://attractive-dog-vest.cyclic.app/login",
+        JSON.stringify(jsonBodyData),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         if (response.data.status === "error") {
-          console.log(response.data);
           return alert("Login failed");
         }
         if (response.data.status === "ok") {

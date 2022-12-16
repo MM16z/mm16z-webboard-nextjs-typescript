@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-import useAuthStore from "../../hooks/authstore";
+import useAuthStore from "../../state/authStore";
 
 import { useRouter } from "next/router";
 
@@ -35,11 +35,15 @@ const Register = () => {
     };
 
     axios
-      .post("http://localhost:3006/register", JSON.stringify(payloadData), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .post(
+        "https://attractive-dog-vest.cyclic.app/register",
+        JSON.stringify(payloadData),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         if (response.data.message.errno === 1062) {
           return alert("Email already used");

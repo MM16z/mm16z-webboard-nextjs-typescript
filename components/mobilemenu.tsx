@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 
 import mm16grid from "../assets/images/mm16grid.png";
 import { Appcontext } from "../pages/_app";
-import useAuthStore from "../hooks/authstore";
+import useAuthStore from "../state/authStore";
 
 const Mobilemenu = forwardRef((probs, refs) => {
   const mobilemenuref = useRef<HTMLDivElement>(null);

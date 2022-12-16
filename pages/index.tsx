@@ -6,6 +6,7 @@ import {
   ChangeEvent,
 } from "react";
 import axios from "axios";
+
 import Masonry from "react-masonry-css";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
@@ -14,18 +15,16 @@ import PostBoxContainer from "../components/post-box-container";
 import CommentBoxContainer from "../components/comment-box-container";
 import HeartBtn from "../components/heartbtn";
 
+import useAuthStore from "../state/authStore";
 import getUserauth from "../hooks/getUserAuth";
-import useAuthStore from "../hooks/authstore";
+import reqAuth from "../hooks/requestAuth";
 
 import { setCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
 
 import { PostDataType } from "../types/PostDataType";
-import reqAuth from "../hooks/requestAuth";
 
 function Home({ posts }: PostDataType) {
-  const [username, setUsername] = useState<string | null>("Anonymous");
-  // const [userId, setUserId] = useState<number | null>(null);
   const [comment, setComment] = useState(["", "", "", "", "", ""]);
   const [postlikedstate, setPostlikedstate] = useState([
     false,
@@ -42,24 +41,23 @@ function Home({ posts }: PostDataType) {
 
   const useAuth = useAuthStore((state) => state.accessToken);
   const useUserId = useAuthStore((state) => state.userId);
+  const useUserName = useAuthStore((state) => state.userName);
 
   const setAuthStore = useAuthStore((state) => state.setAccessToken);
 
   const routeAuth = () => {
-    console.log("running form index");
     if (useAuth) {
       getUserauth()
-        .then((result) => {
-          setUsername(result.data.decoded.username);
-          // setUserId(result.data.decoded.userId);
-        })
+        .then((res) => res)
         .catch((err) => {
-          if (err.response.status === 403) {
+          if (err) {
             setCookie("userId", null);
             setAuthStore(null);
             router.push("/");
           }
         });
+    } else {
+      setCookie("userId", null);
     }
   };
 
@@ -109,12 +107,12 @@ function Home({ posts }: PostDataType) {
       return router.push("login");
     }
     const payloadData = {
-      postfrom: username,
+      postfrom: useUserName,
       postcontent: comment[index],
       postid: postId,
     };
     const response = await axios.post(
-      "http://localhost:3006/user_post_comment",
+      "https://attractive-dog-vest.cyclic.app/user_post_comment",
       JSON.stringify(payloadData),
       {
         headers: {
@@ -153,7 +151,7 @@ function Home({ posts }: PostDataType) {
     const checked = [...postlikedstate];
     if (e.target.checked === true) {
       axios.post(
-        "http://localhost:3006/user_post_liked",
+        "https://attractive-dog-vest.cyclic.app/user_post_liked",
         JSON.stringify(payloadData),
         {
           headers: {
@@ -165,7 +163,7 @@ function Home({ posts }: PostDataType) {
       setPostlikedstate(checked);
     } else {
       axios.post(
-        "http://localhost:3006/user_post_unliked",
+        "https://attractive-dog-vest.cyclic.app/user_post_unliked",
         JSON.stringify(payloadData),
         {
           headers: {
@@ -184,7 +182,9 @@ function Home({ posts }: PostDataType) {
 
   return (
     <div className="home-page-container">
-      <div className="userstate">/Home, Howdy! :D @User : {username}</div>
+      <div className="userstate">
+        /Home, Howdy! :D @User : {useAuth ? useUserName : "Anonymous"}
+      </div>
       <span
         style={{
           position: "fixed",
@@ -305,6 +305,7 @@ function Home({ posts }: PostDataType) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // const currentUserId = useAuthStore.getState().userId;
   let currentQuery = Number(context.query.page);
   let currentUserId = context.req?.cookies?.userId || null;
   if (currentQuery <= 0) {
@@ -313,7 +314,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const postDataOptions = {
     method: "GET",
-    url: "http://localhost:3006/user_posts",
+    url: "https://attractive-dog-vest.cyclic.app/user_posts",
     params: { currentQuery: currentQuery, currentUserId: currentUserId },
   };
   const posts = await axios.request(postDataOptions);

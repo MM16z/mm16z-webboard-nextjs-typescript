@@ -1,18 +1,17 @@
 import { useEffect, useState, useRef, ChangeEvent } from "react";
 import axios from "axios";
 
+import useAuthStore from "../../state/authStore";
 import getUserauth from "../../hooks/getUserAuth";
-import useAuthStore from "../../hooks/authstore";
+import reqAuth from "../../hooks/requestAuth";
 
 import { useRouter } from "next/router";
 import { setCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
 
 import { PostDataType } from "../../types/PostDataType";
-import reqAuth from "../../hooks/requestAuth";
 
 export default function Userpanel({ posts }: PostDataType) {
-  console.log(posts);
   const [postcontext, setPostContext] = useState("");
   const [usereditinput, setUserEditinput] = useState(false);
   const [preveditdata, setprevEditdata] = useState("");
@@ -27,24 +26,25 @@ export default function Userpanel({ posts }: PostDataType) {
   const useUserName = useAuthStore((state) => state.userName);
 
   const setAuthStore = useAuthStore((state) => state.setAccessToken);
-  const setEmailStore = useAuthStore((state) => state.setEmailStore);
+  const setUserId = useAuthStore((state) => state.setUserId);
   const setUserName = useAuthStore((state) => state.setUserName);
 
   const routeAuth = () => {
     if (useAuth) {
       getUserauth()
         .then((result) => {
-          setEmailStore(result.data.decoded.email);
+          setUserId(result.data.decoded.userId);
           setUserName(result.data.decoded.username);
         })
         .catch((err) => {
-          if (err.response.status === 403) {
+          if (err) {
             setCookie("userId", null);
             setAuthStore(null);
             router.push("/");
           }
         });
     } else {
+      setCookie("userId", null);
       router.push("/login");
     }
   };
@@ -58,9 +58,6 @@ export default function Userpanel({ posts }: PostDataType) {
 
   const onPostSubmitHandler = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (postcontextRef.current?.value.trim() === "") {
-      return alert("NO TEXT Pepehands");
-    }
     if (!useAuth) {
       alert("Please login frist");
       return router.push("login");
@@ -76,7 +73,7 @@ export default function Userpanel({ posts }: PostDataType) {
     };
     axios
       .post(
-        "http://localhost:3006/user_post_create",
+        "https://attractive-dog-vest.cyclic.app/user_post_create",
         JSON.stringify(jsonBodydata),
         {
           headers: {
@@ -110,7 +107,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     axios
       .post(
-        "http://localhost:3006/user_post_edit",
+        "https://attractive-dog-vest.cyclic.app/user_post_edit",
         JSON.stringify({
           editcontent: preveditdata,
           postid: userpostid,
@@ -145,7 +142,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     axios
       .post(
-        "http://localhost:3006/user_post_delete",
+        "https://attractive-dog-vest.cyclic.app/user_post_delete",
         JSON.stringify({
           userpostid: postid,
         }),
@@ -208,9 +205,8 @@ export default function Userpanel({ posts }: PostDataType) {
 
   useEffect(() => {
     routeAuth();
-    console.log(posts);
     postcontextRef.current?.focus();
-  }, []);
+  }, [useUserName]);
 
   return (
     <div className="userpanel-container">
@@ -285,11 +281,12 @@ export default function Userpanel({ posts }: PostDataType) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let currentUser = context.req?.cookies?.userName || null;
+  // const useUserId = useAuthStore.getState().userId;
+  const currentUserId = context.req?.cookies?.userId || null;
   const options = {
     method: "GET",
-    url: "http://localhost:3006/current_user_posts",
-    params: { currentUser: currentUser },
+    url: "https://attractive-dog-vest.cyclic.app/current_user_posts",
+    params: { currentUserId: currentUserId },
   };
   const posts = await axios.request(options);
 

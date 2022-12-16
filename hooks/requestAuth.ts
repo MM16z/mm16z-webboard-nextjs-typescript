@@ -1,11 +1,11 @@
-import useAuthStore from "./authstore";
+import useAuthStore from "../state/authStore";
 import getUserAuth from "./getUserAuth";
 
 const reqAuth = async () => {
     const response = await getUserAuth()
         .then()
         .catch(async (err) => {
-            if ((await err.response.status) === 403) {
+            if (err) {
                 useAuthStore.setState({ accessToken: null })
                 return "noAuthorization";
             }

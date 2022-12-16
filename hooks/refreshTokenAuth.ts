@@ -1,13 +1,14 @@
-import axios from "axios";
-import useAuthStore from "./authstore";
+import { authAxios } from "../axios/axios";
+import useAuthStore from "../state/authStore";
 
 const refreshTokenAuth = () => {
-    const useEmailAuth = useAuthStore.getState().userEmail
+    // const useUserName = useAuthStore.getState().userName //move to refreshToken
 
     const refreshToken = async () => {
+        const useUserName = useAuthStore.getState().userName
 
-        const response = await axios.post("http://localhost:3006/refreshjwtauth",
-            JSON.stringify({ email: useEmailAuth }), {
+        const response = await authAxios.post("https://attractive-dog-vest.cyclic.app/refreshjwtauth",
+            JSON.stringify({ username: useUserName }), {
             headers: {
                 "Content-Type": "application/json",
             },

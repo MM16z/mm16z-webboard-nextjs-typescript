@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import { setCookie } from "cookies-next";
 
-import useAuthStore from "../hooks/authstore";
+import useAuthStore from "../state/authStore";
 
 function Navbar() {
   const router = useRouter();
@@ -15,7 +15,6 @@ function Navbar() {
   const logoutHandler = () => {
     setAuthStore(null);
     setCookie("userId", null);
-    setCookie("userName", null);
     window.location.href = "/";
   };
 
