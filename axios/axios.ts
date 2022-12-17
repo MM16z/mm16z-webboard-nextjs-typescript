@@ -19,6 +19,7 @@ authAxios.interceptors.response.use(
                         return newAccessToken;
                     },
                     (error) => {
+                        console.log("error from")
                         refreshTokenPromise = null;
                         return Promise.reject(error);
                     }
@@ -27,7 +28,7 @@ authAxios.interceptors.response.use(
             // Retry the original request after the token has been refreshed
             return refreshTokenPromise.then((newAccessToken: string) =>
                 axios.post(
-                    "https://attractive-dog-vest.cyclic.app/jwtauth",
+                    "https://good-puce-squirrel-wear.cyclic.app/jwtauth",
                     JSON.stringify({}),
                     {
                         headers: {
@@ -38,7 +39,6 @@ authAxios.interceptors.response.use(
                 )
             );
         }
-
         return Promise.reject(error);
     }
 );

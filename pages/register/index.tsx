@@ -36,7 +36,7 @@ const Register = () => {
 
     axios
       .post(
-        "https://attractive-dog-vest.cyclic.app/register",
+        "https://good-puce-squirrel-wear.cyclic.app/register",
         JSON.stringify(payloadData),
         {
           headers: {

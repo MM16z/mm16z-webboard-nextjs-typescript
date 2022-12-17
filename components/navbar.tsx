@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef } from "react";
-import { setCookie } from "cookies-next";
+
+import Cookies from "js-cookie";
 
 import useAuthStore from "../state/authStore";
 
@@ -14,8 +15,10 @@ function Navbar() {
 
   const logoutHandler = () => {
     setAuthStore(null);
-    setCookie("userId", null);
-    window.location.href = "/";
+    Cookies.set("u_id", "");
+    //call logout api to delete cookie
+    router.push("/");
+    router.reload();
   };
 
   return (

@@ -6,8 +6,9 @@ import getUserauth from "../../hooks/getUserAuth";
 import reqAuth from "../../hooks/requestAuth";
 
 import { useRouter } from "next/router";
-import { setCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
+
+import Cookies from "js-cookie";
 
 import { PostDataType } from "../../types/PostDataType";
 
@@ -35,16 +36,20 @@ export default function Userpanel({ posts }: PostDataType) {
         .then((result) => {
           setUserId(result.data.decoded.userId);
           setUserName(result.data.decoded.username);
+          Cookies.set("u_id", result.data.decoded.userId);
         })
         .catch((err) => {
-          if (err) {
-            setCookie("userId", null);
+          if (err.response.status === 403) {
+            //call logout api to delete cookie later
+            Cookies.set("u_id", "");
             setAuthStore(null);
             router.push("/");
           }
         });
     } else {
-      setCookie("userId", null);
+      //call logout api to delete cookie later
+      Cookies.set("u_id", "");
+      setAuthStore(null);
       router.push("/login");
     }
   };
@@ -73,7 +78,7 @@ export default function Userpanel({ posts }: PostDataType) {
     };
     axios
       .post(
-        "https://attractive-dog-vest.cyclic.app/user_post_create",
+        "https://good-puce-squirrel-wear.cyclic.app/user_post_create",
         JSON.stringify(jsonBodydata),
         {
           headers: {
@@ -107,7 +112,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     axios
       .post(
-        "https://attractive-dog-vest.cyclic.app/user_post_edit",
+        "https://good-puce-squirrel-wear.cyclic.app/user_post_edit",
         JSON.stringify({
           editcontent: preveditdata,
           postid: userpostid,
@@ -142,7 +147,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     axios
       .post(
-        "https://attractive-dog-vest.cyclic.app/user_post_delete",
+        "https://good-puce-squirrel-wear.cyclic.app/user_post_delete",
         JSON.stringify({
           userpostid: postid,
         }),
@@ -281,11 +286,10 @@ export default function Userpanel({ posts }: PostDataType) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const useUserId = useAuthStore.getState().userId;
-  const currentUserId = context.req?.cookies?.userId || null;
+  let currentUserId = Number(context.req?.cookies?.u_id) || null;
   const options = {
     method: "GET",
-    url: "https://attractive-dog-vest.cyclic.app/current_user_posts",
+    url: "https://good-puce-squirrel-wear.cyclic.app/current_user_posts",
     params: { currentUserId: currentUserId },
   };
   const posts = await axios.request(options);

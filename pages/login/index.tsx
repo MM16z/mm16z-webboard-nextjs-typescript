@@ -3,7 +3,6 @@ import axios from "axios";
 
 import { useRouter } from "next/router";
 
-import getUserauth from "../../hooks/getUserAuth";
 import useAuthStore from "../../state/authStore";
 
 const Login = () => {
@@ -33,7 +32,7 @@ const Login = () => {
     };
     axios
       .post(
-        "https://attractive-dog-vest.cyclic.app/login",
+        "https://good-puce-squirrel-wear.cyclic.app/login",
         JSON.stringify(jsonBodyData),
         {
           headers: {

@@ -19,8 +19,9 @@ import useAuthStore from "../state/authStore";
 import getUserauth from "../hooks/getUserAuth";
 import reqAuth from "../hooks/requestAuth";
 
-import { setCookie } from "cookies-next";
 import { GetServerSideProps } from "next";
+
+import Cookies from "js-cookie";
 
 import { PostDataType } from "../types/PostDataType";
 
@@ -48,16 +49,18 @@ function Home({ posts }: PostDataType) {
   const routeAuth = () => {
     if (useAuth) {
       getUserauth()
-        .then((res) => res)
+        .then()
         .catch((err) => {
           if (err) {
-            setCookie("userId", null);
+            //call logout api to delete cookie later
+            Cookies.set("u_id", "");
             setAuthStore(null);
             router.push("/");
           }
         });
     } else {
-      setCookie("userId", null);
+      Cookies.set("u_id", "");
+      //call logout api to delete cookie later
     }
   };
 
@@ -112,7 +115,7 @@ function Home({ posts }: PostDataType) {
       postid: postId,
     };
     const response = await axios.post(
-      "https://attractive-dog-vest.cyclic.app/user_post_comment",
+      "https://good-puce-squirrel-wear.cyclic.app/user_post_comment",
       JSON.stringify(payloadData),
       {
         headers: {
@@ -151,7 +154,7 @@ function Home({ posts }: PostDataType) {
     const checked = [...postlikedstate];
     if (e.target.checked === true) {
       axios.post(
-        "https://attractive-dog-vest.cyclic.app/user_post_liked",
+        "https://good-puce-squirrel-wear.cyclic.app/user_post_liked",
         JSON.stringify(payloadData),
         {
           headers: {
@@ -163,7 +166,7 @@ function Home({ posts }: PostDataType) {
       setPostlikedstate(checked);
     } else {
       axios.post(
-        "https://attractive-dog-vest.cyclic.app/user_post_unliked",
+        "https://good-puce-squirrel-wear.cyclic.app/user_post_unliked",
         JSON.stringify(payloadData),
         {
           headers: {
@@ -305,17 +308,19 @@ function Home({ posts }: PostDataType) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const currentUserId = useAuthStore.getState().userId;
   let currentQuery = Number(context.query.page);
-  let currentUserId = context.req?.cookies?.userId || null;
+  //will set/use secure cookie on api endpoint instend of client side cookie later
+  let currentUserId = Number(context.req?.cookies?.u_id) || null;
+
   if (currentQuery <= 0) {
     currentQuery = 1;
   }
 
   const postDataOptions = {
     method: "GET",
-    url: "https://attractive-dog-vest.cyclic.app/user_posts",
+    url: "https://good-puce-squirrel-wear.cyclic.app/user_posts",
     params: { currentQuery: currentQuery, currentUserId: currentUserId },
+    withCredentials: true,
   };
   const posts = await axios.request(postDataOptions);
 
