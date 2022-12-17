@@ -4,6 +4,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 #Update log #2 => jwt now app memory store // jwt refresh token update with https header only     
 #Update log #3 => persistant state // ongoing
 
+TODO :        
+#1.like/unlike onchange value state // later             
+#2.mobile/responsive editinput navigate to top window 
+ 
+ 
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
