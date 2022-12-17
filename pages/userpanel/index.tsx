@@ -34,6 +34,7 @@ export default function Userpanel({ posts }: PostDataType) {
     if (useAuth) {
       getUserauth()
         .then((result) => {
+          if (useUserName) return;
           setUserId(result.data.decoded.userId);
           setUserName(result.data.decoded.username);
           Cookies.set("u_id", result.data.decoded.userId);
