@@ -55,6 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Hambergermenu ref={hambergermenuref} onClick={onHambergerMenuClick} />
         <Mobilemenu ref={mobilemenuref} />
         <Component {...pageProps} />
+        <div className="mm16z">©2022 MM16 | All Rights Reserved</div>
       </div>
     </Appcontext.Provider>
   );
