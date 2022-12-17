@@ -37,7 +37,7 @@ export default function Userpanel({ posts }: PostDataType) {
           setUserId(result.data.decoded.userId);
           setUserName(result.data.decoded.username);
           Cookies.set("u_id", result.data.decoded.userId);
-          router.reload();
+          router.push("userpanel");
         })
         .catch((err) => {
           if (err.response.status === 403) {
