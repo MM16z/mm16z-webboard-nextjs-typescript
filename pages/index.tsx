@@ -40,8 +40,6 @@ function Home({ posts }: PostDataType) {
   );
   const [postLikedCount, setPostLikedCount] = useState(initialPostLikedCount);
 
-  const userIdCookie = Cookies.get("u_id");
-
   const heartRef = useRef(null);
 
   const router = useRouter();
@@ -198,8 +196,8 @@ function Home({ posts }: PostDataType) {
   useEffect(() => {
     routeAuth();
     setPostLikedCount(posts.allPosts.map((post) => post.post_liked_count));
-    console.log("asd");
-  }, [posts, userIdCookie]);
+    console.log("meow");
+  }, [posts, Cookies.get("u_id")]);
 
   return (
     <div className="home-page-container">
