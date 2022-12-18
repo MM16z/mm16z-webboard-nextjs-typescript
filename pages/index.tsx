@@ -35,6 +35,10 @@ function Home({ posts }: PostDataType) {
     false,
     false,
   ]);
+  const initialPostLikedCount = posts.allPosts.map(
+    (post) => post.post_liked_count
+  );
+  const [postLikedCount, setPostLikedCount] = useState(initialPostLikedCount);
 
   const heartRef = useRef(null);
 
@@ -163,6 +167,11 @@ function Home({ posts }: PostDataType) {
         }
       );
       checked[index] = e.target.checked;
+      setPostLikedCount((prev) => {
+        const newCount = [...prev];
+        newCount[index]++;
+        return newCount;
+      });
       setPostlikedstate(checked);
     } else {
       axios.post(
@@ -175,13 +184,20 @@ function Home({ posts }: PostDataType) {
         }
       );
       checked[index] = e.target.checked;
+      setPostLikedCount((prev) => {
+        const newCount = [...prev];
+        newCount[index]--;
+        return newCount;
+      });
       setPostlikedstate(checked);
     }
   };
 
   useEffect(() => {
     routeAuth();
-  }, []);
+    setPostLikedCount(posts.allPosts.map((post) => post.post_liked_count));
+    console.log("runoing index");
+  }, [posts]);
 
   return (
     <div className="home-page-container">
@@ -210,7 +226,6 @@ function Home({ posts }: PostDataType) {
         >
           {posts.allPosts.map((post, index) => {
             let postId = post.post_id;
-            let likedcount = post.post_liked_count;
             return (
               <PostBoxContainer
                 key={postId}
@@ -221,7 +236,7 @@ function Home({ posts }: PostDataType) {
               >
                 <HeartBtn
                   key={index}
-                  postLikedCount={likedcount}
+                  postLikedCount={postLikedCount[index]}
                   defaultChecked={
                     post.isLiked === null ? false : post.isLiked ? true : false
                   }
