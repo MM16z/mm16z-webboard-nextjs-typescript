@@ -169,7 +169,7 @@ function Home({ posts }: PostDataType) {
       checked[index] = e.target.checked;
       setPostLikedCount((prev) => {
         const newCount = [...prev];
-        newCount[index]++;
+        newCount[index] = newCount[index] + 1;
         return newCount;
       });
       setPostlikedstate(checked);
@@ -186,7 +186,7 @@ function Home({ posts }: PostDataType) {
       checked[index] = e.target.checked;
       setPostLikedCount((prev) => {
         const newCount = [...prev];
-        newCount[index]--;
+        newCount[index] = newCount[index] - 1;
         return newCount;
       });
       setPostlikedstate(checked);
@@ -196,7 +196,6 @@ function Home({ posts }: PostDataType) {
   useEffect(() => {
     routeAuth();
     setPostLikedCount(posts.allPosts.map((post) => post.post_liked_count));
-    console.log("runoing index");
   }, [posts]);
 
   return (
