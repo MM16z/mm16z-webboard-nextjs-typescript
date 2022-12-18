@@ -25,6 +25,7 @@ export default function Userpanel({ posts }: PostDataType) {
 
   const useAuth = useAuthStore((state) => state.accessToken);
   const useUserName = useAuthStore((state) => state.userName);
+  const useUserId = useAuthStore((state) => state.userId);
 
   const setAuthStore = useAuthStore((state) => state.setAccessToken);
   const setUserId = useAuthStore((state) => state.setUserId);
@@ -75,6 +76,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     const jsonBodydata = {
       postfrom: useUserName,
+      postfromuserid: useUserId,
       posttitle: "(Post Title Input Incoming...)",
       postcontent: postcontext,
     };
