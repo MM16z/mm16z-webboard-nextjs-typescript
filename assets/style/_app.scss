@@ -20,7 +20,7 @@ body {
 
 #githubmark {
   z-index: 3;
-  position: fixed;
+  position: relative;
   cursor: pointer;
   top: 16px;
   left: 285px;
@@ -32,7 +32,6 @@ body {
 
 @media screen and (min-width: 0px) and (max-width: 410px) {
   #githubmark {
-    position: absolute;
     top: inherit;
     left: inherit;
     bottom: 10px;
