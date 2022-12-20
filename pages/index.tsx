@@ -206,17 +206,7 @@ function Home({ posts }: PostDataType) {
       <div className="userstate">
         /Home, Howdy! :D @User : {useAuth ? useUserName : "Anonymous"}
       </div>
-      <span
-        style={{
-          position: "fixed",
-          zIndex: "100",
-          top: "93vh",
-          left: "10px",
-          color: "red",
-          inlineSize: "350px",
-          fontWeight: "bold",
-        }}
-      >
+      <span className="announcement_1">
         Starting November 28th, 2022, Heroku free plan will no longer, website
         will shutdown.
       </span>

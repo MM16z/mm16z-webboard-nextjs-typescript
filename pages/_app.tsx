@@ -11,9 +11,13 @@ import "../assets/style/components_style/comment-box-container.scss";
 import "../assets/style/components_style/heartbtn.scss";
 import "../assets/style/components_style/mobilemenu.scss";
 
+import githubMark from "../assets/images/GitHub-Mark.png";
+
 //module css later for not messing on same css attb
 
 import { createContext, useRef } from "react";
+
+import Image from "next/image";
 
 import Navbar from "../components/navbar";
 import Hambergermenu from "../components/hambergermenu";
@@ -55,6 +59,17 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Hambergermenu ref={hambergermenuref} onClick={onHambergerMenuClick} />
         <Mobilemenu ref={mobilemenuref} />
         <Component {...pageProps} />
+        <Image
+          src={githubMark}
+          alt=""
+          id="githubmark"
+          onClick={() => {
+            window.open(
+              "https://github.com/MM16z/mm16z-webboard-nextjs-typescript",
+              "_blank"
+            );
+          }}
+        ></Image>
         <div className="mm16z">©2022 MM16 | All Rights Reserved</div>
       </div>
     </Appcontext.Provider>
