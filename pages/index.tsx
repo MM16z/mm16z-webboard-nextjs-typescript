@@ -24,6 +24,7 @@ import { GetServerSideProps } from "next";
 import Cookies from "js-cookie";
 
 import { PostDataType } from "../types/PostDataType";
+import dayjs from "dayjs";
 
 function Home({ posts }: PostDataType) {
   const [comment, setComment] = useState(["", "", "", "", "", ""]);
@@ -197,6 +198,7 @@ function Home({ posts }: PostDataType) {
     routeAuth();
     setPostLikedCount(posts.allPosts.map((post) => post.post_liked_count));
     console.log("meow");
+    console.log(posts);
   }, [posts, Cookies.get("u_id")]);
 
   return (
@@ -226,13 +228,14 @@ function Home({ posts }: PostDataType) {
         >
           {posts.allPosts.map((post, index) => {
             let postId = post.post_id;
+            let postDate = post.post_createdAt;
             return (
               <PostBoxContainer
                 key={postId}
                 username={post.post_from}
                 title={post.post_title}
                 postcontent={post.post_content}
-                postdate={post.post_createdAt}
+                postdate={dayjs(postDate).format("D MMM YYYY - HH:mm")}
               >
                 <HeartBtn
                   key={index}
