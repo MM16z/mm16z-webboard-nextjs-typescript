@@ -22,9 +22,9 @@ import reqAuth from "../hooks/requestAuth";
 import { GetServerSideProps } from "next";
 
 import Cookies from "js-cookie";
+import dayjs from "dayjs";
 
 import { PostDataType } from "../types/PostDataType";
-import dayjs from "dayjs";
 
 function Home({ posts }: PostDataType) {
   const [comment, setComment] = useState(["", "", "", "", "", ""]);

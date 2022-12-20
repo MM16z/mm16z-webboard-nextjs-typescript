@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 
 import Cookies from "js-cookie";
+import dayjs from "dayjs";
 
 import { PostDataType } from "../../types/PostDataType";
 
@@ -242,6 +243,7 @@ export default function Userpanel({ posts }: PostDataType) {
         <div className="user-posts-container">
           {posts.userPostData.map((post) => {
             let postId = post.post_id;
+            let postDate = post.post_createdAt;
             let currentPostContent = post.post_content;
             return (
               <div className="post-box-container" key={postId}>
@@ -274,7 +276,9 @@ export default function Userpanel({ posts }: PostDataType) {
                 <span className="post-content" style={{ marginBottom: "25px" }}>
                   {currentPostContent}
                 </span>
-                <span className="post-date">{post.post_createdAt}</span>
+                <span className="post-date">
+                  {dayjs(postDate).format("D MMM YYYY - HH:mm")}
+                </span>
                 <span className="horizontal-line_1"></span>
               </div>
             );
