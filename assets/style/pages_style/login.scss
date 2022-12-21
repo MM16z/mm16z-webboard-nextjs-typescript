@@ -69,6 +69,14 @@
     }
 }
 
+.blocks-wrapper {
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 @media screen and (min-width: 0px) and (max-width: 500px) {
     .login-inputcontainer {
         & > input.inputborder {

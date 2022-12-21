@@ -5,6 +5,8 @@ import useAuthStore from "../../state/authStore";
 
 import { useRouter } from "next/router";
 
+import { Blocks } from "react-loader-spinner";
+
 const Register = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -14,6 +16,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isloading, setIsLoading] = useState(false);
 
   const useAuth = useAuthStore((state) => state.accessToken);
 
@@ -24,10 +27,22 @@ const Register = () => {
     }
   };
 
+  const loadingRegister = isloading ? (
+    <Blocks
+      visible={true}
+      height="280"
+      width="280"
+      ariaLabel="blocks-loading"
+      wrapperStyle={{}}
+      wrapperClass="blocks-wrapper"
+    />
+  ) : null;
+
   const onRegisterSubmitHandler = (
     e: FormEvent<EventTarget | HTMLFormElement>
   ) => {
     e.preventDefault();
+    setIsLoading(true);
     const payloadData = {
       username: username,
       email: email,
@@ -45,6 +60,7 @@ const Register = () => {
         }
       )
       .then((response) => {
+        setIsLoading(false);
         if (response.data.message.errno === 1062) {
           return alert("Email already used");
         }
@@ -71,6 +87,7 @@ const Register = () => {
 
   return (
     <div className="register-page-container">
+      {loadingRegister}
       <form method="post" onSubmit={onRegisterSubmitHandler}>
         <div className="register-inputcontainer">
           <label htmlFor="email-input">Enter your email</label>

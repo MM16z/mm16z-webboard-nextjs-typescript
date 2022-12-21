@@ -5,9 +5,12 @@ import { useRouter } from "next/router";
 
 import useAuthStore from "../../state/authStore";
 
+import { Blocks } from "react-loader-spinner";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isloading, setIsLoading] = useState(false);
 
   const emailRef = useRef<HTMLInputElement>(null);
 
@@ -24,8 +27,20 @@ const Login = () => {
     }
   };
 
+  const loadingLogin = isloading ? (
+    <Blocks
+      visible={true}
+      height="280"
+      width="280"
+      ariaLabel="blocks-loading"
+      wrapperStyle={{}}
+      wrapperClass="blocks-wrapper"
+    />
+  ) : null;
+
   const handleSubmit = (e: FormEvent<EventTarget | HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     const jsonBodyData = {
       email: email,
       password: password,
@@ -42,6 +57,7 @@ const Login = () => {
         }
       )
       .then((response) => {
+        setIsLoading(false);
         if (response.data.status === "error") {
           return alert("Login failed");
         }
@@ -65,6 +81,7 @@ const Login = () => {
 
   return (
     <div className="login-page-container">
+      {loadingLogin}
       <form method="post" onSubmit={handleSubmit}>
         <div className="login-inputcontainer">
           <label htmlFor="email-input">Enter your email :D</label>
