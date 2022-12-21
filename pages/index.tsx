@@ -60,7 +60,7 @@ function Home({ posts }: PostDataType) {
             //call logout api to delete cookie later
             Cookies.set("u_id", "");
             setAuthStore(null);
-            router.push("/");
+            router.replace("/");
           }
         });
     } else {
