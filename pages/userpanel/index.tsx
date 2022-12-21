@@ -47,7 +47,7 @@ export default function Userpanel({ posts }: PostDataType) {
             //call logout api to delete cookie later
             Cookies.set("u_id", "");
             setAuthStore(null);
-            router.replace("/");
+            return (window.location.href = "/");
           }
         });
     } else {
@@ -73,7 +73,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.replace("/");
+      return (window.location.href = "/");
     }
     const jsonBodydata = {
       postfrom: useUserName,
@@ -113,7 +113,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.replace("/");
+      return (window.location.href = "/");
     }
     axios
       .post(
@@ -148,7 +148,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.replace("/");
+      return (window.location.href = "/");
     }
     axios
       .post(

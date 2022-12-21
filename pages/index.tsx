@@ -60,7 +60,8 @@ function Home({ posts }: PostDataType) {
             //call logout api to delete cookie later
             Cookies.set("u_id", "");
             setAuthStore(null);
-            router.replace("/");
+            alert("out of session");
+            return (window.location.href = "/");
           }
         });
     } else {
@@ -112,7 +113,7 @@ function Home({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.replace("/");
+      return (window.location.href = "/");
     }
     const payloadData = {
       postfrom: useUserName,
@@ -154,7 +155,7 @@ function Home({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.replace("/");
+      return (window.location.href = "/");
     }
     const checked = [...postlikedstate];
     if (e.target.checked === true) {
