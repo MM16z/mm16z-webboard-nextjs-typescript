@@ -43,7 +43,7 @@ export default function Userpanel({ posts }: PostDataType) {
           router.push("userpanel");
         })
         .catch((err) => {
-          if (err.response.status === 403) {
+          if (err) {
             //call logout api to delete cookie later
             Cookies.set("u_id", "");
             setAuthStore(null);
