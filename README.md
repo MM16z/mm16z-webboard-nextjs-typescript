@@ -7,6 +7,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 TODO :        
 #1.like/unlike onchange value state // later             
 #2.mobile/responsive editinput navigate to top window 
+
+Fixed :         
+#1.use browser refresh when auth is out of session
  
  
 ## Learn More
