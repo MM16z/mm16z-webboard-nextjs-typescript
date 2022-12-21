@@ -47,6 +47,7 @@ export default function Userpanel({ posts }: PostDataType) {
             //call logout api to delete cookie later
             Cookies.set("u_id", "");
             setAuthStore(null);
+            alert("out of session");
             return (window.location.href = "/");
           }
         });
