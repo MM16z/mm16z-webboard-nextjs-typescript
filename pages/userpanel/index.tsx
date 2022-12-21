@@ -73,7 +73,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.push("login");
+      return router.replace("/");
     }
     const jsonBodydata = {
       postfrom: useUserName,
@@ -113,7 +113,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.push("login");
+      return router.replace("/");
     }
     axios
       .post(
@@ -148,7 +148,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.push("login");
+      return router.replace("/");
     }
     axios
       .post(

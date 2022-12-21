@@ -112,7 +112,7 @@ function Home({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.push("login");
+      return router.replace("/");
     }
     const payloadData = {
       postfrom: useUserName,
@@ -154,7 +154,7 @@ function Home({ posts }: PostDataType) {
     }
     if ((await reqAuth()) === "noAuthorization") {
       alert("out of session");
-      return router.push("login");
+      return router.replace("/");
     }
     const checked = [...postlikedstate];
     if (e.target.checked === true) {
