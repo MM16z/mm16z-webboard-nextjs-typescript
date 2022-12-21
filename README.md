@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 #Update log #1 => every request need authorization. //done             
-#Update log #2 => jwt now app memory store // jwt refresh token update with https/secure header cookie only //done    
+#Update log #2 => jwt now in app(react state || global state) memory// jwt refresh token update with https/secure header cookie only //done    
 #Update log #3 => persistant state //#ongoing            
 #Update log #4 => Loading component //done
 
