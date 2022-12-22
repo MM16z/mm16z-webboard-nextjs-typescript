@@ -2,8 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 #Update log #1 => every request need authorization. //done             
 #Update log #2 => jwt now in app(react state || global state) memory// jwt refresh token update with https/secure header cookie only //done    
-#Update log #3 => persistant state //#ongoing            
+#Update log #3 => persistant state //done           
 #Update log #4 => Loading component //done
+#update log #5 => trust device login// #on going
 
 TODO :        
 #1.like/unlike onchange value state // later             
