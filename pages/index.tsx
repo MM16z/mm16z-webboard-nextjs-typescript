@@ -23,8 +23,10 @@ import { GetServerSideProps } from "next";
 
 import Cookies from "js-cookie";
 import dayjs from "dayjs";
+import { Blocks } from "react-loader-spinner";
 
 import { PostDataType } from "../types/PostDataType";
+import refreshTokenAuth from "../hooks/refreshTokenAuth";
 
 function Home({ posts }: PostDataType) {
   const [comment, setComment] = useState(["", "", "", "", "", ""]);
@@ -50,17 +52,37 @@ function Home({ posts }: PostDataType) {
   const useUserName = useAuthStore((state) => state.userName);
 
   const setAuthStore = useAuthStore((state) => state.setAccessToken);
+  const setUserId = useAuthStore((state) => state.setUserId);
+  const setUserName = useAuthStore((state) => state.setUserName);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const refresh = refreshTokenAuth();
+
+  const verifyRefreshToken = async () => {
+    try {
+      await refresh();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const routeAuth = () => {
     if (useAuth) {
       getUserauth()
-        .then()
+        .then((response) => {
+          if (useUserName) return;
+          setUserId(response.data.decoded.userId);
+          setUserName(response.data.decoded.username);
+          Cookies.set("u_id", response.data.decoded.userId);
+        })
         .catch((err) => {
           if (err) {
             //call logout api to delete cookie later
             Cookies.set("u_id", "");
             setAuthStore(null);
-            alert("out of session");
+
             return (window.location.href = "/");
           }
         });
@@ -196,6 +218,7 @@ function Home({ posts }: PostDataType) {
   };
 
   useEffect(() => {
+    !useAuth ? verifyRefreshToken() : setIsLoading(false);
     routeAuth();
     setPostLikedCount(posts.allPosts.map((post) => post.post_liked_count));
     console.log("meow");
@@ -203,6 +226,16 @@ function Home({ posts }: PostDataType) {
 
   return (
     <div className="home-page-container">
+      {isLoading ? (
+        <Blocks
+          visible={true}
+          height="280"
+          width="280"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{ top: "20%" }}
+          wrapperClass="blocks-wrapper"
+        />
+      ) : null}
       <div className="userstate">
         /Home, Howdy! :D @User : {useAuth ? useUserName : "Anonymous"}
       </div>

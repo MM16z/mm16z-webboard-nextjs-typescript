@@ -10,8 +10,10 @@ import { GetServerSideProps } from "next";
 
 import Cookies from "js-cookie";
 import dayjs from "dayjs";
+import { Blocks } from "react-loader-spinner";
 
 import { PostDataType } from "../../types/PostDataType";
+import refreshTokenAuth from "../../hooks/refreshTokenAuth";
 
 export default function Userpanel({ posts }: PostDataType) {
   const [postcontext, setPostContext] = useState("");
@@ -32,14 +34,28 @@ export default function Userpanel({ posts }: PostDataType) {
   const setUserId = useAuthStore((state) => state.setUserId);
   const setUserName = useAuthStore((state) => state.setUserName);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const refresh = refreshTokenAuth();
+
+  //into seperate function later
+  const verifyRefreshToken = async () => {
+    try {
+      await refresh();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const routeAuth = () => {
     if (useAuth) {
       getUserauth()
-        .then((result) => {
+        .then((response) => {
           if (useUserName) return;
-          setUserId(result.data.decoded.userId);
-          setUserName(result.data.decoded.username);
-          Cookies.set("u_id", result.data.decoded.userId);
+          setUserId(response.data.decoded.userId);
+          setUserName(response.data.decoded.username);
+          Cookies.set("u_id", response.data.decoded.userId);
           router.push("userpanel");
         })
         .catch((err) => {
@@ -215,12 +231,24 @@ export default function Userpanel({ posts }: PostDataType) {
   }
 
   useEffect(() => {
+    !useAuth ? verifyRefreshToken() : setIsLoading(false);
     routeAuth();
     postcontextRef.current?.focus();
+    console.log("meow");
   }, [useUserName]);
 
   return (
     <div className="userpanel-container">
+      {isLoading ? (
+        <Blocks
+          visible={true}
+          height="280"
+          width="280"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{ top: "20%" }}
+          wrapperClass="blocks-wrapper"
+        />
+      ) : null}
       <span id="username">HI! {useUserName} </span>
       <form onSubmit={onPostSubmitHandler}>
         <div className="user-panel-inputcontainer">

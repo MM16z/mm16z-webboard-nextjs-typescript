@@ -5,6 +5,7 @@ import { useRef } from "react";
 import Cookies from "js-cookie";
 
 import useAuthStore from "../state/authStore";
+import axios from "axios";
 
 function Navbar() {
   const router = useRouter();
@@ -14,6 +15,16 @@ function Navbar() {
   const setAuthStore = useAuthStore((state) => state.setAccessToken);
 
   const logoutHandler = () => {
+    axios.post(
+      "https://good-puce-squirrel-wear.cyclic.app/logout",
+      JSON.stringify({}),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
     setAuthStore(null);
     Cookies.set("u_id", "");
     //call logout api to delete cookie

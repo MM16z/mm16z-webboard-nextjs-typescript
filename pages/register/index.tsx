@@ -22,7 +22,7 @@ const Register = () => {
 
   const routeAuth = () => {
     if (useAuth) {
-      alert("already login");
+      // alert("already login");
       router.push("userpanel");
     }
   };
@@ -83,7 +83,7 @@ const Register = () => {
   useEffect(() => {
     routeAuth();
     emailRef.current?.focus();
-  }, []);
+  }, [useAuth]);
 
   return (
     <div className="register-page-container">
