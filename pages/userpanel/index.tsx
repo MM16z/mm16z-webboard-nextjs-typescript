@@ -246,7 +246,7 @@ export default function Userpanel({ posts }: PostDataType) {
           width="280"
           ariaLabel="blocks-loading"
           wrapperStyle={{ top: "20%" }}
-          wrapperClass="blocks-wrapper"
+          wrapperClass="blocks-wrapper-userpanel"
         />
       ) : null}
       <span id="username">HI! {useUserName} </span>

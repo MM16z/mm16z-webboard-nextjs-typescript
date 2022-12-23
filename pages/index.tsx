@@ -233,16 +233,12 @@ function Home({ posts }: PostDataType) {
           width="280"
           ariaLabel="blocks-loading"
           wrapperStyle={{ top: "20%" }}
-          wrapperClass="blocks-wrapper"
+          wrapperClass="blocks-wrapper-home"
         />
       ) : null}
       <div className="userstate">
         /Home, Howdy! :D @User : {useAuth ? useUserName : "Anonymous"}
       </div>
-      <span className="announcement_1">
-        Starting November 28th, 2022, Heroku free plan will no longer, website
-        will shutdown.
-      </span>
       <div className="masonry-warper">
         <Masonry
           breakpointCols={breakpointColumnsObj}

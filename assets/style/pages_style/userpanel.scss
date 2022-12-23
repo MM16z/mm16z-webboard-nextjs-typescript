@@ -219,6 +219,14 @@
     }
 }
 
+.blocks-wrapper-userpanel {
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 //**//
 
 @media screen and (min-width: 0px) and (max-width: 600px) {
@@ -283,6 +291,9 @@
             }
         }
     }
+    .blocks-wrapper-userpanel {
+        top: 10% !important;
+    }
 }
 @media screen and (min-width: 362px) and (max-width: 395px) {
     .userpanel-container {
@@ -330,6 +341,9 @@
                 right: 10px;
             }
         }
+    }
+    .blocks-wrapper-userpanel {
+        top: 10% !important;
     }
 }
 @media screen and (min-width: 396px) and (max-width: 450px) {
@@ -379,6 +393,9 @@
             }
         }
     }
+    .blocks-wrapper-userpanel {
+        top: 10% !important;
+    }
 }
 @media screen and (min-width: 451px) and (max-width: 500px) {
     .usereditinput-container {
@@ -413,6 +430,9 @@
                 right: 10px;
             }
         }
+    }
+    .blocks-wrapper-userpanel {
+        top: 10% !important;
     }
 }
 @media screen and (min-width: 501px) and (max-width: 600px) {
