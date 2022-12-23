@@ -9,7 +9,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 TODO :      
 #0.5 => separate css to module for each page => #IMPORTANT!! //ongoing
 #1.like/unlike onchange value state //done                 
-#2.mobile/responsive editinput navigate to top window // ongoing
+#2.mobile/responsive editinput navigate to top window // ongoing          
+#3.new tab open initial state(persist login) not update //IMPORTANT //ongoing
 
 Fixed :         
 #1.use browser refresh when auth is out of session
