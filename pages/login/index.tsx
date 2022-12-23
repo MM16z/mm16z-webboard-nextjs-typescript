@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { useRouter } from "next/router";
 
-import useAuthStore from "../../state/authStore";
+import useAuthStore from "../../global_state/authStore";
 
 import { Blocks } from "react-loader-spinner";
 

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, ChangeEvent } from "react";
 import axios from "axios";
 
-import useAuthStore from "../../state/authStore";
+import useAuthStore from "../../global_state/authStore";
 import getUserauth from "../../hooks/getUserAuth";
 import reqAuth from "../../hooks/requestAuth";
 

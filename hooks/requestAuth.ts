@@ -1,4 +1,4 @@
-import useAuthStore from "../state/authStore";
+import useAuthStore from "../global_state/authStore";
 import getUserAuth from "./getUserAuth";
 
 const reqAuth = async () => {

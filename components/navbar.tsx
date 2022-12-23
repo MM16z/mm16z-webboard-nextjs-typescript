@@ -4,7 +4,7 @@ import { useRef } from "react";
 
 import Cookies from "js-cookie";
 
-import useAuthStore from "../state/authStore";
+import useAuthStore from "../global_state/authStore";
 import axios from "axios";
 
 function Navbar() {

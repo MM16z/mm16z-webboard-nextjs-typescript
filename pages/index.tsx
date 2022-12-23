@@ -15,7 +15,7 @@ import PostBoxContainer from "../components/post-box-container";
 import CommentBoxContainer from "../components/comment-box-container";
 import HeartBtn from "../components/heartbtn";
 
-import useAuthStore from "../state/authStore";
+import useAuthStore from "../global_state/authStore";
 import getUserauth from "../hooks/getUserAuth";
 import reqAuth from "../hooks/requestAuth";
 

@@ -1,5 +1,5 @@
 import { authAxios } from "../axios/axios";
-import useAuthStore from "../state/authStore";
+import useAuthStore from "../global_state/authStore";
 
 const getUserAuth = async () => {
   const useAuth = useAuthStore.getState().accessToken

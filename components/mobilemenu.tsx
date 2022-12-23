@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import mm16grid from "../assets/images/mm16grid.png";
 import { Appcontext } from "../pages/_app";
-import useAuthStore from "../state/authStore";
+import useAuthStore from "../global_state/authStore";
 
 import Cookies from "js-cookie";
 
