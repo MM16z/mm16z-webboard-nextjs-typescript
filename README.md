@@ -7,8 +7,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 #update log #5 => trust device login// #on going
 
 TODO :        
-#1.like/unlike onchange value state // later             
-#2.mobile/responsive editinput navigate to top window 
+#1.like/unlike onchange value state //done                 
+#2.mobile/responsive editinput navigate to top window // onhoing
 
 Fixed :         
 #1.use browser refresh when auth is out of session
