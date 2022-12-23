@@ -6,9 +6,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 #Update log #4 => Loading component //done                
 #update log #5 => trust device login// #on going
 
-TODO :        
+TODO :      
+#0.5 => separate css to module for each page => #IMPORTANT!! //ongoing
 #1.like/unlike onchange value state //done                 
-#2.mobile/responsive editinput navigate to top window // onhoing
+#2.mobile/responsive editinput navigate to top window // ongoing
 
 Fixed :         
 #1.use browser refresh when auth is out of session
