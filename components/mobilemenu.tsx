@@ -1,11 +1,5 @@
 import Image from "next/image";
-import {
-  forwardRef,
-  useContext,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-} from "react";
+import { forwardRef, useContext, useImperativeHandle, useRef } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -26,7 +20,6 @@ const Mobilemenu = forwardRef((probs, refs) => {
   const router = useRouter();
   const appcontext = useContext(Appcontext);
 
-  useEffect(() => {}, []);
   return (
     <div className="mobilemenu" ref={mobilemenuref}>
       {router.pathname === "/userpanel" ? null : (

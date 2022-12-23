@@ -1,15 +1,15 @@
-import "../assets/style/_app.scss";
-import "../assets/style/pages_style/home.scss";
-import "../assets/style/pages_style/login.scss";
-import "../assets/style/pages_style/register.scss";
-import "../assets/style/pages_style/userpanel.scss";
+import "../style/_app.scss";
+import "../style/pages_style/home.scss";
+import "../style/pages_style/login.scss";
+import "../style/pages_style/register.scss";
+import "../style/pages_style/userpanel.scss";
 
-import "../assets/style/components_style/navbar.scss";
-import "../assets/style/components_style/post-box-container.scss";
-import "../assets/style/components_style/hambergermenu.scss";
-import "../assets/style/components_style/comment-box-container.scss";
-import "../assets/style/components_style/heartbtn.scss";
-import "../assets/style/components_style/mobilemenu.scss";
+import "../style/components_style/navbar.scss";
+import "../style/components_style/post-box-container.scss";
+import "../style/components_style/hambergermenu.scss";
+import "../style/components_style/comment-box-container.scss";
+import "../style/components_style/heartbtn.scss";
+import "../style/components_style/mobilemenu.scss";
 
 import githubMark from "../assets/images/GitHub-Mark.png";
 
