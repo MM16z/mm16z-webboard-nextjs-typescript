@@ -28,8 +28,7 @@ function Navbar() {
     setAuthStore(null);
     Cookies.set("u_id", "");
     //call logout api to delete cookie
-    router.push("/");
-    router.reload();
+    window.location.href = "/";
   };
 
   return (

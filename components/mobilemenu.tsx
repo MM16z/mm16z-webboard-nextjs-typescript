@@ -6,11 +6,14 @@ import {
   useImperativeHandle,
   useRef,
 } from "react";
+import axios from "axios";
 import { useRouter } from "next/router";
 
 import mm16grid from "../assets/images/mm16grid.png";
 import { Appcontext } from "../pages/_app";
 import useAuthStore from "../state/authStore";
+
+import Cookies from "js-cookie";
 
 const Mobilemenu = forwardRef((probs, refs) => {
   const mobilemenuref = useRef<HTMLDivElement>(null);
@@ -71,10 +74,21 @@ const Mobilemenu = forwardRef((probs, refs) => {
         <p
           style={{ top: "150px" }}
           onClick={() => {
+            axios.post(
+              "https://good-puce-squirrel-wear.cyclic.app/logout",
+              JSON.stringify({}),
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                withCredentials: true,
+              }
+            );
             setAuthStore(null);
-            window.location.href = "/";
+            Cookies.set("u_id", "");
             mobilemenuref.current?.classList.toggle("active");
             appcontext.current.classList.toggle("active");
+            window.location.href = "/";
           }}
         >
           LOGOUT
