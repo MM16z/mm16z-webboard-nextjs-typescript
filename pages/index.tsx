@@ -222,7 +222,7 @@ function Home({ posts }: PostDataType) {
     routeAuth();
     setPostLikedCount(posts.allPosts.map((post) => post.post_liked_count));
     console.log("meow");
-  }, [useAuth]);
+  }, [useAuth, Cookies.get("u_id")]);
 
   return (
     <div className="home-page-container">
