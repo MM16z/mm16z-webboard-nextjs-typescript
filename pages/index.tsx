@@ -345,6 +345,10 @@ function Home({ posts }: PostDataType) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  context.res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
   let currentQuery = Number(context.query.page);
   //will set/use secure cookie on api endpoint instend of client side cookie later
   let currentUserId = Number(context.req?.cookies?.u_id) || null;
