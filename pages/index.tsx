@@ -154,12 +154,11 @@ function Home({ posts }: PostDataType) {
     if (response.data.message === "emtpy content")
       return alert("Emtpy Content Pepehands");
     if (response.data.status === "error") return alert("Comment Failed");
-
     if (response.data.status === "ok") {
       alert("Comment Success");
-      setComment((prev) => [...prev, (prev[index] = "")]);
       router.push("/");
     }
+    setComment((prev) => [...prev, (prev[index] = "")]);
   };
 
   const onPostlikeHandler = async (
