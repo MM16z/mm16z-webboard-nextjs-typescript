@@ -158,7 +158,11 @@ function Home({ posts }: PostDataType) {
       alert("Comment Success");
       router.push("/");
     }
-    setComment((prev) => [...prev, (prev[index] = "")]);
+    setComment((prev) => {
+      const newState = [...prev];
+      newState[index] = "";
+      return newState;
+    });
   };
 
   const onPostlikeHandler = async (
