@@ -1,4 +1,4 @@
-import "../styles/_app.scss";
+import "../styles/_app.css";
 import "../styles/pages_style/home.scss";
 import "../styles/pages_style/login.scss";
 import "../styles/pages_style/register.scss";
