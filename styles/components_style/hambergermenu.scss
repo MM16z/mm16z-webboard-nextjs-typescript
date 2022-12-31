@@ -2,6 +2,13 @@
     width: 80px !important;
 }
 
+.mobilemenu {
+    & > p {
+        cursor: pointer;
+        z-index: 2;
+    }
+}
+
 .ham {
     z-index: 11;
     cursor: pointer;

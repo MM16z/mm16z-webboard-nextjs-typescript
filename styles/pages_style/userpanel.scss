@@ -99,8 +99,6 @@
     & > * {
         margin-top: 40px;
     }
-    & > .post-box-container {
-    }
 }
 
 #post-edit-btn {
@@ -227,8 +225,6 @@
     transform: translate(-50%, -50%);
 }
 
-//**//
-
 @media screen and (min-width: 0px) and (max-width: 600px) {
     .userpanel-container {
         & > form {
@@ -273,7 +269,6 @@
             line-height: 10px;
         }
         & > input#post-edit-submitbtn {
-            // @extend #post-submitbtn;
             font-size: 3vw;
             color: red;
             width: 150px;
@@ -324,7 +319,6 @@
             line-height: 10px;
         }
         & > input#post-edit-submitbtn {
-            // @extend #post-submitbtn;
             font-size: 3vw;
             color: red;
             width: 150px;
@@ -375,7 +369,6 @@
             line-height: 10px;
         }
         & > input#post-edit-submitbtn {
-            // @extend #post-submitbtn;
             font-size: 3vw;
             color: red;
             width: 200px;
