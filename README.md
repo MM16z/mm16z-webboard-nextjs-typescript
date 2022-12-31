@@ -13,7 +13,8 @@ TODO :
 #3.new tab open initial state(persist login) not update //IMPORTANT //ongoing
 
 Fixed :         
-#1.use browser refresh when auth is out of session
+#1.refresh when auth is out of session
+#2.initial likedcount state fixed
  
  
 ## Learn More
