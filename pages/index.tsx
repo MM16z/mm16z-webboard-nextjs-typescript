@@ -1,10 +1,4 @@
-import {
-  useRef,
-  useState,
-  useEffect,
-  SyntheticEvent,
-  ChangeEvent,
-} from "react";
+import { useState, useEffect, SyntheticEvent, ChangeEvent } from "react";
 import axios from "axios";
 
 import Masonry from "react-masonry-css";
@@ -38,12 +32,7 @@ function Home({ posts }: PostDataType) {
     false,
     false,
   ]);
-  const initialPostLikedCount = posts.allPosts.map(
-    (post) => post.post_liked_count
-  );
-  const [postLikedCount, setPostLikedCount] = useState(initialPostLikedCount);
-
-  const heartRef = useRef(null);
+  const [postLikedCounts, setPostLikedCounts] = useState<number[]>([]);
 
   const router = useRouter();
 
@@ -56,6 +45,7 @@ function Home({ posts }: PostDataType) {
   const setUserName = useAuthStore((state) => state.setUserName);
 
   const [isLoading, setIsLoading] = useState(true);
+
   const refresh = refreshTokenAuth();
 
   const verifyRefreshToken = async () => {
@@ -194,7 +184,7 @@ function Home({ posts }: PostDataType) {
         }
       );
       checked[index] = e.target.checked;
-      setPostLikedCount((prev) => {
+      setPostLikedCounts((prev) => {
         const newCount = [...prev];
         newCount[index] = newCount[index] + 1;
         return newCount;
@@ -211,7 +201,7 @@ function Home({ posts }: PostDataType) {
         }
       );
       checked[index] = e.target.checked;
-      setPostLikedCount((prev) => {
+      setPostLikedCounts((prev) => {
         const newCount = [...prev];
         newCount[index] = newCount[index] - 1;
         return newCount;
@@ -223,9 +213,9 @@ function Home({ posts }: PostDataType) {
   useEffect(() => {
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
     routeAuth();
-    // setPostLikedCount(posts.allPosts.map((post) => post.post_liked_count));
+    setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
     console.log("meow");
-  }, [useAuth]);
+  }, [useAuth, posts.allPosts]);
 
   return (
     <div className="home-page-container">
@@ -261,14 +251,14 @@ function Home({ posts }: PostDataType) {
               >
                 <HeartBtn
                   key={index}
-                  postLikedCount={postLikedCount[index]}
+                  postLikedCount={postLikedCounts[index]}
+                  // postLikedCount={postLikedCount}
                   defaultChecked={
                     post.isLiked === null ? false : post.isLiked ? true : false
                   }
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     onPostlikeHandler(e, postId, index);
                   }}
-                  ref={heartRef}
                 />
                 <form
                   method="post"
