@@ -212,13 +212,13 @@ function Home({ posts }: PostDataType) {
 
   useEffect(() => {
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
-  }, []);
+    routeAuth();
+    console.log("meow");
+  }, [useAuth]);
 
   useEffect(() => {
-    routeAuth();
     setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
-    console.log("meow");
-  }, [useAuth, posts.allPosts]);
+  }, [posts.allPosts]);
 
   return (
     <div className="home-page-container">
