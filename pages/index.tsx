@@ -33,6 +33,7 @@ function Home({ posts }: PostDataType) {
     false,
   ]);
   const [postLikedCounts, setPostLikedCounts] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const router = useRouter();
 
@@ -211,6 +212,10 @@ function Home({ posts }: PostDataType) {
   };
 
   useEffect(() => {
+    const page = router.query.page;
+    if (page) {
+      setCurrentPage(Number(page));
+    }
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
     routeAuth();
     setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
@@ -320,7 +325,7 @@ function Home({ posts }: PostDataType) {
         className="paginate"
         breakLabel="..."
         nextLabel="next>"
-        initialPage={0}
+        initialPage={currentPage - 1}
         pageCount={
           Number.isSafeInteger(postsCount)
             ? Number(postsCount.toFixed(0))
