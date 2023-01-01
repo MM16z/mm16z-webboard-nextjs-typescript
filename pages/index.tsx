@@ -212,6 +212,9 @@ function Home({ posts }: PostDataType) {
 
   useEffect(() => {
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
     routeAuth();
     setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
     console.log("meow");
