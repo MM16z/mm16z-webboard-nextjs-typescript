@@ -22,7 +22,7 @@ import { Blocks } from "react-loader-spinner";
 import { PostDataType } from "../types/PostDataType";
 import refreshTokenAuth from "../hooks/refreshTokenAuth";
 
-function Home({ posts }: PostDataType) {
+function Home({ posts, query }: PostDataType) {
   const [comment, setComment] = useState(["", "", "", "", "", ""]);
   const [postlikedstate, setPostlikedstate] = useState([
     false,
@@ -106,7 +106,7 @@ function Home({ posts }: PostDataType) {
   }
 
   const pagginationHandler = (page: any) => {
-    let currentPage = page.selected + 1;
+    let currentPage = page.selected;
     router.push({
       pathname: router.pathname,
       query: { page: currentPage },
@@ -320,7 +320,7 @@ function Home({ posts }: PostDataType) {
         className="paginate"
         breakLabel="..."
         nextLabel="next>"
-        initialPage={0}
+        initialPage={query || 0}
         pageCount={
           Number.isSafeInteger(postsCount)
             ? Number(postsCount.toFixed(0))
@@ -363,6 +363,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       posts: posts.data,
+      query: currentQuery,
     },
   };
 };

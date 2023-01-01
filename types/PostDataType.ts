@@ -1,5 +1,6 @@
 export interface PostDataType {
     posts: PostDataTypes;
+    query: number;
 }
 
 export interface PostDataTypes {
