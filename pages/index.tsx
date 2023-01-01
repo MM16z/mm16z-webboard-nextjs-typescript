@@ -216,7 +216,9 @@ function Home({ posts }: PostDataType) {
   }, []);
 
   useEffect(() => {
-    routeAuth();
+    if (useAuth) {
+      routeAuth();
+    }
   }, [useAuth]);
 
   useEffect(() => {
