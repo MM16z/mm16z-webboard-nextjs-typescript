@@ -215,12 +215,14 @@ function Home({ posts }: PostDataType) {
     const page = router.query.page;
     if (page) {
       setCurrentPage(Number(page));
+    } else {
+      setCurrentPage(1);
     }
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
     routeAuth();
     setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
     console.log("meow");
-  }, [useAuth, posts.allPosts]);
+  }, [useAuth, posts.allPosts, router.query.page]);
 
   return (
     <div className="home-page-container">
@@ -325,7 +327,7 @@ function Home({ posts }: PostDataType) {
         className="paginate"
         breakLabel="..."
         nextLabel="next>"
-        initialPage={currentPage}
+        initialPage={currentPage - 1}
         pageCount={
           Number.isSafeInteger(postsCount)
             ? Number(postsCount.toFixed(0))
