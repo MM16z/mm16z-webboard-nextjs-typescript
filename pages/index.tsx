@@ -212,8 +212,11 @@ function Home({ posts }: PostDataType) {
 
   useEffect(() => {
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
-    routeAuth();
     console.log("meow");
+  }, []);
+
+  useEffect(() => {
+    routeAuth();
   }, [useAuth]);
 
   useEffect(() => {
