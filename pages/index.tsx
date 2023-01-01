@@ -343,7 +343,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   "public, s-maxage=10, stale-while-revalidate=59"
   // );
   let currentQuery = Number(context.query.page);
-  let currentCustomQuery = Number(context.query.page);
   if (currentQuery) {
     if (currentQuery <= 0) {
       currentQuery = 1;
@@ -364,7 +363,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       posts: posts.data,
-      query: currentCustomQuery,
+      query: currentQuery,
     },
   };
 };
