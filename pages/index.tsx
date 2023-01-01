@@ -215,8 +215,6 @@ function Home({ posts }: PostDataType) {
     const page = router.query.page;
     if (page) {
       setCurrentPage(Number(page));
-    } else {
-      setCurrentPage(1);
     }
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
     routeAuth();
