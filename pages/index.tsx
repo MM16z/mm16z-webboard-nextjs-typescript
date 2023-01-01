@@ -342,13 +342,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   "Cache-Control",
   //   "public, s-maxage=10, stale-while-revalidate=59"
   // );
-  let currentQuery = (Number(context.query.page) - 1) * 6;
-  //will set/use secure cookie on api endpoint instend of client side cookie later
-  let currentUserId = Number(context.req?.cookies?.u_id) || null;
-
+  let currentQuery = Number(context.query.page);
   if (currentQuery <= 0) {
     currentQuery = 1;
   }
+  currentQuery = (currentQuery - 1) * 6;
+  //will set/use secure cookie on api endpoint instend of client side cookie later
+  let currentUserId = Number(context.req?.cookies?.u_id) || null;
 
   const postDataOptions = {
     method: "GET",
