@@ -48,6 +48,10 @@ function Home({ posts, query }: PostDataType) {
 
   const refresh = refreshTokenAuth();
 
+  if (!query) {
+    query = 0;
+  }
+
   const verifyRefreshToken = async () => {
     try {
       await refresh();
@@ -320,7 +324,7 @@ function Home({ posts, query }: PostDataType) {
         className="paginate"
         breakLabel="..."
         nextLabel="next>"
-        initialPage={query || 0}
+        initialPage={query}
         pageCount={
           Number.isSafeInteger(postsCount)
             ? Number(postsCount.toFixed(0))
@@ -343,10 +347,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   "public, s-maxage=10, stale-while-revalidate=59"
   // );
   let currentQuery = Number(context.query.page);
-  if (currentQuery) {
-    if (currentQuery <= 0) {
-      currentQuery = 1;
-    }
+  if (!currentQuery) {
+    currentQuery = 0;
+  } else {
+    currentQuery = 1;
     currentQuery = (currentQuery - 1) * 6;
   }
   //will set/use secure cookie on api endpoint instend of client side cookie later
