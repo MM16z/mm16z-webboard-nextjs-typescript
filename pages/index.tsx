@@ -214,13 +214,16 @@ function Home({ posts }: PostDataType) {
   useEffect(() => {
     const page = router.query.page;
     if (page) {
-      setCurrentPage(Number(page));
+      router.push({
+        pathname: router.pathname,
+        query: { page: page },
+      });
     }
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
     routeAuth();
     setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
     console.log("meow");
-  }, [useAuth, posts.allPosts, currentPage]);
+  }, [useAuth, posts.allPosts, router.query.page]);
 
   return (
     <div className="home-page-container">
