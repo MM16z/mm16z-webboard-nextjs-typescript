@@ -320,7 +320,7 @@ function Home({ posts, currentPage }: PostDataType) {
         className="paginate"
         breakLabel="..."
         nextLabel="next>"
-        initialPage={Number(currentPage) || 0}
+        initialPage={Number(currentPage) ? Number(currentPage) : 0}
         pageCount={
           Number.isSafeInteger(postsCount)
             ? Number(postsCount.toFixed(0))
