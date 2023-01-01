@@ -220,7 +220,7 @@ function Home({ posts }: PostDataType) {
     routeAuth();
     setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
     console.log("meow");
-  }, [useAuth, posts.allPosts, router.query.page]);
+  }, [useAuth, posts.allPosts, currentPage]);
 
   return (
     <div className="home-page-container">
