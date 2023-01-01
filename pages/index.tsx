@@ -22,7 +22,7 @@ import { Blocks } from "react-loader-spinner";
 import { PostDataType } from "../types/PostDataType";
 import refreshTokenAuth from "../hooks/refreshTokenAuth";
 
-function Home({ posts, query }: PostDataType) {
+function Home({ posts }: PostDataType) {
   const [comment, setComment] = useState(["", "", "", "", "", ""]);
   const [postlikedstate, setPostlikedstate] = useState([
     false,
@@ -47,10 +47,6 @@ function Home({ posts, query }: PostDataType) {
   const [isLoading, setIsLoading] = useState(true);
 
   const refresh = refreshTokenAuth();
-
-  if (!query) {
-    query = 0;
-  }
 
   const verifyRefreshToken = async () => {
     try {
@@ -110,7 +106,7 @@ function Home({ posts, query }: PostDataType) {
   }
 
   const pagginationHandler = (page: any) => {
-    let currentPage = page.selected;
+    let currentPage = page.selected + 1;
     router.push({
       pathname: router.pathname,
       query: { page: currentPage },
@@ -324,7 +320,7 @@ function Home({ posts, query }: PostDataType) {
         className="paginate"
         breakLabel="..."
         nextLabel="next>"
-        initialPage={query}
+        initialPage={0}
         pageCount={
           Number.isSafeInteger(postsCount)
             ? Number(postsCount.toFixed(0))
@@ -347,10 +343,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   "public, s-maxage=10, stale-while-revalidate=59"
   // );
   let currentQuery = Number(context.query.page);
-  if (!currentQuery) {
-    currentQuery = 0;
-  } else {
-    currentQuery = 1;
+  if (currentQuery) {
+    if (currentQuery <= 0) {
+      currentQuery = 1;
+    }
     currentQuery = (currentQuery - 1) * 6;
   }
   //will set/use secure cookie on api endpoint instend of client side cookie later
@@ -367,7 +363,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       posts: posts.data,
-      query: currentQuery,
     },
   };
 };
