@@ -342,7 +342,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   "Cache-Control",
   //   "public, s-maxage=10, stale-while-revalidate=59"
   // );
-  let currentQuery = Number(context.query.page);
+  let currentQuery = (Number(context.query.page) - 1) * 6;
+  console.log(currentQuery);
   //will set/use secure cookie on api endpoint instend of client side cookie later
   let currentUserId = Number(context.req?.cookies?.u_id) || null;
 
@@ -352,8 +353,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const postDataOptions = {
     method: "GET",
-    url: "https://good-puce-squirrel-wear.cyclic.app/user_posts",
-    params: { currentQuery: currentQuery, currentUserId: currentUserId },
+    url: `https://good-puce-squirrel-wear.cyclic.app/user_posts/${currentQuery}`,
+    params: { currentUserId: currentUserId },
     withCredentials: true,
   };
   const posts = await axios.request(postDataOptions);
