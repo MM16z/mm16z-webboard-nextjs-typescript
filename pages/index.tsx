@@ -209,6 +209,9 @@ function Home({ posts }: PostDataType) {
       setPostlikedstate(checked);
     }
   };
+  useEffect(() => {
+    console.log("meow");
+  }, []);
 
   useEffect(() => {
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
