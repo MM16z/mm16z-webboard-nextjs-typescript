@@ -111,7 +111,6 @@ function Home({ posts }: PostDataType) {
       pathname: router.pathname,
       query: { page: currentPage },
     });
-    console.log("meow pagination");
   };
 
   const commentSubmitHandler = async (
@@ -213,19 +212,14 @@ function Home({ posts }: PostDataType) {
 
   useEffect(() => {
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
-    console.log("meow1");
   }, []);
 
   useEffect(() => {
-    if (useAuth) {
-      routeAuth();
-      console.log("meow2");
-    }
+    useAuth ? routeAuth() : null;
   }, [useAuth]);
 
   useEffect(() => {
     setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
-    console.log("meow3");
   }, [posts.allPosts]);
 
   return (
