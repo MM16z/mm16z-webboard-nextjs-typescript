@@ -111,6 +111,7 @@ function Home({ posts }: PostDataType) {
       pathname: router.pathname,
       query: { page: currentPage },
     });
+    console.log("meow pagination");
   };
 
   const commentSubmitHandler = async (
@@ -330,7 +331,7 @@ function Home({ posts }: PostDataType) {
         className="paginate"
         breakLabel="..."
         nextLabel="next>"
-        initialPage={0}
+        // initialPage={0}
         pageCount={
           Number.isSafeInteger(postsCount)
             ? Number(postsCount.toFixed(0))
@@ -353,7 +354,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   "public, s-maxage=10, stale-while-revalidate=59"
   // );
   let currentQuery = Number(context.query.page);
-  if (currentQuery) {
+  if (!currentQuery) {
+    currentQuery = 1;
+  } else {
     if (currentQuery <= 0) {
       currentQuery = 1;
     }
