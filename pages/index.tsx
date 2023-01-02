@@ -352,7 +352,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // );
   let currentQuery = Number(context.query.page);
   if (!currentQuery) {
-    currentQuery = 1;
+    currentQuery = 0;
   } else {
     if (currentQuery <= 0) {
       currentQuery = 1;
