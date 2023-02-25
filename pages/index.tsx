@@ -106,6 +106,8 @@ function Home({ posts }: PostDataType) {
     postsCount = 1;
   }
 
+  const param = router.query.page;
+
   const pagginationHandler = (page: any) => {
     let currentPage = page.selected + 1;
     setcurrentPage(Math.round(currentPage));
@@ -220,10 +222,12 @@ function Home({ posts }: PostDataType) {
 
   useEffect(() => {
     !useAuth ? verifyRefreshToken() : setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     useAuth ? routeAuth() : null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useAuth]);
 
   useEffect(() => {
@@ -333,7 +337,8 @@ function Home({ posts }: PostDataType) {
         className="paginate"
         breakLabel="..."
         nextLabel="next>"
-        // initialPage={0}
+        // initialPage={Number(param)}
+        forcePage={Number(param) - 1}
         pageCount={
           Number.isSafeInteger(postsCount)
             ? Number(postsCount.toFixed(0))
