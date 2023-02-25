@@ -33,6 +33,7 @@ function Home({ posts }: PostDataType) {
     false,
   ]);
   const [postLikedCounts, setPostLikedCounts] = useState<number[]>([]);
+  const [currentPage, setcurrentPage] = useState<number>();
 
   const router = useRouter();
 
@@ -107,6 +108,7 @@ function Home({ posts }: PostDataType) {
 
   const pagginationHandler = (page: any) => {
     let currentPage = page.selected + 1;
+    setcurrentPage(Math.round(currentPage));
     router.push({
       pathname: router.pathname,
       query: { page: currentPage },
@@ -146,7 +148,10 @@ function Home({ posts }: PostDataType) {
     if (response.data.status === "error") return alert("Comment Failed");
     if (response.data.status === "ok") {
       alert("Comment Success");
-      router.push("/");
+      router.push({
+        pathname: router.pathname,
+        query: { page: currentPage },
+      });
     }
     setComment((prev) => {
       const newState = [...prev];
