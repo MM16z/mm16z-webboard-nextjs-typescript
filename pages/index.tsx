@@ -33,7 +33,7 @@ function Home({ posts }: PostDataType) {
     false,
   ]);
   const [postLikedCounts, setPostLikedCounts] = useState<number[]>([]);
-  const [currentPage, setcurrentPage] = useState<number>();
+  const [currentPage, setcurrentPage] = useState<number>(0);
 
   const router = useRouter();
 
@@ -105,8 +105,6 @@ function Home({ posts }: PostDataType) {
   if (postsCount <= 1) {
     postsCount = 1;
   }
-
-  const param = router.query.page;
 
   const pagginationHandler = (page: any) => {
     let currentPage = page.selected + 1;
@@ -232,7 +230,12 @@ function Home({ posts }: PostDataType) {
 
   useEffect(() => {
     setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
-  }, [posts.allPosts]);
+    const currentParam = router.query?.page;
+    if (currentParam) {
+      setcurrentPage(Number(currentParam) - 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [posts.allPosts, currentPage]);
 
   return (
     <div className="home-page-container">
@@ -338,7 +341,7 @@ function Home({ posts }: PostDataType) {
         breakLabel="..."
         nextLabel="next>"
         // initialPage={Number(param)}
-        forcePage={Number(param) - 1}
+        forcePage={currentPage}
         pageCount={
           Number.isSafeInteger(postsCount)
             ? Number(postsCount.toFixed(0))
