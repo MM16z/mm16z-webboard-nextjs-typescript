@@ -28,7 +28,7 @@ authAxios.interceptors.response.use(
             // Retry the original request after the token has been refreshed
             return refreshTokenPromise.then((newAccessToken: string) =>
                 axios.post(
-                    "https://good-puce-squirrel-wear.cyclic.app/jwtauth",
+                    "https://unusual-red-crab.cyclic.app/jwtauth",
                     JSON.stringify({}),
                     {
                         headers: {

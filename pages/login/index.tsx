@@ -47,7 +47,7 @@ const Login = () => {
     };
     axios
       .post(
-        "https://good-puce-squirrel-wear.cyclic.app/login",
+        "https://unusual-red-crab.cyclic.app/login",
         JSON.stringify(jsonBodyData),
         {
           headers: {

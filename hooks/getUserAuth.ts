@@ -5,7 +5,7 @@ const getUserAuth = async () => {
   const useAuth = useAuthStore.getState().accessToken
 
   const response = await authAxios.post(
-    "https://good-puce-squirrel-wear.cyclic.app/jwtauth",
+    "https://unusual-red-crab.cyclic.app/jwtauth",
     JSON.stringify({}),
     {
       headers: {

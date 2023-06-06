@@ -68,7 +68,7 @@ const Mobilemenu = forwardRef((probs, refs) => {
           style={{ top: "150px" }}
           onClick={() => {
             axios.post(
-              "https://good-puce-squirrel-wear.cyclic.app/logout",
+              "https://unusual-red-crab.cyclic.app/logout",
               JSON.stringify({}),
               {
                 headers: {

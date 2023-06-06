@@ -16,7 +16,7 @@ function Navbar() {
 
   const logoutHandler = () => {
     axios.post(
-      "https://good-puce-squirrel-wear.cyclic.app/logout",
+      "https://unusual-red-crab.cyclic.app/logout",
       JSON.stringify({}),
       {
         headers: {

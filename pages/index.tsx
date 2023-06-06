@@ -135,7 +135,7 @@ function Home({ posts }: PostDataType) {
       postid: postId,
     };
     const response = await axios.post(
-      "https://good-puce-squirrel-wear.cyclic.app/user_post_comment",
+      "https://unusual-red-crab.cyclic.app/user_post_comment",
       JSON.stringify(payloadData),
       {
         headers: {
@@ -180,7 +180,7 @@ function Home({ posts }: PostDataType) {
     const checked = [...postlikedstate];
     if (e.target.checked === true) {
       axios.post(
-        "https://good-puce-squirrel-wear.cyclic.app/user_post_liked",
+        "https://unusual-red-crab.cyclic.app/user_post_liked",
         JSON.stringify(payloadData),
         {
           headers: {
@@ -197,7 +197,7 @@ function Home({ posts }: PostDataType) {
       setPostlikedstate(checked);
     } else {
       axios.post(
-        "https://good-puce-squirrel-wear.cyclic.app/user_post_unliked",
+        "https://unusual-red-crab.cyclic.app/user_post_unliked",
         JSON.stringify(payloadData),
         {
           headers: {
@@ -377,7 +377,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const postDataOptions = {
     method: "GET",
-    url: `https://good-puce-squirrel-wear.cyclic.app/user_posts/${currentQuery}`,
+    url: `https://unusual-red-crab.cyclic.app/user_posts/${currentQuery}`,
     params: { currentUserId: currentUserId },
     withCredentials: true,
   };

@@ -9,7 +9,7 @@ const refreshTokenAuth = () => {
     const refreshToken = async () => {
         const useUserName = useAuthStore.getState().userName
 
-        const response = await refreshAxios.post("https://good-puce-squirrel-wear.cyclic.app/refreshjwtauth",
+        const response = await refreshAxios.post("https://unusual-red-crab.cyclic.app/refreshjwtauth",
             JSON.stringify({ username: useUserName }), {
             headers: {
                 "Content-Type": "application/json",

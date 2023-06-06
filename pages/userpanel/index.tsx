@@ -100,7 +100,7 @@ export default function Userpanel({ posts }: PostDataType) {
     };
     axios
       .post(
-        "https://good-puce-squirrel-wear.cyclic.app/user_post_create",
+        "https://unusual-red-crab.cyclic.app/user_post_create",
         JSON.stringify(jsonBodydata),
         {
           headers: {
@@ -134,7 +134,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     axios
       .post(
-        "https://good-puce-squirrel-wear.cyclic.app/user_post_edit",
+        "https://unusual-red-crab.cyclic.app/user_post_edit",
         JSON.stringify({
           editcontent: preveditdata,
           postid: userpostid,
@@ -169,7 +169,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     axios
       .post(
-        "https://good-puce-squirrel-wear.cyclic.app/user_post_delete",
+        "https://unusual-red-crab.cyclic.app/user_post_delete",
         JSON.stringify({
           userpostid: postid,
         }),
@@ -326,7 +326,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let currentUserId = Number(context.req?.cookies?.u_id) || null;
   const options = {
     method: "GET",
-    url: "https://good-puce-squirrel-wear.cyclic.app/current_user_posts",
+    url: "https://unusual-red-crab.cyclic.app/current_user_posts",
     params: { currentUserId: currentUserId },
   };
   const posts = await axios.request(options);
