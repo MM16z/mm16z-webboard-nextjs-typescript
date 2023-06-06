@@ -11,7 +11,8 @@ TODO :
 #1.like/unlike onchange value state //done                 
 #2.mobile/responsive editinput navigate to top window // ongoing          
 #3.new tab open initial state(persist login) not update //IMPORTANT //done               
-#4.pagination active class based on query //IMPORTANT //ongoing           
+#4.pagination active class based on query //IMPORTANT //ongoing         
+#5.set all api url to env //todo
 
 Fixed :         
 #1.refresh when auth is out of session              
