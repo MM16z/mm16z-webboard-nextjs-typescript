@@ -6,7 +6,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 #Update log #4 => Loading component //done                
 #update log #5 => trust device login// #on going
 
-TODO :      
+TODO :
+#NEW => Refactor all code (on still use then promise, use css framework, post by id ui)
 #0.5 => separate css to module for each page => #IMPORTANT!! //ongoing                
 #1.like/unlike onchange value state //done                 
 #2.mobile/responsive editinput navigate to top window // ongoing          
