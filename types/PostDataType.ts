@@ -5,7 +5,7 @@ export interface PostDataType {
 
 export interface PostDataTypes {
     allPosts: AllPostsType[];
-    postsCount: { all_post_count: number };
+    postsCount: number;
     userPostData: UserPostDataType[];
 }
 export type AllPostsType = {
