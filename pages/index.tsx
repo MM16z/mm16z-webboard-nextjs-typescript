@@ -101,10 +101,12 @@ function Home({ posts }: PostDataType) {
     }
   };
 
-  let postsCount = posts.postsCount.all_post_count / 6;
+  let postsCount = posts.postsCount / 6;
   if (postsCount <= 1) {
     postsCount = 1;
   }
+
+  console.log("POST", posts);
 
   const pagginationHandler = (page: any) => {
     let currentPage = page.selected + 1;
