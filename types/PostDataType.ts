@@ -15,7 +15,7 @@ export type AllPostsType = {
     post_content: string;
     post_createdAt: string;
     post_liked_count: number;
-    isLiked: boolean;
+    isliked: boolean;
     comments: AllPostCommentsType[];
 };
 
