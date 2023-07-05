@@ -193,7 +193,7 @@ function Home({ posts }: PostDataType) {
       checked[index] = e.target.checked;
       setPostLikedCounts((prev) => {
         const newCount = [...prev];
-        newCount[index] = newCount[index] + 1;
+        newCount[index] = Number(newCount[index]) + 1;
         return newCount;
       });
       setPostlikedstate(checked);
@@ -210,7 +210,7 @@ function Home({ posts }: PostDataType) {
       checked[index] = e.target.checked;
       setPostLikedCounts((prev) => {
         const newCount = [...prev];
-        newCount[index] = newCount[index] - 1;
+        newCount[index] = Number(newCount[index]) - 1;
         return newCount;
       });
       setPostlikedstate(checked);
