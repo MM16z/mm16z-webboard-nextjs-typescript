@@ -237,8 +237,6 @@ function Home({ posts }: PostDataType) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [posts.allPosts, currentPage]);
 
-  console.log("postdata", posts);
-
   return (
     <div className="home-page-container">
       {isLoading ? (
