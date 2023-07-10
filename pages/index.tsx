@@ -274,7 +274,7 @@ function Home({ posts }: PostDataType) {
                   key={index}
                   postLikedCount={postLikedCounts[index]}
                   // postLikedCount={postLikedCount}
-                  defaultChecked={post.isliked}
+                  defaultChecked={post.isLiked}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     onPostlikeHandler(e, postId, index);
                   }}
