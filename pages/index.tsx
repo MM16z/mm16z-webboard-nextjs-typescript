@@ -262,14 +262,13 @@ function Home({ posts }: PostDataType) {
         >
           {posts.allPosts?.map((post, index) => {
             let postId = post.post_id;
-            let postDate = post.post_createdat;
             return (
               <PostBoxContainer
                 key={postId}
                 username={post.post_from}
                 title={post.post_title}
                 postcontent={post.post_content}
-                postdate={dayjs(postDate).format("D MMM YYYY - HH:mm")}
+                postdate={dayjs(post?.post_createdat).format("D MMM YYYY - HH:mm")}
               >
                 <HeartBtn
                   key={index}

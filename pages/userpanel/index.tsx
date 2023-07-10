@@ -272,7 +272,6 @@ export default function Userpanel({ posts }: PostDataType) {
         <div className="user-posts-container">
           {posts.userPostData?.map((post) => {
             let postId = post.post_id;
-            let postDate = post.post_createdAt;
             let currentPostContent = post.post_content;
             return (
               <div className="post-box-container" key={postId}>
@@ -306,7 +305,7 @@ export default function Userpanel({ posts }: PostDataType) {
                   {currentPostContent}
                 </span>
                 <span className="post-date">
-                  {dayjs(postDate).format("D MMM YYYY - HH:mm")}
+                  {dayjs(post?.post_createdat).format("D MMM YYYY - HH:mm")}
                 </span>
                 <span className="horizontal-line_1"></span>
               </div>
