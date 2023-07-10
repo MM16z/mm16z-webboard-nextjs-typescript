@@ -47,7 +47,7 @@ const Login = () => {
     };
     axios
       .post(
-        "https://unusual-red-crab.cyclic.app/login",
+        `${process.env.NEXT_PUBLIC_API_URL}/login`,
         JSON.stringify(jsonBodyData),
         {
           headers: {

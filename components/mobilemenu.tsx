@@ -68,7 +68,7 @@ const Mobilemenu = forwardRef((probs, refs) => {
           style={{ top: "150px" }}
           onClick={() => {
             axios.post(
-              "https://unusual-red-crab.cyclic.app/logout",
+              `${process.env.NEXT_PUBLIC_API_URL}/logout`,
               JSON.stringify({}),
               {
                 headers: {

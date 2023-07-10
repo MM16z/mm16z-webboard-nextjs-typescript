@@ -11,12 +11,12 @@ function Navbar() {
   const router = useRouter();
   const createPostBtnref = useRef(null);
 
-  const useAuth = useAuthStore((state) => state.accessToken);
-  const setAuthStore = useAuthStore((state) => state.setAccessToken);
+  const useAuth = useAuthStore((state:any) => state.accessToken);
+  const setAuthStore = useAuthStore((state:any) => state.setAccessToken);
 
   const logoutHandler = () => {
     axios.post(
-      "https://unusual-red-crab.cyclic.app/logout",
+      process.env.NEXT_PUBLIC_API_URL as string,
       JSON.stringify({}),
       {
         headers: {

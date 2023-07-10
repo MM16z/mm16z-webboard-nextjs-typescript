@@ -100,7 +100,7 @@ export default function Userpanel({ posts }: PostDataType) {
     };
     axios
       .post(
-        "https://unusual-red-crab.cyclic.app/user_post_create",
+        `${process.env.NEXT_PUBLIC_API_URL}/user_post_create`,
         JSON.stringify(jsonBodydata),
         {
           headers: {
@@ -134,7 +134,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     axios
       .post(
-        "https://unusual-red-crab.cyclic.app/user_post_edit",
+        `${process.env.NEXT_PUBLIC_API_URL}/user_post_edit`,
         JSON.stringify({
           editcontent: preveditdata,
           postid: userpostid,
@@ -169,7 +169,7 @@ export default function Userpanel({ posts }: PostDataType) {
     }
     axios
       .post(
-        "https://unusual-red-crab.cyclic.app/user_post_delete",
+        `${process.env.NEXT_PUBLIC_API_URL}/user_post_delete`,
         JSON.stringify({
           userpostid: postid,
         }),
@@ -270,7 +270,7 @@ export default function Userpanel({ posts }: PostDataType) {
       <section className="user-posts">
         <span id="user-post-text">Your recent posts</span>
         <div className="user-posts-container">
-          {posts.userPostData.map((post) => {
+          {posts.userPostData?.map((post) => {
             let postId = post.post_id;
             let postDate = post.post_createdAt;
             let currentPostContent = post.post_content;
@@ -326,7 +326,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let currentUserId = Number(context.req?.cookies?.u_id) || null;
   const options = {
     method: "GET",
-    url: "https://unusual-red-crab.cyclic.app/current_user_posts",
+    url: `${process.env.NEXT_PUBLIC_API_URL}/current_user_posts`,
     params: { currentUserId: currentUserId },
   };
   const posts = await axios.request(options);
