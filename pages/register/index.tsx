@@ -51,7 +51,7 @@ const Register = () => {
 
     axios
       .post(
-        "https://unusual-red-crab.cyclic.app/register",
+        `${process.env.NEXT_PUBLIC_API_URL}/register`,
         JSON.stringify(payloadData),
         {
           headers: {

@@ -28,7 +28,7 @@ authAxios.interceptors.response.use(
             // Retry the original request after the token has been refreshed
             return refreshTokenPromise.then((newAccessToken: string) =>
                 axios.post(
-                    "https://unusual-red-crab.cyclic.app/jwtauth",
+                    `${process.env.NEXT_PUBLIC_API_URL}/jwtauth`,
                     JSON.stringify({}),
                     {
                         headers: {

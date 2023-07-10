@@ -13,7 +13,7 @@ export type AllPostsType = {
     post_from: string;
     post_title: string;
     post_content: string;
-    post_createdAt: string;
+    post_createdat: string;
     post_liked_count: number;
     isliked: boolean;
     comments: AllPostCommentsType[];
@@ -31,5 +31,5 @@ export type UserPostDataType = {
     post_from: string;
     post_title: string;
     post_content: string;
-    post_createdAt: string;
+    post_createdat: string;
 }

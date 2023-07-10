@@ -106,8 +106,6 @@ function Home({ posts }: PostDataType) {
     postsCount = 1;
   }
 
-  console.log("POST", posts);
-
   const pagginationHandler = (page: any) => {
     let currentPage = page.selected + 1;
     setcurrentPage(Math.round(currentPage));
@@ -137,7 +135,7 @@ function Home({ posts }: PostDataType) {
       postid: postId,
     };
     const response = await axios.post(
-      "https://unusual-red-crab.cyclic.app/user_post_comment",
+      `${process.env.NEXT_PUBLIC_API_URL}/user_post_comment`,
       JSON.stringify(payloadData),
       {
         headers: {
@@ -182,7 +180,7 @@ function Home({ posts }: PostDataType) {
     const checked = [...postlikedstate];
     if (e.target.checked === true) {
       axios.post(
-        "https://unusual-red-crab.cyclic.app/user_post_liked",
+        `${process.env.NEXT_PUBLIC_API_URL}/user_post_liked`,
         JSON.stringify(payloadData),
         {
           headers: {
@@ -199,7 +197,7 @@ function Home({ posts }: PostDataType) {
       setPostlikedstate(checked);
     } else {
       axios.post(
-        "https://unusual-red-crab.cyclic.app/user_post_unliked",
+        `${process.env.NEXT_PUBLIC_API_URL}/user_post_unliked`,
         JSON.stringify(payloadData),
         {
           headers: {
@@ -231,13 +229,15 @@ function Home({ posts }: PostDataType) {
   }, [useAuth]);
 
   useEffect(() => {
-    setPostLikedCounts(posts.allPosts.map((post) => post.post_liked_count));
+    setPostLikedCounts(posts.allPosts?.map((post) => post.post_liked_count));
     const currentParam = router.query?.page;
     if (currentParam) {
       setcurrentPage(Number(currentParam) - 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [posts.allPosts, currentPage]);
+
+  console.log("postdata", posts);
 
   return (
     <div className="home-page-container">
@@ -260,16 +260,15 @@ function Home({ posts }: PostDataType) {
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
-          {posts.allPosts.map((post, index) => {
+          {posts.allPosts?.map((post, index) => {
             let postId = post.post_id;
-            let postDate = post.post_createdAt;
             return (
               <PostBoxContainer
                 key={postId}
                 username={post.post_from}
                 title={post.post_title}
                 postcontent={post.post_content}
-                postdate={dayjs(postDate).format("D MMM YYYY - HH:mm")}
+                postdate={dayjs(post?.post_createdat).format("D MMM YYYY - HH:mm")}
               >
                 <HeartBtn
                   key={index}
@@ -377,7 +376,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const postDataOptions = {
     method: "GET",
-    url: `https://unusual-red-crab.cyclic.app/user_posts/${currentQuery}`,
+    url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
     params: { currentUserId: currentUserId },
     withCredentials: true,
   };
