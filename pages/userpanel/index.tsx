@@ -26,13 +26,13 @@ export default function Userpanel({ posts }: PostDataType) {
 
   const router = useRouter();
 
-  const useAuth = useAuthStore((state) => state.accessToken);
-  const useUserName = useAuthStore((state) => state.userName);
-  const useUserId = useAuthStore((state) => state.userId);
+  const useAuth = useAuthStore((state:any) => state.accessToken);
+  const useUserName = useAuthStore((state:any) => state.userName);
+  const useUserId = useAuthStore((state:any) => state.userId);
 
-  const setAuthStore = useAuthStore((state) => state.setAccessToken);
-  const setUserId = useAuthStore((state) => state.setUserId);
-  const setUserName = useAuthStore((state) => state.setUserName);
+  const setAuthStore = useAuthStore((state:any) => state.setAccessToken);
+  const setUserId = useAuthStore((state:any) => state.setUserId);
+  const setUserName = useAuthStore((state:any) => state.setUserName);
 
   const [isLoading, setIsLoading] = useState(true);
   const refresh = refreshTokenAuth();
