@@ -16,7 +16,7 @@ function Navbar() {
 
   const logoutHandler = () => {
     axios.post(
-      process.env.NEXT_PUBLIC_API_URL as string,
+        `${process.env.NEXT_PUBLIC_API_URL}/logout`,
       JSON.stringify({}),
       {
         headers: {
