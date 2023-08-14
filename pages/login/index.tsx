@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import useAuthStore from "../../global_state/authStore";
 
 import { Blocks } from "react-loader-spinner";
+import swal from "sweetalert2";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -59,11 +60,19 @@ const Login = () => {
       .then((response) => {
         setIsLoading(false);
         if (response.data.status === "error") {
-          return alert("Login failed");
+          swal.fire({
+            icon: 'error',
+            title: 'xdding?',
+            text: 'Login failed!',
+          })
         }
         if (response.data.status === "ok") {
           setAuthStore(response.data.accessToken);
-          alert("Login success");
+          swal.fire({
+            icon: 'success',
+            title: 'xdding?',
+            text: 'Login success!',
+          })
           router.push("userpanel");
         }
       })
