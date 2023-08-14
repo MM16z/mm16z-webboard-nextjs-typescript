@@ -27,6 +27,7 @@ function PostBoxContainer({ children, ...props }: PostBoxContainerType) {
       <div
         style={{
           fontSize: "15px",
+          marginTop: "10px",
           marginLeft: "20px",
           marginBottom: "10px",
           opacity: "0.75",
