@@ -60,6 +60,10 @@ export default function Home({posts}: PostDataType) {
             await refresh();
         } catch (error) {
             Cookies.set("u_id", "");
+<<<<<<< Updated upstream
+=======
+            // @ts-ignore
+>>>>>>> Stashed changes
             console.error(error?.response?.data);
         } finally {
             setIsLoading(false);
