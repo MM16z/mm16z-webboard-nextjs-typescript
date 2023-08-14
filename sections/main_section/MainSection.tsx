@@ -230,7 +230,7 @@ export default function MainSection({posts}: PostDataType) {
                                     onSubmit={(e) => {
                                         commentSubmitHandler(e, post.post_id, index);
                                     }}
-                                    style={{display: useAuth ? "flex" : "none"}}
+                                    style={{display: useAuth ? "flex" : "none", paddingBottom:"20px"}}
                                 >
                                     <label htmlFor="comment-input">Type something nice :D</label>
                                     <textarea
