@@ -18,12 +18,14 @@ import swal from "sweetalert2";
 
 export default function Userpanel({ posts }: PostDataType) {
   const [postcontext, setPostContext] = useState("");
+  const [postTitleContext, setPostTitleContext] = useState("");
   const [usereditinput, setUserEditinput] = useState(false);
   const [preveditdata, setprevEditdata] = useState("");
   const [userpostid, setPostid] = useState<number | null>(null);
 
   const editdataRef = useRef<HTMLTextAreaElement>(null);
   const postcontextRef = useRef<HTMLTextAreaElement>(null);
+  const postTitleContextRef = useRef<HTMLTextAreaElement>(null);
 
   const router = useRouter();
 
@@ -109,7 +111,7 @@ export default function Userpanel({ posts }: PostDataType) {
     const jsonBodydata = {
       postfrom: useUserName,
       postfromuserid: useUserId,
-      posttitle: "(Post Title Input Incoming...)",
+      posttitle: postTitleContext,
       postcontent: postcontext,
     };
     axios
@@ -319,8 +321,22 @@ export default function Userpanel({ posts }: PostDataType) {
       <span id="username">HI! {useUserName} </span>
       <form onSubmit={onPostSubmitHandler}>
         <div className="user-panel-inputcontainer">
-          <label htmlFor="post-text-input">Write something nice :D</label>
+          <label htmlFor="post-text-input" style={{marginBottom:"20px"}}>Write something nice :D</label>
           <textarea
+              placeholder={"Title"}
+              ref={postTitleContextRef}
+              onChange={(e) => {
+                setPostTitleContext(e.target.value);
+              }}
+              value={postTitleContext}
+              required
+              className="post-inputborder"
+              id="post-text-input"
+              typeof="text"
+              style={{height:"30px"}}
+          ></textarea>
+          <textarea
+            placeholder={"Content"}
             ref={postcontextRef}
             onChange={(e) => {
               setPostContext(e.target.value);
