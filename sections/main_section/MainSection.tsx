@@ -17,6 +17,7 @@ import {PostDataType} from "../../types/PostDataType";
 import reqAuth from "../../hooks/requestAuth";
 import {useRouter} from "next/router";
 import swal from "sweetalert2";
+import {Blocks} from "react-loader-spinner";
 
 const breakpointColumnsObj = {
     default: 4,
@@ -35,6 +36,7 @@ export default function MainSection({posts}: PostDataType) {
     const [currentPage, setcurrentPage] = useState<number>(0);
     const [postLikedCounts, setPostLikedCounts] = useState<number[]>([]);
     const [comment, setComment] = useState(["", "", "", "", "", ""]);
+    const [isLoading, setIsLoading] = useState(false);
 
     let postsCount = posts?.postsCount / 6;
     if (postsCount < 1) {
@@ -113,6 +115,7 @@ export default function MainSection({posts}: PostDataType) {
             })
             return router.push("login");
         }
+        setIsLoading(true);
         if ((await reqAuth()) === "noAuthorization") {
             swal.fire({
                 icon: 'error',
@@ -152,6 +155,7 @@ export default function MainSection({posts}: PostDataType) {
                 title: 'xdding?',
                 text: 'Comment success!',
             })
+            setIsLoading(false);
             router.push({
                 pathname: router.pathname,
                 query: {page: currentPage},
@@ -185,6 +189,16 @@ export default function MainSection({posts}: PostDataType) {
 
     return (
         <>
+            {isLoading ? (
+                <Blocks
+                    visible={true}
+                    height="280"
+                    width="280"
+                    ariaLabel="blocks-loading"
+                    wrapperStyle={{top: "40%"}}
+                    wrapperClass="blocks-wrapper-home"
+                />
+            ) : null}
             <div className="userstate">
                 /Home, Howdy! :D @User : {useAuth ? useUserName : "Anonymous"}
             </div>
