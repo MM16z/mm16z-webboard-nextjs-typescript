@@ -17,7 +17,7 @@ function PostBoxContainer({ children, ...props }: PostBoxContainerType) {
       <span className="vertical-line_1"></span>
       <span className="horizontal-line"></span>
       <span className="profile-circle-line">
-        <span className="profile-circle-img"></span>
+        <span className="profile-circle-img" title="user icons">User icons created by Freepik - Flaticon</span>
       </span>
       <span className="username">{username}</span>
       <span className="title">{title}</span>

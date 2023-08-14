@@ -19,14 +19,15 @@
         background-clip: padding-box, border-box;
         background-origin: padding-box, border-box;
         overflow: hidden;
+        font-size: 0;
         & > .comment-profile-circle-img {
             position: absolute;
             width: 25px;
             height: 25px;
-            top: 2.5px;
-            left: 2.5px;
+            top: 2px;
+            left: 3px;
             border-radius: 50%;
-            background-image: url("https://i.kym-cdn.com/photos/images/original/001/333/191/047.png");
+            background-image: url("../../assets/images/man.png");
             background-size: contain;
         }
     }

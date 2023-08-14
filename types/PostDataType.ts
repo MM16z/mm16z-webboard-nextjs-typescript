@@ -1,6 +1,6 @@
 export interface PostDataType {
     posts: PostDataTypes;
-    currentPage: number;
+    // currentPage: number;
 }
 
 export interface PostDataTypes {
@@ -15,7 +15,7 @@ export type AllPostsType = {
     post_content: string;
     post_createdat: string;
     post_liked_count: number;
-    isliked: boolean;
+    isLiked: boolean;
     comments: AllPostCommentsType[];
 };
 
