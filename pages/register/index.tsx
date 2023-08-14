@@ -6,6 +6,7 @@ import useAuthStore from "../../global_state/authStore";
 import { useRouter } from "next/router";
 
 import { Blocks } from "react-loader-spinner";
+import swal from "sweetalert2";
 
 const Register = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -62,13 +63,26 @@ const Register = () => {
       .then((response) => {
         setIsLoading(false);
         if (response.data.message.errno === 1062) {
-          return alert("Email already used");
+          return swal.fire({
+            icon: 'error',
+            title: 'xdding?',
+            text: 'This email already used!',
+          });
+
         }
         if (response.data.status === "error") {
-          return alert("Register failed");
+          return swal.fire({
+            icon: 'error',
+            title: 'xdding?',
+            text: 'Register failed!',
+          })
         }
         if (response.data.status === "ok") {
-          alert("Register Success");
+          swal.fire({
+            icon: 'success',
+            title: 'xdding?',
+            text: 'login success!',
+          })
           router.push("login");
         }
       })

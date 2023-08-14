@@ -14,6 +14,7 @@ import { Blocks } from "react-loader-spinner";
 
 import { PostDataType } from "../../types/PostDataType";
 import refreshTokenAuth from "../../hooks/refreshTokenAuth";
+import swal from "sweetalert2";
 
 export default function Userpanel({ posts }: PostDataType) {
   const [postcontext, setPostContext] = useState("");
@@ -63,7 +64,11 @@ export default function Userpanel({ posts }: PostDataType) {
             //call logout api to delete cookie later
             Cookies.set("u_id", "");
             setAuthStore(null);
-            alert("out of session");
+            swal.fire({
+              icon: 'error',
+              title: 'xdding?',
+              text: 'Out of session!',
+            })
             return (window.location.href = "/");
           }
         });
@@ -85,11 +90,19 @@ export default function Userpanel({ posts }: PostDataType) {
   const onPostSubmitHandler = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!useAuth) {
-      alert("Please login frist");
+      swal.fire({
+        icon: 'error',
+        title: 'xdding?',
+        text: 'Please login frist!',
+      })
       return router.push("login");
     }
     if ((await reqAuth()) === "noAuthorization") {
-      alert("out of session");
+      swal.fire({
+        icon: 'error',
+        title: 'xdding?',
+        text: 'Out of session!',
+      })
       return (window.location.href = "/");
     }
     const jsonBodydata = {
@@ -110,10 +123,22 @@ export default function Userpanel({ posts }: PostDataType) {
       )
       .then((response) => {
         if (response.data.message === "emtpy content")
-          return alert("Emtpy Content Pepehands");
-        if (response.data.status === "error") return alert("Post Failed");
+          return swal.fire({
+            icon: 'error',
+            title: 'xdding?',
+            text: 'Empty content!',
+          })
+        if (response.data.status === "error") return swal.fire({
+          icon: 'error',
+          title: 'xdding?',
+          text: 'Post Failed!',
+        })
         if (response.data.status === "ok") {
-          alert("Post Success");
+          swal.fire({
+            icon: 'success',
+            title: 'xdding?',
+            text: 'Post success!',
+          })
           router.push("/");
         }
       })
@@ -125,11 +150,19 @@ export default function Userpanel({ posts }: PostDataType) {
   const onEdithSubmithandler = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!useAuth) {
-      alert("Please login frist");
+      swal.fire({
+        icon: 'error',
+        title: 'xdding?',
+        text: 'Please login frist!',
+      })
       return router.push("login");
     }
     if ((await reqAuth()) === "noAuthorization") {
-      alert("out of session");
+      swal.fire({
+        icon: 'error',
+        title: 'xdding?',
+        text: 'Out of session!',
+      })
       return (window.location.href = "/");
     }
     axios
@@ -145,10 +178,22 @@ export default function Userpanel({ posts }: PostDataType) {
       )
       .then((response) => {
         if (response.data.message === "emtpy content")
-          return alert("Emtpy Content Pepehands");
-        if (response.data.status === "error") return alert("Edit Failed");
+          return swal.fire({
+            icon: 'error',
+            title: 'xdding?',
+            text: 'Empty content!',
+          })
+        if (response.data.status === "error") return swal.fire({
+          icon: 'error',
+          title: 'xdding?',
+          text: 'Edit failed!',
+        })
         if (response.data.status === "ok") {
-          alert("Edit Success");
+          swal.fire({
+            icon: 'success',
+            title: 'xdding?',
+            text: 'Edit success!',
+          })
           setUserEditinput(false);
           router.push("userpanel");
         }
@@ -160,11 +205,19 @@ export default function Userpanel({ posts }: PostDataType) {
 
   const onDelClickhandler = async (postid: number) => {
     if (!useAuth) {
-      alert("Please login frist");
+      swal.fire({
+        icon: 'error',
+        title: 'xdding?',
+        text: 'Please login frist!',
+      })
       return router.push("login");
     }
     if ((await reqAuth()) === "noAuthorization") {
-      alert("out of session");
+      swal.fire({
+        icon: 'error',
+        title: 'xdding?',
+        text: 'Out of session!',
+      })
       return (window.location.href = "/");
     }
     axios
@@ -178,9 +231,17 @@ export default function Userpanel({ posts }: PostDataType) {
         }
       )
       .then((response) => {
-        if (response.data.status === "error") return alert("Delete Failed");
+        if (response.data.status === "error") return swal.fire({
+          icon: 'error',
+          title: 'xdding?',
+          text: 'Delete failed!',
+        })
         if (response.data.status === "ok") {
-          alert("Delete Success");
+          swal.fire({
+            icon: 'success',
+            title: 'xdding?',
+            text: 'Delete success!',
+          })
           router.push("userpanel");
         }
       })
