@@ -1,390 +1,129 @@
-import { useState, useEffect, SyntheticEvent, ChangeEvent } from "react";
+import {useState, useEffect} from "react";
 import axios from "axios";
 
-import Masonry from "react-masonry-css";
-import ReactPaginate from "react-paginate";
-import { useRouter } from "next/router";
-
-import PostBoxContainer from "../components/post-box-container";
-import CommentBoxContainer from "../components/comment-box-container";
-import HeartBtn from "../components/heartbtn";
-
 import useAuthStore from "../global_state/authStore";
-import getUserauth from "../hooks/getUserAuth";
-import reqAuth from "../hooks/requestAuth";
+import getUserAuth from "../hooks/getUserAuth";
 
-import { GetServerSideProps } from "next";
+import {GetServerSideProps} from "next";
 
 import Cookies from "js-cookie";
-import dayjs from "dayjs";
-import { Blocks } from "react-loader-spinner";
+import {Blocks} from "react-loader-spinner";
 
-import { PostDataType } from "../types/PostDataType";
+import {PostDataType} from "../types/PostDataType";
 import refreshTokenAuth from "../hooks/refreshTokenAuth";
+import MainSection from "../sections/main_section/MainSection";
 
-function Home({ posts }: PostDataType) {
-  const [comment, setComment] = useState(["", "", "", "", "", ""]);
-  const [postlikedstate, setPostlikedstate] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const [postLikedCounts, setPostLikedCounts] = useState<number[]>([]);
-  const [currentPage, setcurrentPage] = useState<number>(0);
 
-  const router = useRouter();
+export default function Home({posts}: PostDataType) {
 
-  const useAuth = useAuthStore((state: any) => state.accessToken);
-  const useUserId = useAuthStore((state: any) => state.userId);
-  const useUserName = useAuthStore((state: any) => state.userName);
+    const useAuth = useAuthStore((state: any) => state.accessToken);
 
-  const setAuthStore = useAuthStore((state: any) => state.setAccessToken);
-  const setUserId = useAuthStore((state: any) => state.setUserId);
-  const setUserName = useAuthStore((state: any) => state.setUserName);
+    const setAuthStore = useAuthStore((state: any) => state.setAccessToken);
+    const setUserId = useAuthStore((state: any) => state.setUserId);
+    const setUserName = useAuthStore((state: any) => state.setUserName);
 
-  const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
-  const refresh = refreshTokenAuth();
+    const refresh = refreshTokenAuth();
 
-  const verifyRefreshToken = async () => {
-    try {
-      await refresh();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    const routeAuth = async () => {
+        try {
+            const useAuth = useAuthStore.getState().accessToken;
 
-  const routeAuth = () => {
-    if (useAuth) {
-      getUserauth()
-        .then((response) => {
-          if (useUserName) return;
-          setUserId(response.data.decoded.userId);
-          setUserName(response.data.decoded.username);
-          Cookies.set("u_id", response.data.decoded.userId);
-        })
-        .catch((err) => {
-          if (err) {
-            //call logout api to delete cookie later
+            if (useAuth) {
+                const response = await getUserAuth();
+
+                if (response && response.data && response.data.decoded) {
+                    const {userId, username} = response.data.decoded;
+                    setUserId(userId);
+                    setUserName(username);
+                    Cookies.set("u_id", userId);
+                } else {
+                    throw new Error("Invalid response data");
+                }
+            } else {
+                Cookies.set("u_id", "");
+                // call logout API to delete the cookie later
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+            // Call logout API to delete the cookie later
             Cookies.set("u_id", "");
             setAuthStore(null);
-
-            return (window.location.href = "/");
-          }
-        });
-    } else {
-      Cookies.set("u_id", "");
-      //call logout api to delete cookie later
-    }
-  };
-
-  const breakpointColumnsObj = {
-    default: 4,
-    1920: 3,
-    1500: 2,
-    1100: 1,
-  };
-
-  let FixWithoutRounding = (v: any, l: any) => {
-    const intPart = Math.trunc(v).toString();
-    const fractionPart = v.toString().slice(v.toString().indexOf(".") + 1);
-    if (fractionPart.length > l) {
-      return Number(intPart.concat(".", fractionPart.slice(0, l)));
-    } else {
-      const padded = intPart.concat(".", fractionPart.padEnd(l, "0"));
-      return padded;
-    }
-  };
-
-  let postsCount = posts.postsCount / 6;
-  if (postsCount <= 1) {
-    postsCount = 1;
-  }
-
-  const pagginationHandler = (page: any) => {
-    let currentPage = page.selected + 1;
-    setcurrentPage(Math.round(currentPage));
-    router.push({
-      pathname: router.pathname,
-      query: { page: currentPage },
-    });
-  };
-
-  const commentSubmitHandler = async (
-    e: SyntheticEvent,
-    postId: number,
-    index: number
-  ) => {
-    e.preventDefault();
-    if (!useAuth) {
-      alert("Please login frist");
-      return router.push("login");
-    }
-    if ((await reqAuth()) === "noAuthorization") {
-      alert("out of session");
-      return (window.location.href = "/");
-    }
-    const payloadData = {
-      postfrom: useUserName,
-      postcontent: comment[index],
-      postid: postId,
-    };
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/user_post_comment`,
-      JSON.stringify(payloadData),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (response.data.message === "emtpy content")
-      return alert("Emtpy Content Pepehands");
-    if (response.data.status === "error") return alert("Comment Failed");
-    if (response.data.status === "ok") {
-      alert("Comment Success");
-      router.push({
-        pathname: router.pathname,
-        query: { page: currentPage },
-      });
-    }
-    setComment((prev) => {
-      const newState = [...prev];
-      newState[index] = "";
-      return newState;
-    });
-  };
-
-  const onPostlikeHandler = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    postId: number,
-    index: number
-  ) => {
-    const payloadData = {
-      userid: useUserId,
-      postid: postId,
-    };
-    if (!useAuth) {
-      alert("Please login frist");
-      return router.push("login");
-    }
-    if ((await reqAuth()) === "noAuthorization") {
-      alert("out of session");
-      return (window.location.href = "/");
-    }
-    const checked = [...postlikedstate];
-    if (e.target.checked === true) {
-      axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user_post_liked`,
-        JSON.stringify(payloadData),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+            window.location.href = "/";
         }
-      );
-      checked[index] = e.target.checked;
-      setPostLikedCounts((prev) => {
-        const newCount = [...prev];
-        newCount[index] = Number(newCount[index]) + 1;
-        return newCount;
-      });
-      setPostlikedstate(checked);
-    } else {
-      axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user_post_unliked`,
-        JSON.stringify(payloadData),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+        setIsLoading(false);
+    };
+
+    const verifyRefreshToken = async () => {
+        try {
+            await refresh();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
-      );
-      checked[index] = e.target.checked;
-      setPostLikedCounts((prev) => {
-        const newCount = [...prev];
-        newCount[index] = Number(newCount[index]) - 1;
-        return newCount;
-      });
-      setPostlikedstate(checked);
-    }
-  };
-  useEffect(() => {
-    console.log("meow");
-  }, []);
+    };
 
-  useEffect(() => {
-    !useAuth ? verifyRefreshToken() : setIsLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    useEffect(() => {
+        console.log("meow");
+    }, []);
 
-  useEffect(() => {
-    useAuth ? routeAuth() : null;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useAuth]);
+    useEffect(() => {
+        if (!useAuth) {
+            verifyRefreshToken()
+            return;
+        }
+        routeAuth();
+    }, [useAuth]);
 
-  useEffect(() => {
-    setPostLikedCounts(posts.allPosts?.map((post) => post.post_liked_count));
-    const currentParam = router.query?.page;
-    if (currentParam) {
-      setcurrentPage(Number(currentParam) - 1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [posts.allPosts, currentPage]);
-
-  return (
-    <div className="home-page-container">
-      {isLoading ? (
-        <Blocks
-          visible={true}
-          height="280"
-          width="280"
-          ariaLabel="blocks-loading"
-          wrapperStyle={{ top: "20%" }}
-          wrapperClass="blocks-wrapper-home"
-        />
-      ) : null}
-      <div className="userstate">
-        /Home, Howdy! :D @User : {useAuth ? useUserName : "Anonymous"}
-      </div>
-      <div className="masonry-warper">
-        <Masonry
-          breakpointCols={breakpointColumnsObj}
-          className="my-masonry-grid"
-          columnClassName="my-masonry-grid_column"
-        >
-          {posts.allPosts?.map((post, index) => {
-            let postId = post.post_id;
-            return (
-              <PostBoxContainer
-                key={postId}
-                username={post.post_from}
-                title={post.post_title}
-                postcontent={post.post_content}
-                postdate={dayjs(post?.post_createdat).format("D MMM YYYY - HH:mm")}
-              >
-                <HeartBtn
-                  key={index}
-                  postLikedCount={postLikedCounts[index]}
-                  // postLikedCount={postLikedCount}
-                  defaultChecked={post.isLiked}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    onPostlikeHandler(e, postId, index);
-                  }}
+    return (
+        <div className="home-page-container">
+            {isLoading ? (
+                <Blocks
+                    visible={true}
+                    height="280"
+                    width="280"
+                    ariaLabel="blocks-loading"
+                    wrapperStyle={{top: "20%"}}
+                    wrapperClass="blocks-wrapper-home"
                 />
-                <form
-                  method="post"
-                  onSubmit={(e) => {
-                    commentSubmitHandler(e, postId, index);
-                  }}
-                >
-                  <label htmlFor="comment-input">Type something nice :D</label>
-                  <textarea
-                    key={index}
-                    id="comment-input"
-                    name="comment"
-                    onChange={(e) => {
-                      const newCommentState = [...comment];
-                      newCommentState[index] = e.target.value;
-                      setComment(newCommentState);
-                    }}
-                    value={comment[index]}
-                    required
-                  ></textarea>
-                  <button id="comment-submitbtn" type="submit">
-                    Submit
-                  </button>
-                </form>
-                {post.comments.map((comment, index) => {
-                  let commentId = comment.comment_id;
-                  if (comment.comment_content === null) {
-                    return (
-                      <div
-                        key={index}
-                        style={{
-                          position: "relative",
-                          left: "20px",
-                          top: "10px",
-                          fontFamily: "Silkscreen, cursive",
-                          fontSize: "14px",
-                          opacity: "0.8",
-                        }}
-                      >
-                        No comment
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <CommentBoxContainer
-                        key={commentId}
-                        commentusername={comment.comment_from}
-                        commentcontent={comment.comment_content}
-                      />
-                    );
-                  }
-                })}
-              </PostBoxContainer>
-            );
-          })}
-        </Masonry>
-      </div>
-      <ReactPaginate
-        className="paginate"
-        breakLabel="..."
-        nextLabel="next>"
-        // initialPage={Number(param)}
-        forcePage={currentPage}
-        pageCount={
-          Number.isSafeInteger(postsCount)
-            ? Number(postsCount.toFixed(0))
-            : Number(FixWithoutRounding(postsCount, 0)) + 1
-        }
-        onPageChange={pagginationHandler}
-        pageRangeDisplayed={3}
-        previousLabel="<previous"
-      />
-      <div id="home-page-bg">
-        <span id="home-page-bg-nested"></span>
-      </div>
-    </div>
-  );
+            ) : null}
+            <MainSection posts={posts}/>
+        </div>
+    );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // context.res.setHeader(
-  //   "Cache-Control",
-  //   "public, s-maxage=10, stale-while-revalidate=59"
-  // );
-  let currentQuery = Number(context.query.page);
-  if (!currentQuery) {
-    currentQuery = 0;
-  } else {
-    if (currentQuery <= 0) {
-      currentQuery = 1;
+    // context.res.setHeader(
+    //   "Cache-Control",
+    //   "public, s-maxage=10, stale-while-revalidate=59"
+    // );
+    let currentQuery = Number(context.query.page);
+    if (!currentQuery) {
+        currentQuery = 0;
+    } else {
+        if (currentQuery <= 0) {
+            currentQuery = 1;
+        }
+        currentQuery = (currentQuery - 1) * 6;
     }
-    currentQuery = (currentQuery - 1) * 6;
-  }
-  //will set/use secure cookie on api endpoint instend of client side cookie later
-  let currentUserId = Number(context.req?.cookies?.u_id) || null;
+    //will set/use secure cookie on api endpoint instend of client side cookie later
+    let currentUserId = Number(context.req?.cookies?.u_id) || null;
 
-  const postDataOptions = {
-    method: "GET",
-    url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
-    params: { currentUserId: currentUserId },
-    withCredentials: true,
-  };
-  const posts = await axios.request(postDataOptions);
+    const postDataOptions = {
+        method: "GET",
+        url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
+        params: {currentUserId: currentUserId},
+        withCredentials: true,
+    };
+    const posts = await axios.request(postDataOptions);
 
-  return {
-    props: {
-      posts: posts.data,
-    },
-  };
+    return {
+        props: {
+            posts: posts.data,
+        },
+    };
 };
 
-export default Home;
+

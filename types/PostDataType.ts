@@ -1,6 +1,6 @@
 export interface PostDataType {
     posts: PostDataTypes;
-    currentPage: number;
+    // currentPage: number;
 }
 
 export interface PostDataTypes {

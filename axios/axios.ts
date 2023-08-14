@@ -19,7 +19,6 @@ authAxios.interceptors.response.use(
                         return newAccessToken;
                     },
                     (error) => {
-                        console.log("error from")
                         refreshTokenPromise = null;
                         return Promise.reject(error);
                     }
