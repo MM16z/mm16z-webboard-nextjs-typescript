@@ -87,7 +87,7 @@ export default function Home({posts}: PostDataType) {
                     height="280"
                     width="280"
                     ariaLabel="blocks-loading"
-                    wrapperStyle={{top: "20%"}}
+                    wrapperStyle={{top: "30%"}}
                     wrapperClass="blocks-wrapper-home"
                 />
             ) : null}

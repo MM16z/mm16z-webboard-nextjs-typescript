@@ -97,6 +97,7 @@ export default function Userpanel({ posts }: PostDataType) {
       })
       return router.push("login");
     }
+    setIsLoading(true);
     if ((await reqAuth()) === "noAuthorization") {
       swal.fire({
         icon: 'error',
@@ -139,6 +140,7 @@ export default function Userpanel({ posts }: PostDataType) {
             title: 'xdding?',
             text: 'Post success!',
           })
+          setIsLoading(false);
           router.push("/");
         }
       })
@@ -157,6 +159,7 @@ export default function Userpanel({ posts }: PostDataType) {
       })
       return router.push("login");
     }
+    setIsLoading(true);
     if ((await reqAuth()) === "noAuthorization") {
       swal.fire({
         icon: 'error',
@@ -195,6 +198,7 @@ export default function Userpanel({ posts }: PostDataType) {
             text: 'Edit success!',
           })
           setUserEditinput(false);
+          setIsLoading(false);
           router.push("userpanel");
         }
       })
@@ -212,6 +216,7 @@ export default function Userpanel({ posts }: PostDataType) {
       })
       return router.push("login");
     }
+    setIsLoading(true);
     if ((await reqAuth()) === "noAuthorization") {
       swal.fire({
         icon: 'error',
@@ -242,6 +247,7 @@ export default function Userpanel({ posts }: PostDataType) {
             title: 'xdding?',
             text: 'Delete success!',
           })
+          setIsLoading(false);
           router.push("userpanel");
         }
       })
@@ -306,7 +312,7 @@ export default function Userpanel({ posts }: PostDataType) {
           height="280"
           width="280"
           ariaLabel="blocks-loading"
-          wrapperStyle={{ top: "20%" }}
+          wrapperStyle={{ top: "30%" }}
           wrapperClass="blocks-wrapper-userpanel"
         />
       ) : null}
