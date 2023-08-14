@@ -84,6 +84,7 @@ export default function Userpanel({ posts }: PostDataType) {
 
   //scroll to top when edited on responsive(mobile etc..) later
   const onEditClickhandler = (postid: number, currentpostcontext: string) => {
+    window.scrollTo(0, 0)
     setUserEditinput(true);
     setprevEditdata(currentpostcontext);
     setPostid(postid);
