@@ -59,7 +59,8 @@ export default function Home({posts}: PostDataType) {
         try {
             await refresh();
         } catch (error) {
-            console.error(error);
+            Cookies.set("u_id", "");
+            console.error(error?.response?.data);
         } finally {
             setIsLoading(false);
         }

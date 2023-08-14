@@ -16,6 +16,7 @@ import axios from "axios";
 import {PostDataType} from "../../types/PostDataType";
 import reqAuth from "../../hooks/requestAuth";
 import {useRouter} from "next/router";
+import swal from "sweetalert2";
 
 const breakpointColumnsObj = {
     default: 4,
@@ -50,11 +51,19 @@ export default function MainSection({posts}: PostDataType) {
             postid: postId,
         };
         if (!useAuth) {
-            alert("Please login frist");
+            swal.fire({
+                icon: 'error',
+                title: 'xdding?',
+                text: 'Please login frist!',
+            })
             return router.push("login");
         }
         if ((await reqAuth()) === "noAuthorization") {
-            alert("out of session");
+            swal.fire({
+                icon: 'error',
+                title: 'xdding?',
+                text: 'out of session!',
+            })
             return (window.location.href = "/");
         }
         if (e.target.checked === true) {
@@ -97,11 +106,19 @@ export default function MainSection({posts}: PostDataType) {
     ) => {
         e.preventDefault();
         if (!useAuth) {
-            alert("Please login frist");
+            swal.fire({
+                icon: 'error',
+                title: 'xdding?',
+                text: 'Please login first!',
+            })
             return router.push("login");
         }
         if ((await reqAuth()) === "noAuthorization") {
-            alert("out of session");
+            swal.fire({
+                icon: 'error',
+                title: 'xdding?',
+                text: 'Out of session!',
+            })
             return (window.location.href = "/");
         }
         const payloadData = {
@@ -119,10 +136,22 @@ export default function MainSection({posts}: PostDataType) {
             }
         );
         if (response.data.message === "emtpy content")
-            return alert("Emtpy Content Pepehands");
-        if (response.data.status === "error") return alert("Comment Failed");
+            return swal.fire({
+                icon: 'error',
+                title: 'xdding?',
+                text: 'Empty content!',
+            })
+        if (response.data.status === "error") return swal.fire({
+            icon: 'error',
+            title: 'xdding?',
+            text: 'Comment failed!',
+        })
         if (response.data.status === "ok") {
-            alert("Comment Success");
+            swal.fire({
+                icon: 'success',
+                title: 'xdding?',
+                text: 'Comment success!',
+            })
             router.push({
                 pathname: router.pathname,
                 query: {page: currentPage},
