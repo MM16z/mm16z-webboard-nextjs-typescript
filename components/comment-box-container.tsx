@@ -1,16 +1,16 @@
+import {MouseEventHandler} from "react";
+
 type CommentBoxContainer = {
     commentusername: string;
     commentcontent: string;
     isAdmin: boolean;
-    handleDeleteComment: (commentId: number) => void;
+    handleDeleteComment: MouseEventHandler<HTMLDivElement>;
 };
 
 const CommentBoxContainer = (probs: CommentBoxContainer) => {
     const {commentusername, commentcontent, isAdmin, handleDeleteComment} = probs;
     return (
-        <div className="reply-box-container"
-             style={{pointerEvents: isAdmin ? "all" : "none"}}
-             onClick={handleDeleteComment}>
+        <div className="reply-box-container">
             <hr></hr>
             <span className="comment-profile-circle-line">
         <span className="comment-profile-circle-img" title="user icons">User icons created by Freepik - Flaticon</span>
@@ -25,6 +25,7 @@ const CommentBoxContainer = (probs: CommentBoxContainer) => {
                 display: isAdmin ? "block" : "none",
                 cursor: "pointer",
             }}
+             onClick={handleDeleteComment}
             >Delete comment</span>
         </div>
     );
