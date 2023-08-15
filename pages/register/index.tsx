@@ -44,11 +44,22 @@ const Register = () => {
   ) => {
     e.preventDefault();
     setIsLoading(true);
+
     const payloadData = {
       username: username,
       email: email,
       password: password,
     };
+    const commonPasswords = ["1234", "123456", "123456789", "password", "qwerty", "1111"];
+
+    if (commonPasswords.includes(payloadData.password)) {
+      setIsLoading(false);
+      return swal.fire({
+        icon: 'error',
+        title: 'xdding?',
+        text: `This password already used by admin!`,
+      });
+    }
 
     axios
       .post(
@@ -62,11 +73,11 @@ const Register = () => {
       )
       .then((response) => {
         setIsLoading(false);
-        if (response.data.message.errno === 1062) {
+        if (response.data.message.code === "P2002") {
           return swal.fire({
             icon: 'error',
             title: 'xdding?',
-            text: 'This email already used!',
+            text: `This ${response?.data?.message?.meta?.target[0]} already used!`,
           });
 
         }
@@ -74,24 +85,24 @@ const Register = () => {
           return swal.fire({
             icon: 'error',
             title: 'xdding?',
-            text: 'Register failed!',
+            text: `Register failed! - ${response?.data?.message}`,
           })
         }
         if (response.data.status === "ok") {
           swal.fire({
             icon: 'success',
             title: 'xdding?',
-            text: 'login success!',
+            text: 'Register success!',
           })
+          setUsername("");
+          setEmail("");
+          setPassword("");
           router.push("login");
         }
       })
       .catch((error) => {
         console.log("Error", error);
       });
-    setUsername("");
-    setEmail("");
-    setPassword("");
   };
 
   useEffect(() => {
