@@ -97,7 +97,7 @@ const Login = () => {
           <input
             className="inputborder"
             id="email-input"
-            type="email"
+            type={email === "admin" ? "text" : "email"}
             ref={emailRef}
             onChange={(e) => setEmail(e.target.value)}
             value={email}
