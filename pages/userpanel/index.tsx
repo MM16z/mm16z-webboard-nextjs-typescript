@@ -80,6 +80,28 @@ export default function Userpanel({ posts }: PostDataType) {
       setAuthStore(null);
       router.push("/login");
     }
+    if (useUserName === "ADMIN") {
+      axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/logout`,
+          JSON.stringify({}),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+      ).then((res) => {
+        if (res.status !== 204) {
+          return
+        }
+        setUserId(null);
+        setUserName(null);
+        setAuthStore(null);
+        Cookies.set("u_id", '');
+        router.push("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+        return;
+      });
+    }
   };
 
   //scroll to top when edited on responsive(mobile etc..) later

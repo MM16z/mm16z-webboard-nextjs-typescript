@@ -322,7 +322,6 @@ export default function MainSection({posts}: PostDataType) {
                                 {post?.comments?.map((comment, index) => {
                                     let commentId = comment.comment_id;
                                     let commentFrom = comment.comment_from;
-                                    console.log(commentFrom,"asd")
                                     if (comment.comment_content === null) {
                                         return (
                                             <div
