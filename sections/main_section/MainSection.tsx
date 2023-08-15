@@ -37,6 +37,7 @@ export default function MainSection({posts}: PostDataType) {
     const [postLikedCounts, setPostLikedCounts] = useState<number[]>([]);
     const [comment, setComment] = useState(["", "", "", "", "", ""]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     let postsCount = posts?.postsCount / 6;
     if (postsCount < 1) {
@@ -48,6 +49,7 @@ export default function MainSection({posts}: PostDataType) {
         postId: number,
         index: number
     ) => {
+        const DEBOUNCE_DELAY = 1500;
         const payloadData = {
             userid: useUserId,
             postid: postId,
@@ -99,6 +101,10 @@ export default function MainSection({posts}: PostDataType) {
                 return newCount;
             });
         }
+        setIsButtonDisabled(true); // Disable the button
+        setTimeout(() => {
+            setIsButtonDisabled(false); // Enable the button after the debounce delay
+        }, DEBOUNCE_DELAY);
     };
 
     const commentSubmitHandler = async (
@@ -287,6 +293,7 @@ export default function MainSection({posts}: PostDataType) {
                                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                         onPostlikeHandler(e, post.post_id, index);
                                     }}
+                                    disabled={isButtonDisabled}
                                 />
                                 <form
                                     method="post"

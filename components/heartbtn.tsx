@@ -4,6 +4,7 @@ type HeartBtnPropsType = {
   postLikedCount: number;
   onChange: ChangeEventHandler;
   defaultChecked: boolean;
+  disabled: boolean;
 };
 
 const HeartBtn = (props: HeartBtnPropsType) => {
@@ -15,6 +16,9 @@ const HeartBtn = (props: HeartBtnPropsType) => {
         id="checkbox"
         onChange={props.onChange}
         defaultChecked={props.defaultChecked}
+        disabled={props.disabled}
+        //loading cursor
+        style={{cursor: props.disabled ? "wait" : "pointer"}}
       />
       <label htmlFor="checkbox">
         <noscript>By http://robeen.io</noscript>
