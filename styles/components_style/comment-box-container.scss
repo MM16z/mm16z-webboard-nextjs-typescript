@@ -58,6 +58,11 @@
         position: relative;
         width: 100%;
     }
+    & > .comment-delete {
+        &:hover {
+            background-color: pink;
+        }
+    }
 }
 
 @media screen and (min-width: 0px) and (max-width: 361px) {

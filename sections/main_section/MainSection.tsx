@@ -116,6 +116,7 @@ export default function MainSection({posts}: PostDataType) {
             return router.push("login");
         }
         setIsLoading(true);
+        window.scrollTo(0, screen.height/2)
         if ((await reqAuth()) === "noAuthorization") {
             swal.fire({
                 icon: 'error',
@@ -158,7 +159,7 @@ export default function MainSection({posts}: PostDataType) {
             setIsLoading(false);
             router.push({
                 pathname: router.pathname,
-                query: {page: currentPage},
+                query: {page: currentPage + 1},
             });
         }
         setComment((prev) => {
@@ -167,6 +168,68 @@ export default function MainSection({posts}: PostDataType) {
             return newState;
         });
     };
+
+    const handleDeleteComment = async (commentId: number)   => {
+        swal.fire({
+            title: 'Are you sure to delete this comment?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                setIsLoading(true)
+                window.scrollTo(0, screen.height/2)
+                if (!useAuth) {
+                    swal.fire({
+                        icon: 'error',
+                        title: 'xdding?',
+                        text: 'Please login first!',
+                    })
+                    return router.push("login");
+                }
+                if ((await reqAuth()) === "noAuthorization") {
+                    swal.fire({
+                        icon: 'error',
+                        title: 'xdding?',
+                        text: 'Out of session!',
+                    })
+                    return (window.location.href = "/");
+                }
+                const payloadData = {
+                    commentId: commentId,
+                };
+                const response = await axios.post(
+                    `${process.env.NEXT_PUBLIC_API_URL}/user_post_comment_delete`,
+                    JSON.stringify(payloadData),
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                if (response.data.status === "error") return swal.fire({
+                    icon: 'error',
+                    title: 'xdding?',
+                    text: 'Delete comment failed!',
+                })
+                if (response.data.status === "ok") {
+                    swal.fire({
+                        icon: 'success',
+                        title: 'xdding?',
+                        text: 'Delete comment success!',
+                    })
+                    router.push({
+                        pathname: router.pathname,
+                        query: {page: currentPage + 1},
+                    });
+                }
+                    setIsLoading(false)
+            }
+        })
+    }
 
     const pagginationHandler = (page: any) => {
         let currentPage = page.selected + 1;
@@ -251,6 +314,8 @@ export default function MainSection({posts}: PostDataType) {
                                 </form>
                                 {post?.comments?.map((comment, index) => {
                                     let commentId = comment.comment_id;
+                                    let commentFrom = comment.comment_from;
+                                    console.log(commentFrom,"asd")
                                     if (comment.comment_content === null) {
                                         return (
                                             <div
@@ -271,6 +336,8 @@ export default function MainSection({posts}: PostDataType) {
                                         return (
                                             <CommentBoxContainer
                                                 key={commentId}
+                                                isAdmin={useUserId === 1 || commentFrom === useUserName}
+                                                handleDeleteComment={() => handleDeleteComment(commentId)}
                                                 commentusername={comment.comment_from}
                                                 commentcontent={comment.comment_content}
                                             />
