@@ -31,16 +31,17 @@ function Navbar() {
                     icon: 'error',
                     title: 'xdding?',
                     text: `Logout failed!`,
+                }).then(() => {
+                  return;
                 })
             } else {
                 swal.fire({
                     icon: 'success',
                     title: 'xdding?',
                     text: `Logout success!`,
-                })
-                return;
+                }).then(() => {
+                });
             }
-
             setAuthStore(null);
             Cookies.set("u_id", "");
             window.location.href = "/";
