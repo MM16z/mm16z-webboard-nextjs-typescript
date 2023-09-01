@@ -124,7 +124,7 @@ const Login = () => {
                         id="toregisref"
                         style={{marginTop: "12px", opacity: 0.6}}
                     >
-                        or try an admin account? admin:1234 or <span style={{fontWeight: "bold", opacity: 1, zIndex: 100}}
+                        or try an global account? admin:1234 or <span style={{fontWeight: "bold", opacity: 1, zIndex: 100}}
                                                                   onClick={() => {
                                                                       setEmail("admin");
                                                                       setPassword("1234");
