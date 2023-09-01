@@ -54,7 +54,10 @@ function Navbar() {
             <div
                 className="navbar-title"
                 onClick={() => {
-                    router.push("/");
+                  router.push({
+                    pathname: '/',
+                    query: { page: 1 },
+                  });
                 }}
             >
                 MM16STUDIO
@@ -62,7 +65,10 @@ function Navbar() {
             <div
                 className="navbar-title_01"
                 onClick={() => {
-                    router.push("/");
+                  router.push({
+                    pathname: '/',
+                    query: { page: 1 },
+                  });
                 }}
             >
                 Webboard
