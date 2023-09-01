@@ -1,6 +1,6 @@
 import Link from "next/link";
-import {useRouter} from "next/router";
-import {useRef} from "react";
+import { useRouter } from "next/router";
+import { useRef } from "react";
 
 import Cookies from "js-cookie";
 
@@ -27,17 +27,20 @@ function Navbar() {
             }
         ).then((res) => {
             if (res.status !== 204) {
-                return swal.fire({
+                swal.fire({
                     icon: 'error',
                     title: 'xdding?',
                     text: `Logout failed!`,
                 })
+            } else {
+                swal.fire({
+                    icon: 'success',
+                    title: 'xdding?',
+                    text: `Logout success!`,
+                })
+                return;
             }
-            swal.fire({
-                icon: 'success',
-                title: 'xdding?',
-                text: `Logout success!`,
-            })
+
             setAuthStore(null);
             Cookies.set("u_id", "");
             window.location.href = "/";
@@ -88,7 +91,7 @@ function Navbar() {
                             router.push("login");
                         }
                     }}
-                    style={{right: useAuth ? "140px" : "295px"}}
+                    style={{ right: useAuth ? "140px" : "295px" }}
                 >
                     CreatePost |
                 </div>
@@ -99,8 +102,8 @@ function Navbar() {
                 </div>
             ) : null}
             <span className="navbar-bg">
-        <span className="navbar-bg-nested"></span>
-      </span>
+                <span className="navbar-bg-nested"></span>
+            </span>
         </nav>
     );
 }
