@@ -1,20 +1,20 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-import useAuthStore from "../global_state/authStore";
-import getUserAuth from "../hooks/getUserAuth";
+import useAuthStore from "../store/authStore";
+import getUserAuth from "../auth/getUserAuth";
 
-import {GetServerSideProps} from "next";
+import { GetServerSideProps } from "next";
 
 import Cookies from "js-cookie";
-import {Blocks} from "react-loader-spinner";
+import { Blocks } from "react-loader-spinner";
 
-import {PostDataType} from "../types/PostDataType";
-import refreshTokenAuth from "../hooks/refreshTokenAuth";
+import { PostDataType } from "../types/PostDataType";
+import refreshTokenAuth from "../auth/refreshTokenAuth";
 import MainSection from "../sections/main_section/MainSection";
 
 
-export default function Home({posts}: PostDataType) {
+export default function Home({ posts }: PostDataType) {
 
     const useAuth = useAuthStore((state: any) => state.accessToken);
 
@@ -34,7 +34,7 @@ export default function Home({posts}: PostDataType) {
                 const response = await getUserAuth();
 
                 if (response && response.data && response.data.decoded) {
-                    const {userId, username} = response.data.decoded;
+                    const { userId, username } = response.data.decoded;
                     setUserId(userId);
                     setUserName(username);
                     Cookies.set("u_id", userId);
@@ -87,11 +87,11 @@ export default function Home({posts}: PostDataType) {
                     height="280"
                     width="280"
                     ariaLabel="blocks-loading"
-                    wrapperStyle={{top: "30%"}}
+                    wrapperStyle={{ top: "30%" }}
                     wrapperClass="blocks-wrapper-home"
                 />
             ) : null}
-            <MainSection posts={posts}/>
+            <MainSection posts={posts} />
         </div>
     );
 }
@@ -116,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const postDataOptions = {
         method: "GET",
         url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
-        params: {currentUserId: currentUserId},
+        params: { currentUserId: currentUserId },
         withCredentials: true,
     };
     const posts = await axios.request(postDataOptions);

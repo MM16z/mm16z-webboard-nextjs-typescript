@@ -1,23 +1,23 @@
-import React, {ChangeEvent, SyntheticEvent, useEffect, useState} from 'react';
+import React, { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react';
 
 import PostBoxContainer from "../../components/post-box-container";
 import CommentBoxContainer from "../../components/comment-box-container";
 import HeartBtn from "../../components/heartbtn";
 
-import useAuthStore from "../../global_state/authStore";
+import useAuthStore from "../../store/authStore";
 
 import ReactPaginate from "react-paginate";
 import Masonry from "react-masonry-css";
 
 import dayjs from "dayjs";
-import {FixWithoutRounding} from "../../utils/FixWithoutRounding";
-import {GetServerSideProps} from "next";
+import { FixWithoutRounding } from "../../utils/FixWithoutRounding";
+import { GetServerSideProps } from "next";
 import axios from "axios";
-import {PostDataType} from "../../types/PostDataType";
-import reqAuth from "../../hooks/requestAuth";
-import {useRouter} from "next/router";
+import { PostDataType } from "../../types/PostDataType";
+import reqAuth from "../../auth/requestAuth";
+import { useRouter } from "next/router";
 import swal from "sweetalert2";
-import {Blocks} from "react-loader-spinner";
+import { Blocks } from "react-loader-spinner";
 
 const breakpointColumnsObj = {
     default: 4,
@@ -26,7 +26,7 @@ const breakpointColumnsObj = {
     1100: 1,
 };
 
-export default function MainSection({posts}: PostDataType) {
+export default function MainSection({ posts }: PostDataType) {
     const router = useRouter();
 
     const useAuth = useAuthStore((state: any) => state.accessToken);
@@ -122,7 +122,7 @@ export default function MainSection({posts}: PostDataType) {
             return router.push("login");
         }
         setIsLoading(true);
-        window.scrollTo(0, screen.height/2)
+        window.scrollTo(0, screen.height / 2)
         if ((await reqAuth()) === "noAuthorization") {
             swal.fire({
                 icon: 'error',
@@ -165,7 +165,7 @@ export default function MainSection({posts}: PostDataType) {
             setIsLoading(false);
             router.push({
                 pathname: router.pathname,
-                query: {page: currentPage + 1},
+                query: { page: currentPage + 1 },
             });
         }
         setComment((prev) => {
@@ -175,7 +175,7 @@ export default function MainSection({posts}: PostDataType) {
         });
     };
 
-    const handleDeleteComment = async (commentId: number)   => {
+    const handleDeleteComment = async (commentId: number) => {
         swal.fire({
             title: 'Are you sure to delete this comment?',
             text: "You won't be able to revert this!",
@@ -187,7 +187,7 @@ export default function MainSection({posts}: PostDataType) {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 setIsLoading(true)
-                window.scrollTo(0, screen.height/2)
+                window.scrollTo(0, screen.height / 2)
                 if (!useAuth) {
                     swal.fire({
                         icon: 'error',
@@ -229,10 +229,10 @@ export default function MainSection({posts}: PostDataType) {
                     })
                     router.push({
                         pathname: router.pathname,
-                        query: {page: currentPage + 1},
+                        query: { page: currentPage + 1 },
                     });
                 }
-                    setIsLoading(false)
+                setIsLoading(false)
             }
         })
     }
@@ -242,7 +242,7 @@ export default function MainSection({posts}: PostDataType) {
         setcurrentPage(Math.round(currentPage));
         router.push({
             pathname: router.pathname,
-            query: {page: currentPage},
+            query: { page: currentPage },
         });
     };
 
@@ -264,7 +264,7 @@ export default function MainSection({posts}: PostDataType) {
                     height="280"
                     width="280"
                     ariaLabel="blocks-loading"
-                    wrapperStyle={{top: "40%"}}
+                    wrapperStyle={{ top: "40%" }}
                     wrapperClass="blocks-wrapper-home"
                 />
             ) : null}
@@ -300,7 +300,7 @@ export default function MainSection({posts}: PostDataType) {
                                     onSubmit={(e) => {
                                         commentSubmitHandler(e, post.post_id, index);
                                     }}
-                                    style={{display: useAuth ? "flex" : "none", paddingBottom:"20px"}}
+                                    style={{ display: useAuth ? "flex" : "none", paddingBottom: "20px" }}
                                 >
                                     <label htmlFor="comment-input">Type something nice :D</label>
                                     <textarea

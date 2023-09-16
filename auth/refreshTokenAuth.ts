@@ -1,5 +1,5 @@
 import axios from "axios";
-import useAuthStore from "../global_state/authStore";
+import useAuthStore from "../store/authStore";
 
 export const refreshAxios = axios.create();
 

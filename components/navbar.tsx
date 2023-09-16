@@ -4,7 +4,7 @@ import { useRef } from "react";
 
 import Cookies from "js-cookie";
 
-import useAuthStore from "../global_state/authStore";
+import useAuthStore from "../store/authStore";
 import axios from "axios";
 import swal from "sweetalert2";
 
@@ -32,7 +32,7 @@ function Navbar() {
                     title: 'xdding?',
                     text: `Logout failed!`,
                 }).then(() => {
-                  return;
+                    return;
                 })
             } else {
                 swal.fire({
@@ -54,10 +54,10 @@ function Navbar() {
             <div
                 className="navbar-title"
                 onClick={() => {
-                  router.push({
-                    pathname: '/',
-                    query: { page: 1 },
-                  });
+                    router.push({
+                        pathname: '/',
+                        query: { page: 1 },
+                    });
                 }}
             >
                 MM16STUDIO
@@ -65,10 +65,10 @@ function Navbar() {
             <div
                 className="navbar-title_01"
                 onClick={() => {
-                  router.push({
-                    pathname: '/',
-                    query: { page: 1 },
-                  });
+                    router.push({
+                        pathname: '/',
+                        query: { page: 1 },
+                    });
                 }}
             >
                 Webboard
