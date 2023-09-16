@@ -1,11 +1,11 @@
-import {FormEvent, useEffect, useRef, useState} from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
-import useAuthStore from "../../global_state/authStore";
+import useAuthStore from "../../store/authStore";
 
-import {Blocks} from "react-loader-spinner";
+import { Blocks } from "react-loader-spinner";
 import swal from "sweetalert2";
 
 const Login = () => {
@@ -122,13 +122,13 @@ const Login = () => {
                     </div>
                     <div
                         id="toregisref"
-                        style={{marginTop: "12px", opacity: 0.6}}
+                        style={{ marginTop: "12px", opacity: 0.6 }}
                     >
-                        or try an global account? admin:1234 or <span style={{fontWeight: "bold", opacity: 1, zIndex: 100}}
-                                                                  onClick={() => {
-                                                                      setEmail("admin");
-                                                                      setPassword("1234");
-                                                                  }}>Click here</span>
+                        or try an global account? admin:1234 or <span style={{ fontWeight: "bold", opacity: 1, zIndex: 100 }}
+                            onClick={() => {
+                                setEmail("admin");
+                                setPassword("1234");
+                            }}>Click here</span>
                     </div>
                     <input id="login-submitbtn" type="submit" value="Login"></input>
                 </div>

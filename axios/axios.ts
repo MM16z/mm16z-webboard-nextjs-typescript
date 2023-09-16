@@ -1,5 +1,5 @@
 import axios from "axios";
-import refreshTokenAuth from "../hooks/refreshTokenAuth";
+import refreshTokenAuth from "../auth/refreshTokenAuth";
 
 export const authAxios = axios.create();
 

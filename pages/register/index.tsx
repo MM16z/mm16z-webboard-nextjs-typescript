@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-import useAuthStore from "../../global_state/authStore";
+import useAuthStore from "../../store/authStore";
 
 import { useRouter } from "next/router";
 

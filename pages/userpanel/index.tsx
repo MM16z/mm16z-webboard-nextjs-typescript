@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef, ChangeEvent } from "react";
 import axios from "axios";
 
-import useAuthStore from "../../global_state/authStore";
-import getUserauth from "../../hooks/getUserAuth";
-import reqAuth from "../../hooks/requestAuth";
+import useAuthStore from "../../store/authStore";
+import getUserauth from "../../auth/getUserAuth";
+import reqAuth from "../../auth/requestAuth";
 
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 import { Blocks } from "react-loader-spinner";
 
 import { PostDataType } from "../../types/PostDataType";
-import refreshTokenAuth from "../../hooks/refreshTokenAuth";
+import refreshTokenAuth from "../../auth/refreshTokenAuth";
 import swal from "sweetalert2";
 
 export default function Userpanel({ posts }: PostDataType) {
@@ -29,13 +29,13 @@ export default function Userpanel({ posts }: PostDataType) {
 
   const router = useRouter();
 
-  const useAuth = useAuthStore((state:any) => state.accessToken);
-  const useUserName = useAuthStore((state:any) => state.userName);
-  const useUserId = useAuthStore((state:any) => state.userId);
+  const useAuth = useAuthStore((state: any) => state.accessToken);
+  const useUserName = useAuthStore((state: any) => state.userName);
+  const useUserId = useAuthStore((state: any) => state.userId);
 
-  const setAuthStore = useAuthStore((state:any) => state.setAccessToken);
-  const setUserId = useAuthStore((state:any) => state.setUserId);
-  const setUserName = useAuthStore((state:any) => state.setUserName);
+  const setAuthStore = useAuthStore((state: any) => state.setAccessToken);
+  const setUserId = useAuthStore((state: any) => state.setUserId);
+  const setUserName = useAuthStore((state: any) => state.setUserName);
 
   const [isLoading, setIsLoading] = useState(true);
   const refresh = refreshTokenAuth();
@@ -344,19 +344,19 @@ export default function Userpanel({ posts }: PostDataType) {
       <span id="username">HI! {useUserName} </span>
       <form onSubmit={onPostSubmitHandler}>
         <div className="user-panel-inputcontainer">
-          <label htmlFor="post-text-input" style={{marginBottom:"20px"}}>Write something nice :D</label>
+          <label htmlFor="post-text-input" style={{ marginBottom: "20px" }}>Write something nice :D</label>
           <textarea
-              placeholder={"Title"}
-              ref={postTitleContextRef}
-              onChange={(e) => {
-                setPostTitleContext(e.target.value);
-              }}
-              value={postTitleContext}
-              required
-              className="post-inputborder"
-              id="post-text-input"
-              typeof="text"
-              style={{height:"30px"}}
+            placeholder={"Title"}
+            ref={postTitleContextRef}
+            onChange={(e) => {
+              setPostTitleContext(e.target.value);
+            }}
+            value={postTitleContext}
+            required
+            className="post-inputborder"
+            id="post-text-input"
+            typeof="text"
+            style={{ height: "30px" }}
           ></textarea>
           <textarea
             placeholder={"Content"}
