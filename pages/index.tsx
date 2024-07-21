@@ -13,8 +13,10 @@ import { PostDataType } from "../types/PostDataType";
 import refreshTokenAuth from "../auth/refreshTokenAuth";
 import MainSection from "../sections/main_section/MainSection";
 
+import swal from "sweetalert2";
 
-export default function Home({ posts }: PostDataType) {
+
+export default function Home({ posts, error }: PostDataType) {
 
     const useAuth = useAuthStore((state: any) => state.accessToken);
 
@@ -79,6 +81,19 @@ export default function Home({ posts }: PostDataType) {
         routeAuth();
     }, [useAuth]);
 
+    if (error) {
+        swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `currently use free plan (backend), free instance will spin down with inactivity, which can delay requests by 50 seconds or more. 
+            / (backend) เซิฟฟรีจะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น, กรุณาเข้ามาใหม่ในอีก 1 นาที  
+            / I'M POOR XD
+            `
+            ,
+        })
+        return;
+    }
+
     return (
         <div className="home-page-container">
             {isLoading ? (
@@ -97,10 +112,6 @@ export default function Home({ posts }: PostDataType) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    // context.res.setHeader(
-    //   "Cache-Control",
-    //   "public, s-maxage=10, stale-while-revalidate=59"
-    // );
     let currentQuery = Number(context.query.page);
     if (!currentQuery) {
         currentQuery = 0;
@@ -110,22 +121,31 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
         currentQuery = (currentQuery - 1) * 6;
     }
-    //will set/use secure cookie on api endpoint instend of client side cookie later
+
     let currentUserId = Number(context.req?.cookies?.u_id) || null;
 
     const postDataOptions = {
         method: "GET",
-        url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
+        url: `${process.env.NEXT_PUBLIC_API_URL}/users_posts/${currentQuery}`,
         params: { currentUserId: currentUserId },
         withCredentials: true,
     };
-    const posts = await axios.request(postDataOptions);
 
-    return {
-        props: {
-            posts: posts.data,
-        },
-    };
+    try {
+        const posts = await axios.request(postDataOptions);
+        return {
+            props: {
+                posts: posts.data,
+            },
+        };
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        return {
+            props: {
+                error: 'Failed to load posts',
+            },
+        };
+    }
 };
 
 
