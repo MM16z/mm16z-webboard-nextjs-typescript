@@ -91,9 +91,7 @@ export default function Home({ posts }: PostDataType) {
                     wrapperClass="blocks-wrapper-home"
                 />
             ) : null}
-            {
-                posts === null ? <div>TEST</div> :
-                    <MainSection posts={posts} />}
+            <MainSection posts={posts} />
         </div>
     );
 }
@@ -117,7 +115,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const postDataOptions = {
         method: "GET",
-        url: `${process.env.NEXT_PUBLIC_API_URL + "asd"}/user_posts/${currentQuery}`,
+        url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
         params: { currentUserId: currentUserId },
         withCredentials: true,
     };
@@ -125,7 +123,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     return {
         props: {
-            posts: posts.status === 200 ? posts.data : null,
+            posts: posts.data,
         },
     };
 };
