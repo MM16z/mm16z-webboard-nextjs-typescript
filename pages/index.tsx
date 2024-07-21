@@ -126,7 +126,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const postDataOptions = {
         method: "GET",
-        url: `${process.env.NEXT_PUBLIC_API_URL}/users_posts/${currentQuery}`,
+        url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
         params: { currentUserId: currentUserId },
         withCredentials: true,
     };
