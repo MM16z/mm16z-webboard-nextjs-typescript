@@ -2,6 +2,7 @@ export interface PostDataType {
     posts: PostDataTypes;
     // currentPage: number;
     error?: string;
+    status?: string;
 }
 
 export interface PostDataTypes {

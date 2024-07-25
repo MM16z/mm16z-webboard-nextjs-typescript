@@ -16,7 +16,7 @@ import MainSection from "../sections/main_section/MainSection";
 import swal from "sweetalert2";
 
 
-export default function Home({ posts, error }: PostDataType) {
+export default function Home({ posts, error, status }: PostDataType) {
 
     const useAuth = useAuthStore((state: any) => state.accessToken);
 
@@ -81,7 +81,7 @@ export default function Home({ posts, error }: PostDataType) {
         routeAuth();
     }, [useAuth]);
 
-    if (error) {
+    if (status === 'loading') {
         swal.fire({
             icon: 'error',
             title: 'Error',
@@ -90,6 +90,14 @@ export default function Home({ posts, error }: PostDataType) {
             / I'M POOR XD
             `
             ,
+        })
+        return;
+    }
+
+    if (error) {
+        swal.fire({
+            icon: 'error',
+            title: 'Error',
         })
         return;
     }
@@ -112,6 +120,11 @@ export default function Home({ posts, error }: PostDataType) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+        controller.abort();
+    }, 5000);
+
     let currentQuery = Number(context.query.page);
     if (!currentQuery) {
         currentQuery = 0;
@@ -129,20 +142,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
         params: { currentUserId: currentUserId },
         withCredentials: true,
+        signal: controller.signal, // Attach the AbortSignal to the request
     };
 
     try {
         const posts = await axios.request(postDataOptions);
+        clearTimeout(timeout); // Clear the timeout if the request is successful
         return {
             props: {
                 posts: posts.data,
+                status: 'loaded',
             },
         };
     } catch (error) {
+        clearTimeout(timeout); // Clear the timeout in case of an error
         console.error('Error fetching posts:', error);
         return {
             props: {
-                error: 'Failed to load posts',
+                error: 'Server is starting up, please wait...',
+                status: 'loading',
             },
         };
     }
