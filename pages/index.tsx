@@ -84,7 +84,7 @@ export default function Home({ posts, error, status }: PostDataType) {
     if (status === 'loading') {
         swal.fire({
             icon: 'error',
-            title: 'Error',
+            title: 'Error (กรุณาเข้ามาใหม่ในอีก 1 นาที)',
             text: `currently use free plan (backend), free instance will spin down with inactivity, which can delay requests by 50 seconds or more. 
             / (backend) เซิฟฟรีจะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น, กรุณาเข้ามาใหม่ในอีก 1 นาที  
             / I'M POOR XD
