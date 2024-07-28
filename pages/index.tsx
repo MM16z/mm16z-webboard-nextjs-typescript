@@ -86,8 +86,7 @@ export default function Home({ posts, error, status }: PostDataType) {
             icon: 'error',
             title: 'Error (กรุณาเข้ามาใหม่ในอีก 1 นาที)',
             text: `currently use free plan (backend), free instance will spin down with inactivity, which can delay requests by 50 seconds or more. 
-            / (backend) เซิฟฟรีจะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น, กรุณาเข้ามาใหม่ในอีก 1 นาที  
-            / I'M POOR XD
+            / (backend) เซิฟฟรีจะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น, กรุณาเข้ามาใหม่ในอีก 1 นาที
             `
             ,
         })
@@ -142,12 +141,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
         params: { currentUserId: currentUserId },
         withCredentials: true,
-        signal: controller.signal, // Attach the AbortSignal to the request
+        signal: controller.signal,
     };
 
     try {
         const posts = await axios.request(postDataOptions);
-        clearTimeout(timeout); // Clear the timeout if the request is successful
+        clearTimeout(timeout);
         return {
             props: {
                 posts: posts.data,
@@ -155,7 +154,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             },
         };
     } catch (error) {
-        clearTimeout(timeout); // Clear the timeout in case of an error
+        clearTimeout(timeout);
         console.error('Error fetching posts:', error);
         return {
             props: {
