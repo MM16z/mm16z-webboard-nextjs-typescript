@@ -272,10 +272,16 @@ export default function MainSection({ posts }: PostDataType) {
                 /Home, Howdy! :D @User : {useAuth ? useUserName : "Anonymous"}
             </div>
             <div className="masonry-warper">
+                <h2 style={{
+                    marginTop: "60px", wordBreak: "break-word", whiteSpace: "-moz-pre-wrap",
+                    textAlign: "center", padding: "0px 24px 0px 24px"
+                }}>Register with any non-existing email to post, comment, or like.</h2>
+
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
                     className="my-masonry-grid"
                     columnClassName="my-masonry-grid_column"
+                    style={{ marginTop: "20px" }}
                 >
                     {posts?.allPosts?.map((post, index) => {
                         return (
