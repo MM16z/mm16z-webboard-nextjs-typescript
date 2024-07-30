@@ -93,7 +93,7 @@ export default function Home({ posts, error, status, isFetchLoading }: PostDataT
         return;
     }
 
-    if (error) {
+    if (status === 'error') {
         swal.fire({
             icon: 'error',
             title: error,
