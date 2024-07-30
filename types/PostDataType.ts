@@ -3,6 +3,7 @@ export interface PostDataType {
     // currentPage: number;
     error?: string;
     status?: string;
+    isFetchLoading?: boolean;
 }
 
 export interface PostDataTypes {

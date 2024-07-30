@@ -16,7 +16,7 @@ import MainSection from "../sections/main_section/MainSection";
 import swal from "sweetalert2";
 
 
-export default function Home({ posts, error, status }: PostDataType) {
+export default function Home({ posts, error, status, isFetchLoading }: PostDataType) {
 
     const useAuth = useAuthStore((state: any) => state.accessToken);
 
@@ -81,7 +81,7 @@ export default function Home({ posts, error, status }: PostDataType) {
         routeAuth();
     }, [useAuth]);
 
-    if (status === 'loading') {
+    if (status === 'loading' || isFetchLoading) {
         swal.fire({
             icon: 'error',
             title: 'Error (กรุณาเข้ามาใหม่ในอีก 1 นาที)',
@@ -96,7 +96,7 @@ export default function Home({ posts, error, status }: PostDataType) {
     if (error) {
         swal.fire({
             icon: 'error',
-            title: 'Error',
+            title: error,
         })
         return;
     }
@@ -118,51 +118,92 @@ export default function Home({ posts, error, status }: PostDataType) {
     );
 }
 
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//     const controller = new AbortController();
+//     const timeout = setTimeout(() => {
+//         controller.abort();
+//     }, 5000);
+
+//     let currentQuery = Number(context.query.page);
+//     if (!currentQuery) {
+//         currentQuery = 0;
+//     } else {
+//         if (currentQuery <= 0) {
+//             currentQuery = 1;
+//         }
+//         currentQuery = (currentQuery - 1) * 6;
+//     }
+
+//     let currentUserId = Number(context.req?.cookies?.u_id) || null;
+
+//     const postDataOptions = {
+//         method: "GET",
+//         url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
+//         params: { currentUserId: currentUserId },
+//         withCredentials: true,
+//         signal: controller.signal,
+//     };
+
+//     try {
+//         const posts = await axios.request(postDataOptions);
+//         clearTimeout(timeout);
+//         return {
+//             props: {
+//                 posts: posts.data,
+//                 status: 'loaded',
+//             },
+//         };
+//     } catch (error) {
+//         clearTimeout(timeout);
+//         console.error('Error fetching posts:', error);
+//         return {
+//             props: {
+//                 error: 'Server is starting up, please wait...',
+//                 status: 'loading',
+//             },
+//         };
+//     }
+// };
+
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => {
-        controller.abort();
-    }, 5000);
+    let currentQuery = Number(context.query.page) || 1;
+    currentQuery = Math.max(1, currentQuery);
+    const skip = (currentQuery - 1) * 6;
 
-    let currentQuery = Number(context.query.page);
-    if (!currentQuery) {
-        currentQuery = 0;
-    } else {
-        if (currentQuery <= 0) {
-            currentQuery = 1;
-        }
-        currentQuery = (currentQuery - 1) * 6;
-    }
+    const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-    let currentUserId = Number(context.req?.cookies?.u_id) || null;
+    const currentUserId = Number(context.req?.cookies?.u_id) || null;
 
     const postDataOptions = {
         method: "GET",
-        url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
-        params: { currentUserId: currentUserId },
+        url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${skip}`,
+        params: { currentUserId },
         withCredentials: true,
-        signal: controller.signal,
     };
 
-    try {
-        const posts = await axios.request(postDataOptions);
-        clearTimeout(timeout);
-        return {
-            props: {
-                posts: posts.data,
-                status: 'loaded',
-            },
-        };
-    } catch (error) {
-        clearTimeout(timeout);
-        console.error('Error fetching posts:', error);
-        return {
-            props: {
-                error: 'Server is starting up, please wait...',
-                status: 'loading',
-            },
-        };
+    const maxRetries = 4;
+    const retryDelay = 15000;
+
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+        try {
+            const posts = await axios.request(postDataOptions);
+            return { props: { posts: posts.data } };
+        } catch (error) {
+            if (attempt === maxRetries - 1) {
+                return {
+                    props: {
+                        error: 'Server is starting up. Please wait and refresh in about 50 seconds.',
+                        isFetchLoading: true
+                    }
+                };
+            }
+            console.error(`Attempt ${attempt + 1} failed. Retrying in ${retryDelay / 1000} seconds...`);
+            await wait(retryDelay);
+        }
     }
+
+    return { props: { error: 'Unexpected error occurred' } };
 };
 
 
