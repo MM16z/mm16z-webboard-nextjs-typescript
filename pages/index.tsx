@@ -118,56 +118,6 @@ export default function Home({ posts, error, status, isFetchLoading }: PostDataT
     );
 }
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//     const controller = new AbortController();
-//     const timeout = setTimeout(() => {
-//         controller.abort();
-//     }, 5000);
-
-//     let currentQuery = Number(context.query.page);
-//     if (!currentQuery) {
-//         currentQuery = 0;
-//     } else {
-//         if (currentQuery <= 0) {
-//             currentQuery = 1;
-//         }
-//         currentQuery = (currentQuery - 1) * 6;
-//     }
-
-//     let currentUserId = Number(context.req?.cookies?.u_id) || null;
-
-//     const postDataOptions = {
-//         method: "GET",
-//         url: `${process.env.NEXT_PUBLIC_API_URL}/user_posts/${currentQuery}`,
-//         params: { currentUserId: currentUserId },
-//         withCredentials: true,
-//         signal: controller.signal,
-//     };
-
-//     try {
-//         const posts = await axios.request(postDataOptions);
-//         clearTimeout(timeout);
-//         return {
-//             props: {
-//                 posts: posts.data,
-//                 status: 'loaded',
-//             },
-//         };
-//     } catch (error) {
-//         clearTimeout(timeout);
-//         console.error('Error fetching posts:', error);
-//         return {
-//             props: {
-//                 error: 'Server is starting up, please wait...',
-//                 status: 'loading',
-//             },
-//         };
-//     }
-// };
-
-
-const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const controller = new AbortController();
     const timeout = setTimeout(() => {
@@ -194,33 +144,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         signal: controller.signal,
     };
 
-    const maxRetries = 3;
-    const retryDelay = 1000;
-
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-        try {
-            const posts = await axios.request(postDataOptions);
-            clearTimeout(timeout);
-            return {
-                props: {
-                    posts: posts.data,
-                    status: 'loaded',
-                },
-            };
-        } catch (error) {
-            if (attempt === maxRetries - 1) {
-                clearTimeout(timeout);
-                console.error('Error fetching posts:', error);
-                return {
-                    props: {
-                        error: 'Server is starting up, please wait about 50 seconds and refresh...',
-                        status: 'loading',
-                    },
-                };
-            }
-            await wait(retryDelay);
-        }
+    try {
+        const posts = await axios.request(postDataOptions);
+        clearTimeout(timeout);
+        return {
+            props: {
+                posts: posts.data,
+                status: 'loaded',
+            },
+        };
+    } catch (error) {
+        clearTimeout(timeout);
+        console.error('Error fetching posts:', error);
+        return {
+            props: {
+                error: 'Server is starting up, please wait...',
+                status: 'loading',
+            },
+        };
     }
 
-    return { props: { error: 'Unexpected error occurred', status: 'error' } };
 };
+
