@@ -81,14 +81,13 @@ export default function Home({ posts, error, status, isFetchLoading }: PostDataT
         routeAuth();
     }, [useAuth]);
 
-    if (status === 'loading' || isFetchLoading) {
+    if (status === 'loading') {
         swal.fire({
-            icon: 'error',
-            title: 'Error (กรุณาเข้ามาใหม่ในอีก 1 นาที)',
-            text: `currently use free plan (backend), free instance will spin down with inactivity, which can delay requests by 50 seconds or more. 
-            / (backend) เซิฟฟรีจะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น, กรุณาเข้ามาใหม่ในอีก 1 นาที
-            `
-            ,
+            icon: 'info',
+            title: '(กรุณาเข้ามาใหม่ในอีก 1 นาที)',
+            text: `currently use free plan hosting service (backend), free instance will spin down with inactivity,
+            which can delay requests by 50 seconds or more. ,
+            เซิฟฟรี (hosting service) จะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น, กรุณาเข้ามาใหม่ในอีก 1 นาที`,
         })
         return;
     }
@@ -155,11 +154,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         };
     } catch (error) {
         clearTimeout(timeout);
+
+        let errorMessage = 'An unknown error occurred. Please try again later.';
+        let status = 'error';
+
+        if (axios.isCancel(error)) {
+            errorMessage = 'Server is starting up, please wait...';
+            status = 'loading';
+        } else if (axios.isAxiosError(error)) {
+
+            if (error.response) {
+                errorMessage = `Server responded with status ${error.response.status}: ${error.response.data}`;
+            } else if (error.request) {
+                errorMessage = 'No response received from server.';
+            } else {
+                errorMessage = error.message;
+            }
+        }
         console.error('Error fetching posts:', error);
         return {
             props: {
-                error: 'Server is starting up, please wait...',
-                status: 'loading',
+                error: errorMessage,
+                status,
             },
         };
     }
