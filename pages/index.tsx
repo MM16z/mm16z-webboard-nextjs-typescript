@@ -84,13 +84,22 @@ export default function Home({ posts, error, status, isFetchLoading }: PostDataT
     if (status === 'loading') {
         swal.fire({
             icon: 'info',
-            title: '(กรุณาเข้ามาใหม่ในอีก 1 นาที)',
+            title: '(กรุณาเข้ามาใหม่ในอีก 1 นาที) หรือเข้าที่เซิฟผมเอง => http://imm0rz16.thddns.net:8771',
             text: `currently use free plan hosting service (backend), free instance will spin down with inactivity,
             which can delay requests by 50 seconds or more. ,
             เซิฟฟรี (hosting service) จะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น, กรุณาเข้ามาใหม่ในอีก 1 นาที`,
         })
         return;
     }
+
+    if (status === 'server down') {
+        swal.fire({
+            icon: 'info',
+            title: '(ไม่ได้เปิดคอม (เปิดเซิฟบนคอมตัวเอง) กรุณาเข้ามาใหม่ภายหลัง หรือไปที่เซิฟ cloud => https://mm16z-webboard-nextjs-fullstack.vercel.app )',
+        })
+        return;
+    }
+
 
     if (status === 'error') {
         swal.fire({
@@ -165,6 +174,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
             if (error.response) {
                 errorMessage = `Server responded with status ${error.response.status}: ${error.response.data}`;
+                if (error.response.status === 502) {
+                    status = 'server down';
+                }
             } else if (error.request) {
                 errorMessage = 'No response received from server.';
             } else {
