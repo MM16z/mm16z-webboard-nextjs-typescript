@@ -306,7 +306,7 @@ export default function MainSection({ posts }: PostDataType) {
                                     onSubmit={(e) => {
                                         commentSubmitHandler(e, post.post_id, index);
                                     }}
-                                    style={{ display: useAuth ? "flex" : "none", paddingBottom: "20px" }}
+                                // style={{ display: useAuth ? "flex" : "none", paddingBottom: "20px" }}
                                 >
                                     <label htmlFor="comment-input">Type something nice :D</label>
                                     <textarea
@@ -321,7 +321,7 @@ export default function MainSection({ posts }: PostDataType) {
                                         value={comment[index]}
                                         required
                                     ></textarea>
-                                    <button id="comment-submitbtn" type="submit">
+                                    <button id="comment-submitbtn" type="submit" disabled={!useAuth}>
                                         Submit
                                     </button>
                                 </form>
