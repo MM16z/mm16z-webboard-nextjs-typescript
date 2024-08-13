@@ -84,7 +84,7 @@ export default function Home({ posts, error, status, isFetchLoading }: PostDataT
     if (status === 'loading') {
         swal.fire({
             icon: 'info',
-            title: '(กรุณาเข้ามาใหม่ในอีก 1 นาที) หรือเข้าที่เซิฟผมเอง => http://imm0rz16.thddns.net:8771',
+            title: '(กรุณาเข้ามาใหม่ในอีก 1 นาที) หรือเข้าที่เซิฟผมเอง (ถ้าเปิดคอมกับเราท์เตอร์อยู่) => http://imm0rz16.thddns.net:8771',
             text: `currently use free plan hosting service (backend), free instance will spin down with inactivity,
             which can delay requests by 50 seconds or more. ,
             เซิฟฟรี (hosting service) จะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น, กรุณาเข้ามาใหม่ในอีก 1 นาที`,
