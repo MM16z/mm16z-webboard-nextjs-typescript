@@ -81,13 +81,21 @@ export default function Home({ posts, error, status, isFetchLoading }: PostDataT
         routeAuth();
     }, [useAuth]);
 
+    // useEffect(() => {
+    //     if (status === "loading") {
+    //         window.location.href = ""
+    //     }
+    // }, [status]);
+
     if (status === 'loading') {
         swal.fire({
             icon: 'info',
             title: '(กรุณาเข้ามาใหม่ในอีก 1 นาที) หรือเข้าที่เซิฟผมเอง (ถ้าเปิดคอมกับเราท์เตอร์อยู่) => http://imm0rz16.thddns.net:8771',
-            text: `currently use free plan hosting service (backend), free instance will spin down with inactivity,
-            which can delay requests by 50 seconds or more. ,
-            เซิฟฟรี (hosting service) จะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น, กรุณาเข้ามาใหม่ในอีก 1 นาที`,
+            html: `This service is currently using a free hosting plan for the backend. The free instance may go inactive and take up to 50 seconds or more to respond to requests. 
+    <br><br>
+    เซิร์ฟเวอร์ฟรี (hosting service) จะหยุดทำงานเมื่อไม่มีการใช้งาน ซึ่งอาจทำให้การร้องขอล่าช้าไป 50 วินาทีหรือมากกว่านั้น กรุณาเข้ามาใหม่ในอีก 1 นาที.
+    <br><br>
+    <a href='http://imm0rz16.thddns.net:8771' target='_blank' style='text-decoration: underline; font-weight: bold;'>http://imm0rz16.thddns.net:8771</a>`,
         })
         return;
     }
