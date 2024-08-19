@@ -272,10 +272,11 @@ export default function MainSection({ posts }: PostDataType) {
                 /Home, Howdy! :D @User : {useAuth ? useUserName : "Anonymous"}
             </div>
             <div className="masonry-warper">
-                <h2 style={{
+            <h2 style={{
                     marginTop: "60px", wordBreak: "break-word", whiteSpace: "-moz-pre-wrap",
                     textAlign: "center", padding: "0px 24px 0px 24px"
-                }}>Register with any non-existing email to post, comment, or like.</h2>
+                }}>Register with any non-existing email to post, comment, or like.<br />
+                    <span>or try an global account? email/user=admin password=1234</span></h2>
 
                 <Masonry
                     breakpointCols={breakpointColumnsObj}
