@@ -330,7 +330,7 @@ export default function Userpanel({ posts }: PostDataType) {
   }, [useUserName]);
 
   return (
-    <div className="userpanel-container">
+    <div className="userpanel-container" ref={(e) => usereditinput && e?.scrollIntoView({ behavior: 'smooth' })}>
       {isLoading ? (
         <Blocks
           visible={true}
